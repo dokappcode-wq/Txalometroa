@@ -9,6 +9,8 @@ Prototipo del Txalometroa de Hika Teatroa: analiza el feedback del público, lo 
 | Réplica de la web para pruebas | `replica/index.html` |
 | Script de análisis por línea de comandos | `analizar.py` |
 | Presupuesto de la versión definitiva | [`docs/presupuesto.md`](docs/presupuesto.md) |
+| **Documentación completa** (contexto, diseño, especificación técnica, decisiones) | [`docs/`](docs/README.md) |
+| Instrucciones para programar con Claude | [`CLAUDE.md`](CLAUDE.md) |
 
 Todo se compila con `python app/construir.py` y la app móvil se publica con `python app/publicar.py`.
 
