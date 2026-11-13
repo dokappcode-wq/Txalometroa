@@ -1,0 +1,15 @@
+# Ficheros de otros proyectos que comparten esta carpeta
+LOAK_*.xlsx
+S5_*.txt
+iceberg_*
+expresiones/
+
+# Salidas que se regeneran con analizar.py
+salida/
+
+# Python
+__pycache__/
+*.pyc
+
+# Copia temporal de las capturas de la app móvil
+movil/_captura.html

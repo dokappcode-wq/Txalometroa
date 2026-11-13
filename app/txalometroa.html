@@ -1,0 +1,1755 @@
+<meta charset="utf-8">
+<title>Txalometroa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=Raleway:wght@300;400;600;700&display=swap">
+<style>
+/* Layout: banda negra de cabecera (eco del logo de Hika) + pestañas; contenido en una columna de 1040px. */
+:root {
+  --bg: #f4f4f5; --surface: #ffffff; --line: #e1e1e4;
+  --ink: #141414; --ink-2: #55565b; --ink-3: #85868b;
+  --accent: #d4401f; --head: #141414; --head-ink: #ffffff;
+  --series: #2a78d6; --track: #ebebee; --warn-bg: #fff4e5; --warn-ink: #8a4b00;
+  --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111113; --surface: #1b1b1e; --line: #2f2f34;
+    --ink: #f2f2f3; --ink-2: #b9babf; --ink-3: #85868b;
+    --accent: #ef5a37; --head: #000000; --head-ink: #ffffff;
+    --series: #3987e5; --track: #2a2a2e; --warn-bg: #2e2312; --warn-ink: #f0b860;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111113; --surface: #1b1b1e; --line: #2f2f34;
+  --ink: #f2f2f3; --ink-2: #b9babf; --ink-3: #85868b;
+  --accent: #ef5a37; --head: #000000; --head-ink: #ffffff;
+  --series: #3987e5; --track: #2a2a2e; --warn-bg: #2e2312; --warn-ink: #f0b860;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+.wrap { max-width: 1040px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; text-wrap: balance; margin: 0; }
+h2 { font-size: 26px; letter-spacing: .01em; }
+h3 { font-size: 22px; }
+.muted { color: var(--ink-2); } .small { font-size: 13px; } .num { font-variant-numeric: tabular-nums; }
+button, .btn { font: 600 14px var(--body); border-radius: 8px; padding: 8px 14px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button:focus-visible, textarea:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Cabecera */
+header { background: var(--head); color: var(--head-ink); }
+header .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-block: 18px 0; }
+.marca { display: flex; align-items: baseline; gap: 12px; }
+.marca h1 { font-size: 34px; letter-spacing: .06em; text-transform: uppercase; }
+.marca h1 span { color: var(--accent); }
+.marca .sub { font-size: 13px; opacity: .7; }
+.fichero { display: flex; align-items: center; gap: 10px; font-size: 13px; min-width: 0; }
+.fichero .nombre { opacity: .75; overflow-wrap: anywhere; }
+.fichero button { background: transparent; color: var(--head-ink); border-color: rgba(255,255,255,.35); }
+nav.tabs { flex-basis: 100%; display: flex; gap: 4px; margin-top: 6px; overflow-x: auto; }
+nav.tabs a { color: var(--head-ink); opacity: .7; text-decoration: none; font: 600 15px var(--body); padding: 10px 14px; border-bottom: 3px solid transparent; white-space: nowrap; }
+nav.tabs a[aria-current="page"] { opacity: 1; border-bottom-color: var(--accent); }
+
+main { padding-block: 28px 64px; }
+section.vista { display: grid; gap: 28px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; min-width: 0; }
+.aviso { background: var(--warn-bg); color: var(--warn-ink); border-radius: 10px; padding: 12px 16px; font-size: 14px; }
+.error { background: var(--warn-bg); color: var(--warn-ink); border-radius: 10px; padding: 12px 16px; }
+
+/* Arrastrar fichero */
+#soltar { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: color-mix(in srgb, var(--head) 80%, transparent); color: #fff; font: 700 32px var(--display); letter-spacing: .04em; text-transform: uppercase; }
+
+/* Informe */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.tile .k { color: var(--ink-2); font-size: 13px; }
+.tile .v { font: 700 44px/1.05 var(--display); font-variant-numeric: tabular-nums; margin-top: 2px; }
+.tile .d { color: var(--ink-3); font-size: 13px; }
+.cab-seccion { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+ul.conc { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 80ch; }
+.scroll { overflow-x: auto; }
+table { border-collapse: separate; border-spacing: 2px; width: 100%; font-size: 14px; }
+th { text-align: left; font-weight: 600; color: var(--ink-2); padding: 6px 8px; white-space: nowrap; }
+th[title] { cursor: help; }
+tr.grupos th { text-align: center; border-bottom: 1px solid var(--line); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+td { padding: 6px 8px; }
+td.c { text-align: center; border-radius: 4px; font-variant-numeric: tabular-nums; min-width: 64px; }
+.leyenda { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-2); margin-top: 10px; }
+.leyenda .rampa { height: 10px; width: 160px; border-radius: 3px; }
+.obras { display: grid; gap: 16px; }
+.obra .cab { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 8px 16px; }
+.obra .grande { font: 700 48px/1 var(--display); font-variant-numeric: tabular-nums; }
+.obra .grande small { font: 400 15px var(--body); color: var(--ink-2); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.chip { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--track); color: var(--ink-2); }
+.filas { display: grid; grid-template-columns: minmax(96px, 150px) 40px minmax(80px, 1fr) 44px; gap: 6px 12px; align-items: center; margin-top: 16px; font-size: 14px; }
+.filas .h { color: var(--ink-3); font-size: 12px; }
+.filas .bloque { grid-column: 1 / -1; font-size: 12px; font-weight: 600; color: var(--ink-2); text-transform: uppercase; letter-spacing: .05em; margin-top: 8px; }
+.barra { height: 10px; background: var(--track); border-radius: 4px; overflow: hidden; }
+.barra span { display: block; height: 100%; background: var(--series); border-radius: 0 4px 4px 0; }
+svg.evol { width: 100%; height: auto; margin-top: 18px; display: block; }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .eje { fill: var(--ink-3); font: 11px var(--body); }
+svg .linea { fill: none; stroke: var(--series); stroke-width: 2; stroke-linejoin: round; }
+svg .punto { fill: var(--series); stroke: var(--surface); stroke-width: 2; }
+svg .hit { fill: transparent; cursor: pointer; }
+details { margin-top: 12px; } summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
+#tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--surface); font-size: 12px; padding: 6px 8px; border-radius: 6px; opacity: 0; z-index: 60; max-width: 320px; }
+
+/* Publicar */
+.pub { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 760px) { .pub { grid-template-columns: minmax(0, 1fr); } }
+.controles { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; font-size: 14px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; padding: 6px 14px; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.controles input[type=number] { width: 64px; font: inherit; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
+textarea { width: 100%; font: 12px/1.5 ui-monospace, Consolas, monospace; background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 10px; resize: vertical; }
+ol.pasos { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 70ch; }
+.preview { border-radius: 10px; padding: 8px 24px; background: #ffffff; font-family: Raleway, system-ui, sans-serif; overflow: hidden; }
+.preview h3, .preview h4 { font-family: inherit; }
+main a { color: var(--accent); }
+label.chk { display: inline-flex; align-items: center; gap: 6px; }
+.fotos { display: grid; gap: 10px; margin-top: 10px; }
+.fotos label { display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
+.fotos input { font: 13px var(--body); padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); width: 100%; }
+.fila-botones { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+.ok { color: var(--ink-2); font-size: 13px; }
+.lista-obras { display: grid; gap: 8px; margin-top: 12px; }
+.obra-fila { display: grid; grid-template-columns: 60px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.obra-fila img, .obra-fila .mini { width: 60px; height: 40px; object-fit: cover; border-radius: 4px; background: linear-gradient(135deg, #3a2b29, #6b4d47); display: block; }
+.obra-fila button.armado { background: var(--accent); border-color: var(--accent); color: #fff; }
+.nueva-obra { margin-top: 18px; padding-top: 6px; }
+.nueva-obra .campos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 8px; }
+.nueva-obra label { display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
+.nueva-obra label span { color: var(--ink-3); }
+.nueva-obra input { font: 15px var(--body); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); width: 100%; }
+input[type=text] { font: 15px var(--body); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); min-width: 0; flex: 1 1 220px; }
+.alta { max-width: 640px; }
+.vacio { border: 2px dashed var(--line); text-align: center; padding-block: 56px; display: grid; justify-items: center; gap: 12px; }
+.vacio h2 { font-size: 32px; }
+.vacio p { margin: 0; max-width: 56ch; }
+.vacio .icono { font: 700 56px/1 var(--display); color: var(--accent); }
+.destacada { border: 2px solid var(--accent); }
+table.nuevas td { vertical-align: middle; }
+table.nuevas select, table.nuevas input { font: 14px var(--body); padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); width: 100%; min-width: 180px; }
+.sugerido { display: inline-block; font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
+@media (prefers-reduced-motion: no-preference) { #tip { transition: opacity .1s; } }
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="marca"><h1>Txalometro<span>a</span></h1>
+      <span class="sub">Hika Teatroa · feedback del público</span></div>
+    <div class="fichero">
+      <span class="nombre" id="nombre-fichero"></span>
+      <button id="btn-cargar" type="button">Cargar export</button>
+      <input id="input-fichero" type="file" accept=".xls,.xlsx,.csv,.tsv,.txt" hidden>
+    </div>
+    <nav class="tabs" aria-label="Secciones">
+      <a href="#informe" data-vista="informe">Informe</a>
+      <a href="#publicar" data-vista="publicar">Publicar en la web</a>
+      <a href="#ajustes" data-vista="ajustes">Ajustes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="mensaje" hidden></div>
+  <section class="vista" id="vista-informe"></section>
+  <section class="vista" id="vista-publicar" hidden></section>
+  <section class="vista" id="vista-ajustes" hidden>
+    <div class="card">
+      <div class="cab-seccion"><h2>Obras</h2><span class="small muted" id="obras-cuenta"></span></div>
+      <p class="small muted" style="max-width:75ch;margin-top:0">Cuando Hika estrene una obra, añádela aquí con su título en los dos idiomas y la dirección de su foto.
+      Las respuestas del export con esos títulos se suman a la obra y su reseña sale en «Publicar en la web» al llegar al mínimo de respuestas.</p>
+      <div class="lista-obras" id="lista-obras"></div>
+      <form id="form-obra" class="nueva-obra" novalidate>
+        <h3>Añadir obra</h3>
+        <div class="campos">
+          <label for="obra-eu">Título en euskera<input id="obra-eu" type="text" maxlength="80" autocomplete="off" placeholder="Itsasoaren ahotsa"></label>
+          <label for="obra-es">Título en castellano <span>(vacío si es el mismo)</span><input id="obra-es" type="text" maxlength="80" autocomplete="off" placeholder="La voz del mar"></label>
+          <label for="obra-foto">Foto (dirección de la imagen)<input id="obra-foto" type="url" placeholder="https://hikateatroa.eus/wp-content/uploads/…"></label>
+        </div>
+        <div class="fila-botones"><button class="primary" type="submit">Añadir obra</button><span class="ok" id="obra-estado" aria-live="polite"></span></div>
+      </form>
+      <h3 style="margin-top:22px">Probar desde cero</h3>
+      <p class="small muted" style="max-width:75ch;margin:4px 0 0">«Vaciar datos» quita el export cargado y conserva las obras. «Empezar de cero» quita también las obras,
+      para volver a cargar el export o añadir las obras a mano y comprobar que todo cuadra.</p>
+      <div class="fila-botones">
+        <button type="button" id="dat-vaciar">Vaciar datos</button>
+        <button type="button" id="dat-cero">Empezar de cero</button>
+        <button type="button" id="dat-serie">Restaurar como al principio</button>
+      </div>
+      <p class="ok" id="datos-estado" aria-live="polite"></p>
+    </div>
+    <div class="card">
+      <h2>Ajustes</h2>
+      <p class="muted" style="max-width:75ch">Aquí se unen los nombres en euskera y castellano de cada obra, se definen las preguntas y los criterios de limpieza.
+      Para añadir o quitar obras es más cómodo usar la sección «Obras». Los cambios se guardan en este navegador.</p>
+      <label for="cfg" class="small muted">Configuración (JSON)</label>
+      <textarea id="cfg" rows="22" spellcheck="false"></textarea>
+      <div class="fila-botones">
+        <button class="primary" id="cfg-aplicar" type="button">Aplicar y recalcular</button>
+        <button id="cfg-reset" type="button">Volver a los valores de origen</button>
+        <span class="ok" id="cfg-estado"></span>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="soltar" hidden>Suelta el export aquí</div>
+<div id="tip"></div>
+
+<script type="text/plain" id="datos-iniciales" data-nombre="_Lab_Material_Hika-Teatroa_txalometroa_data_20261020.xls">ID	PRODUKZIOA	NOIZ	HIZKUNTZA	GAL1	GAL2	GAL3	GAL4	GAL5	GAL6	GAL7
+1	Zorretan	"2024-05-15 14:02:54"	eu	5	6	7	8	1	4	5
+2	Zorretan	"2024-05-27 21:05:46"	eu	4	6	8	0	0	0	0
+3		"2024-05-27 22:02:06"	N/A	7	9	9	4	4	8	4
+4		"2024-05-27 22:02:48"	N/A	7	9	9	4	4	8	4
+5		"2024-05-27 22:03:00"	N/A	7	9	9	4	4	8	4
+6		"2024-05-27 22:05:30"	N/A	7	9	9	4	4	8	4
+7		"2024-05-27 22:07:50"	N/A	7	9	9	4	4	8	4
+8		"2024-05-27 22:09:28"	N/A	7	9	9	4	4	8	4
+9		"2024-05-27 22:13:38"	N/A	7	9	9	4	4	8	4
+10		"2024-05-27 22:14:00"	N/A	7	9	9	4	4	8	4
+11		"2024-05-27 22:14:24"	N/A	7	9	9	4	4	8	4
+12		"2024-05-27 22:15:18"	N/A	7	9	9	4	4	8	4
+13		"2024-05-27 22:16:13"	N/A	4	3	7	1	9	7	6
+14		"2024-05-27 22:16:51"	N/A	4	3	7	1	9	7	6
+15		"2024-05-27 22:18:22"	N/A	6	7	9	9	9	7	4
+16		"2024-05-28 10:31:48"	N/A	5	6	6	8	7	9	7
+17		"2024-05-28 10:36:29"	N/A	5	6	6	8	7	9	7
+18	Zorretan	"2024-05-29 11:19:59"	eu	4	7	7	5	5	8	6
+19	Zorretan	"2024-05-29 11:20:15"	eu	4	7	7	5	5	8	6
+20	Zorretan	"2024-05-29 11:20:50"	eu	4	7	7	5	5	8	6
+21		"2024-05-29 11:23:21"	N/A	0	0	0	0	0	0	0
+22		"2024-05-29 11:23:59"	N/A	7	7	0	8	0	0	6
+23		"2024-05-29 11:24:29"	N/A	0	0	0	0	0	0	0
+24		"2024-05-29 11:24:31"	N/A	7	7	0	8	0	0	6
+25		"2024-05-29 11:24:35"	N/A	0	0	0	0	0	0	0
+26	"Al otro lado de la puerta"	"2024-05-29 11:26:53"	es	0	0	0	0	0	0	0
+27	"Al otro lado de la puerta"	"2024-05-29 11:28:11"	es	0	0	0	0	0	0	0
+28	"Al otro lado de la puerta"	"2024-05-29 11:28:49"	es	0	0	0	0	0	0	0
+29	Zorretan	"2024-05-30 16:26:22"	eu	4	6	9	10	7	5	7
+30	"Mi deuda"	"2024-05-31 10:25:24"	es	8	10	7	6	7	4	3
+31	"Al otro lado de la puerta"	"2024-06-05 16:21:33"	es	0	0	0	0	0	0	0
+32		"2024-06-14 10:59:18"	N/A	0	0	0	0	0	0	0
+33	"El viaje"	"2024-06-17 10:14:20"	es	10	10	10	10	10	10	10
+34	"Al otro lado de la puerta"	"2024-06-20 20:25:24"	es	10	10	10	10	10	10	10
+35		"2024-06-20 20:26:46"	N/A	10	10	10	10	10	10	10
+36	"Al otro lado de la puerta"	"2024-06-20 21:25:47"	es	10	10	10	10	10	10	10
+37		"2024-06-20 21:54:55"	N/A	10	10	10	10	9	10	7
+38		"2024-06-20 23:15:55"	N/A	8	10	10	10	5	8	8
+39	"Al otro lado de la puerta"	"2024-06-21 21:36:32"	es	10	10	10	10	6	8	9
+40	"El viaje"	"2024-07-02 23:20:16"	es	10	10	9	10	10	9	10
+41	"Mi deuda"	"2024-07-11 08:26:13"	es	0	0	0	0	0	0	0
+42	"Al otro lado de la puerta"	"2024-07-11 19:46:00"	es	8	8	9	8	8	8	8
+43	"Al otro lado de la puerta"	"2024-07-11 19:46:16"	es	10	10	10	10	5	8	8
+44	"Al otro lado de la puerta"	"2024-07-11 19:46:32"	es	10	10	10	10	6	5	6
+45	"Al otro lado de la puerta"	"2024-07-11 19:46:38"	es	10	10	10	10	10	7	6
+46	"Al otro lado de la puerta"	"2024-07-11 19:46:52"	es	10	10	10	10	8	8	6
+47	"Al otro lado de la puerta"	"2024-07-11 19:47:12"	es	9	9	10	9	8	8	8
+48	"Al otro lado de la puerta"	"2024-07-11 19:47:21"	es	10	10	10	9	8	7	9
+49	"Al otro lado de la puerta"	"2024-07-11 19:47:22"	es	10	10	10	9	8	7	9
+50	"Al otro lado de la puerta"	"2024-07-11 19:48:01"	es	10	9	10	7	9	2	7
+51	"Atearen bestaldean"	"2024-07-11 19:49:05"	eu	10	9	10	9	8	8	8
+52	"Al otro lado de la puerta"	"2024-07-11 19:54:30"	es	10	10	10	10	10	10	10
+53	"El viaje"	"2024-07-22 22:55:32"	es	10	10	10	10	10	10	10
+54	"Al otro lado de la puerta"	"2024-07-26 22:17:09"	es	10	10	10	10	10	10	10
+55	"Al otro lado de la puerta"	"2024-07-26 22:17:51"	es	10	10	10	10	10	10	10
+56	"Al otro lado de la puerta"	"2024-07-26 22:17:52"	es	10	10	10	10	0	10	10
+57	"Al otro lado de la puerta"	"2024-07-26 22:17:59"	es	10	10	10	10	10	10	10
+58	"Al otro lado de la puerta"	"2024-07-26 22:19:12"	es	10	10	10	10	6	9	10
+59	"Al otro lado de la puerta"	"2024-07-26 22:20:23"	es	10	10	10	10	10	10	10
+60	"Al otro lado de la puerta"	"2024-07-26 22:20:51"	es	10	10	10	10	10	10	10
+61	"Al otro lado de la puerta"	"2024-07-26 22:22:10"	es	10	10	10	10	10	10	10
+62	"Al otro lado de la puerta"	"2024-07-26 22:22:11"	es	10	10	10	10	10	10	10
+63	"Al otro lado de la puerta"	"2024-07-26 22:22:16"	es	10	10	10	10	8	9	10
+64	"Al otro lado de la puerta"	"2024-07-26 22:22:30"	es	10	10	10	10	10	10	10
+65	"Al otro lado de la puerta"	"2024-07-26 22:22:52"	es	10	10	10	10	10	10	10
+66	"Al otro lado de la puerta"	"2024-07-26 22:26:01"	es	10	10	10	10	8	9	10
+67	"Al otro lado de la puerta"	"2024-07-26 22:43:30"	es	10	10	10	10	10	10	10
+68	"Al otro lado de la puerta"	"2024-07-26 22:51:49"	es	9	9	10	10	10	10	10
+69	"Al otro lado de la puerta"	"2024-07-26 23:15:55"	es	10	10	10	10	10	10	10
+70	"Al otro lado de la puerta"	"2024-07-27 01:13:33"	es	10	10	8	0	10	10	0
+71	"Al otro lado de la puerta"	"2024-07-27 22:15:50"	es	10	10	10	10	10	10	10
+72	"Al otro lado de la puerta"	"2024-07-27 22:16:36"	es	9	9	9	10	9	10	9
+73	"Al otro lado de la puerta"	"2024-07-27 22:19:12"	es	10	10	10	10	7	10	10
+74	"Al otro lado de la puerta"	"2024-07-27 22:21:35"	es	10	10	10	10	10	10	10
+75	"Al otro lado de la puerta"	"2024-07-27 22:23:19"	es	10	8	10	10	2	5	10
+76	"Al otro lado de la puerta"	"2024-07-27 22:28:52"	es	10	10	10	10	10	10	10
+77	"Al otro lado de la puerta"	"2024-07-27 22:28:52"	es	10	10	10	10	10	10	10
+78	"Al otro lado de la puerta"	"2024-07-27 22:29:07"	es	10	8	10	10	5	5	10
+79	"Al otro lado de la puerta"	"2024-07-27 22:43:28"	es	10	10	10	10	7	9	10
+80	"Al otro lado de la puerta"	"2024-07-28 09:06:53"	es	10	10	10	10	7	9	10
+81	"Al otro lado de la puerta"	"2024-07-28 22:14:13"	es	10	10	10	10	1	7	10
+82	"Al otro lado de la puerta"	"2024-07-30 11:25:03"	es	8	6	10	8	10	8	9
+83	"El viaje"	"2024-08-06 08:22:34"	es	10	10	10	10	10	10	10
+84	"El viaje"	"2024-08-24 00:02:26"	es	0	0	0	0	0	0	0
+85	"Al otro lado de la puerta"	"2024-08-30 12:39:41"	es	10	10	10	10	10	10	10
+86	"El viaje"	"2024-09-03 14:09:05"	es	6	6	7	9	9	2	1
+87	"Al otro lado de la puerta"	"2024-10-06 13:14:22"	es	10	10	10	10	10	10	10
+88	"Al otro lado de la puerta"	"2024-10-06 13:16:08"	es	10	10	10	10	10	10	10
+89	"Atearen bestaldean"	"2024-10-06 13:18:20"	eu	10	9	10	9	0	10	9
+90	"Al otro lado de la puerta"	"2024-10-06 13:18:57"	es	10	10	10	10	10	8	10
+91	"Al otro lado de la puerta"	"2024-10-06 13:18:58"	es	10	10	10	10	10	8	10
+92	"Al otro lado de la puerta"	"2024-10-06 13:19:38"	es	10	10	10	10	10	8	10
+93	"El viaje"	"2024-10-06 13:21:07"	es	10	10	10	10	10	10	10
+94	"Al otro lado de la puerta"	"2024-10-06 13:21:46"	es	0	0	0	0	0	0	0
+95	"Al otro lado de la puerta"	"2024-10-06 18:27:03"	es	10	10	10	10	10	10	10
+96	"Al otro lado de la puerta"	"2024-10-06 21:39:55"	es	10	10	10	10	10	10	10
+97	"Atearen bestaldean"	"2024-10-19 19:12:15"	eu	10	10	10	9	8	9	8
+98	"Al otro lado de la puerta"	"2024-10-19 19:12:17"	es	10	10	10	10	10	10	10
+99	"Al otro lado de la puerta"	"2024-10-19 19:12:23"	es	10	10	10	10	10	10	7
+100	"Al otro lado de la puerta"	"2024-10-19 19:12:36"	es	10	10	10	10	8	8	9
+101	"Al otro lado de la puerta"	"2024-10-19 19:12:51"	es	10	10	10	10	10	10	10
+102	"Al otro lado de la puerta"	"2024-10-19 19:13:00"	es	0	8	9	10	10	0	8
+103	"Al otro lado de la puerta"	"2024-10-19 19:13:06"	es	10	10	10	10	10	10	10
+104	"Al otro lado de la puerta"	"2024-10-19 19:13:12"	es	10	10	10	10	10	10	10
+105	"Al otro lado de la puerta"	"2024-10-19 19:13:52"	es	10	10	10	10	10	10	7
+106	"Al otro lado de la puerta"	"2024-10-19 19:13:56"	es	6	5	7	9	8	7	8
+107	"Al otro lado de la puerta"	"2024-10-19 19:13:57"	es	10	10	10	10	9	10	9
+108	"Al otro lado de la puerta"	"2024-10-19 19:14:08"	es	10	10	10	10	10	10	10
+109	"Al otro lado de la puerta"	"2024-10-19 19:15:25"	es	10	10	10	10	10	10	10
+110	"Al otro lado de la puerta"	"2024-10-19 19:16:34"	es	8	8	10	8	5	5	10
+111	"Al otro lado de la puerta"	"2024-10-19 19:17:49"	es	9	8	10	9	9	9	9
+112	"Atearen bestaldean"	"2024-10-19 19:23:19"	eu	8	10	10	5	7	8	6
+113	"Atearen bestaldean"	"2024-10-19 19:23:24"	eu	9	8	10	10	10	10	6
+114	"Al otro lado de la puerta"	"2024-10-19 21:03:19"	es	10	10	10	10	10	10	10
+115	"Al otro lado de la puerta"	"2024-10-19 22:11:11"	es	10	10	10	10	10	10	10
+116	"Al otro lado de la puerta"	"2024-10-20 18:10:09"	es	8	7	8	8	7	6	7
+117	"Al otro lado de la puerta"	"2024-10-20 18:10:50"	es	9	9	10	9	8	10	9
+118	"Atearen bestaldean"	"2024-10-20 18:10:59"	eu	10	7	10	7	10	10	10
+119	"Al otro lado de la puerta"	"2024-10-20 18:11:23"	es	10	9	10	9	0	10	9
+120	"Al otro lado de la puerta"	"2024-10-20 18:13:40"	es	9	10	9	9	10	10	10
+121	"Al otro lado de la puerta"	"2024-10-20 18:13:41"	es	9	10	9	9	10	10	10
+122	"Al otro lado de la puerta"	"2024-10-20 18:13:53"	es	10	10	10	10	10	10	10
+123	"Al otro lado de la puerta"	"2024-10-20 18:14:57"	es	8	8	10	9	10	5	10
+124	"Al otro lado de la puerta"	"2024-10-20 18:14:57"	es	8	8	10	9	10	5	10
+125	"Al otro lado de la puerta"	"2024-10-20 18:18:11"	es	8	6	10	10	10	8	5
+126	"Al otro lado de la puerta"	"2024-10-20 18:39:50"	es	9	7	10	9	10	10	7
+127	"Atearen bestaldean"	"2024-10-20 19:19:35"	eu	7	7	10	6	10	10	8
+128	"Al otro lado de la puerta"	"2024-10-20 20:32:50"	es	10	10	10	10	10	10	7
+129	"Al otro lado de la puerta"	"2024-10-20 20:59:29"	es	10	10	10	10	10	10	8
+130	"Al otro lado de la puerta"	"2024-10-22 21:24:25"	es	10	10	10	10	10	10	10
+131	"Mi deuda"	"2024-10-25 21:09:08"	es	10	10	10	10	10	10	7
+132	"Mi deuda"	"2024-10-25 21:35:23"	es	10	10	10	10	10	10	7
+133	"Mi deuda"	"2024-10-26 08:40:49"	es	8	7	10	7	10	10	6
+134	Zorretan	"2024-10-26 21:06:57"	eu	9	10	10	10	10	9	8
+135	"Mi deuda"	"2024-10-26 21:06:59"	es	10	9	9	10	9	10	10
+136	"Mi deuda"	"2024-10-26 21:07:16"	es	8	7	8	7	7	6	0
+137	"Mi deuda"	"2024-10-26 21:07:26"	es	10	10	10	10	10	10	10
+138	"Mi deuda"	"2024-10-26 21:07:27"	es	10	10	10	10	10	10	10
+139	"Mi deuda"	"2024-10-26 21:07:27"	es	10	10	10	10	10	10	10
+140	"Mi deuda"	"2024-10-26 21:07:28"	es	10	10	10	10	10	10	10
+141	"Mi deuda"	"2024-10-26 21:07:28"	es	10	10	10	10	10	10	10
+142	Zorretan	"2024-10-26 21:08:11"	eu	7	6	9	9	8	0	7
+143	"Mi deuda"	"2024-10-26 21:08:57"	es	8	9	10	8	10	8	9
+144	"Mi deuda"	"2024-10-26 21:12:00"	es	10	10	9	10	10	10	8
+145	Zorretan	"2024-10-26 21:12:07"	eu	8	9	10	9	10	9	5
+146	"Mi deuda"	"2024-10-26 21:18:20"	es	7	0	0	0	0	0	0
+147	Zorretan	"2024-10-26 21:27:26"	eu	8	7	9	8	8	8	6
+148	"Mi deuda"	"2024-10-26 21:42:35"	es	10	10	10	10	10	2	10
+149	Zorretan	"2024-10-26 22:01:02"	eu	9	9	10	9	9	9	9
+150	Zorretan	"2024-10-26 23:12:23"	eu	10	10	10	10	10	10	10
+151	"Mi deuda"	"2024-10-26 23:55:04"	es	8	7	10	9	9	9	6
+152	"Al otro lado de la puerta"	"2024-10-27 13:09:03"	es	10	10	10	10	10	10	10
+153	"Al otro lado de la puerta"	"2024-10-27 13:09:27"	es	10	10	10	10	10	10	10
+154	"Al otro lado de la puerta"	"2024-10-27 13:10:16"	es	10	10	10	10	10	10	10
+155	"Atearen bestaldean"	"2024-10-27 13:10:40"	eu	9	10	10	9	10	10	10
+156	"Al otro lado de la puerta"	"2024-10-27 13:10:56"	es	10	8	10	10	10	10	10
+157	"Al otro lado de la puerta"	"2024-10-27 13:11:02"	es	10	10	10	10	7	9	2
+158	"Mi deuda"	"2024-10-27 13:11:08"	es	10	10	10	10	10	10	10
+159	"Al otro lado de la puerta"	"2024-10-27 13:11:15"	es	10	10	10	10	10	10	10
+160	"Atearen bestaldean"	"2024-10-27 13:11:28"	eu	10	8	10	8	9	10	8
+161	"Al otro lado de la puerta"	"2024-10-27 13:11:46"	es	7	5	10	6	10	6	10
+162	"Al otro lado de la puerta"	"2024-10-27 13:12:03"	es	10	10	10	10	10	10	10
+163	"Al otro lado de la puerta"	"2024-10-27 13:12:04"	es	10	10	10	10	10	10	10
+164	"Al otro lado de la puerta"	"2024-10-27 13:12:04"	es	8	6	9	9	8	7	8
+165	"Al otro lado de la puerta"	"2024-10-27 13:12:18"	es	8	10	10	10	10	10	10
+166	"Al otro lado de la puerta"	"2024-10-27 13:12:19"	es	10	10	10	10	10	10	10
+167	"Al otro lado de la puerta"	"2024-10-27 13:12:20"	es	10	10	10	9	10	9	10
+168	"Al otro lado de la puerta"	"2024-10-27 13:13:16"	es	10	10	10	10	10	10	10
+169	"Atearen bestaldean"	"2024-10-27 13:13:26"	eu	10	8	10	6	0	6	8
+170	"Al otro lado de la puerta"	"2024-10-27 13:13:48"	es	9	10	10	8	10	10	10
+171	"Al otro lado de la puerta"	"2024-10-27 13:13:50"	es	10	10	10	10	10	10	10
+172	"Al otro lado de la puerta"	"2024-10-27 13:13:53"	es	9	2	10	0	10	9	8
+173	"Al otro lado de la puerta"	"2024-10-27 13:13:54"	es	9	2	10	0	10	9	8
+174	"Atearen bestaldean"	"2024-10-27 13:14:51"	eu	4	3	9	2	10	8	9
+175	"Atearen bestaldean"	"2024-10-27 13:15:16"	eu	8	7	10	8	10	10	9
+176	"Atearen bestaldean"	"2024-10-27 13:15:17"	eu	8	7	10	8	10	10	9
+177	"Atearen bestaldean"	"2024-10-27 13:15:48"	eu	10	10	10	8	10	10	10
+178	"Atearen bestaldean"	"2024-10-27 13:15:50"	eu	10	10	10	8	10	10	10
+179	"Al otro lado de la puerta"	"2024-10-27 13:27:48"	es	10	10	10	10	10	10	10
+180	"Al otro lado de la puerta"	"2024-10-27 13:30:20"	es	10	10	10	10	10	10	10
+181	"Al otro lado de la puerta"	"2024-10-27 14:30:38"	es	10	10	10	10	9	10	9
+182	"Al otro lado de la puerta"	"2024-10-27 15:03:19"	es	9	8	10	10	7	7	10
+183	"Al otro lado de la puerta"	"2024-10-27 18:07:03"	es	7	9	9	8	10	7	9
+184	"Al otro lado de la puerta"	"2024-10-27 18:32:22"	es	0	0	0	9	10	0	0
+185	"Al otro lado de la puerta"	"2024-10-27 18:33:30"	es	10	10	10	10	10	6	10
+186	"Al otro lado de la puerta"	"2024-10-27 18:33:31"	es	10	10	10	10	10	6	10
+187	"Mi deuda"	"2024-10-28 00:13:12"	es	10	10	10	10	10	10	10
+188	"Al otro lado de la puerta"	"2024-10-28 18:23:56"	es	10	10	10	10	10	10	10
+189	"Mi deuda"	"2024-10-29 07:43:41"	es	8	10	10	10	10	8	4
+190	Zorretan	"2024-10-30 00:33:58"	eu	9	10	10	10	10	9	8
+191	"Mi deuda"	"2024-11-06 21:05:49"	es	10	10	10	10	10	10	7
+192	"Mi deuda"	"2024-11-06 21:05:49"	es	10	10	10	10	10	10	7
+193	"Mi deuda"	"2024-11-06 21:06:07"	es	10	10	10	10	10	10	10
+194	"Mi deuda"	"2024-11-06 21:06:22"	es	10	10	10	10	10	10	8
+195	"Mi deuda"	"2024-11-06 21:06:30"	es	9	8	10	9	9	9	7
+196	"Mi deuda"	"2024-11-06 21:06:42"	es	9	10	9	10	9	10	9
+197	"Mi deuda"	"2024-11-06 21:06:52"	es	10	10	10	10	10	9	7
+198	"Mi deuda"	"2024-11-06 21:07:23"	es	10	10	10	10	7	7	8
+199	Zorretan	"2024-11-06 21:07:49"	eu	10	10	10	10	10	10	10
+200	Zorretan	"2024-11-06 21:07:55"	eu	10	10	10	10	10	10	10
+201	"Mi deuda"	"2024-11-06 21:08:47"	es	10	10	10	9	10	10	7
+202	"Mi deuda"	"2024-11-06 21:09:09"	es	10	10	10	10	10	10	8
+203	"Mi deuda"	"2024-11-06 21:09:22"	es	10	10	10	10	10	10	10
+204	"Mi deuda"	"2024-11-06 21:13:31"	es	10	10	10	10	10	10	10
+205	Zorretan	"2024-11-06 21:26:39"	eu	10	9	9	9	9	9	6
+206	"Mi deuda"	"2024-11-06 21:27:14"	es	8	8	10	8	10	8	8
+207	"Mi deuda"	"2024-11-06 21:42:07"	es	9	8	10	8	9	10	9
+208	"Mi deuda"	"2024-11-06 22:15:08"	es	10	10	10	10	7	8	7
+209	"Mi deuda"	"2024-11-06 22:30:55"	es	9	9	10	10	10	10	10
+210	"Mi deuda"	"2024-11-06 22:50:31"	es	10	10	10	10	9	9	9
+211	Zorretan	"2024-11-06 22:53:08"	eu	10	10	10	10	5	6	7
+212	Zorretan	"2024-11-06 22:57:55"	eu	10	9	10	10	9	9	6
+213	"Mi deuda"	"2024-11-07 06:43:25"	es	8	10	9	7	10	7	10
+214	"Mi deuda"	"2024-11-07 08:29:34"	es	10	10	10	9	10	10	7
+215	"Mi deuda"	"2024-11-07 13:35:39"	es	10	10	10	10	7	10	7
+216	"Mi deuda"	"2024-11-07 18:50:44"	es	8	7	10	8	6	7	8
+217	"Mi deuda"	"2024-11-07 20:52:46"	es	10	10	10	10	10	10	9
+218	"Al otro lado de la puerta"	"2024-11-09 13:44:58"	es	10	10	10	10	10	10	10
+219		"2024-11-09 14:11:22"	N/A	10	10	10	10	10	7	8
+220		"2024-11-09 14:11:22"	N/A	10	10	10	10	10	7	8
+221		"2024-11-09 14:14:56"	N/A	10	10	10	10	10	10	10
+222		"2024-11-10 10:42:21"	N/A	10	8	10	10	10	6	7
+223	"Mi deuda"	"2024-11-10 17:02:14"	es	10	10	10	10	10	10	10
+224	"Mi deuda"	"2024-11-10 20:32:57"	es	10	10	10	10	10	10	10
+225	"Mi deuda"	"2024-11-10 20:34:04"	es	7	7	9	6	8	9	9
+226	Zorretan	"2024-11-10 20:35:49"	eu	8	10	10	9	10	8	10
+227	"Mi deuda"	"2024-11-10 20:36:27"	es	10	3	10	10	10	10	10
+228	"Mi deuda"	"2024-11-10 20:37:02"	es	10	8	8	8	8	8	7
+229	"Mi deuda"	"2024-11-10 20:37:03"	es	10	8	8	8	8	8	7
+230	"Mi deuda"	"2024-11-10 20:37:03"	es	10	8	8	8	8	8	7
+231	"Mi deuda"	"2024-11-10 20:38:00"	es	6	5	10	7	10	6	7
+232	"Mi deuda"	"2024-11-10 20:43:20"	es	9	9	8	10	10	9	10
+233	"Mi deuda"	"2024-11-10 20:46:52"	es	7	7	10	7	8	4	10
+234	Zorretan	"2024-11-10 21:45:44"	eu	8	7	10	9	10	10	10
+235	"Mi deuda"	"2024-11-11 00:40:25"	es	9	9	9	10	10	10	7
+236	"Mi deuda"	"2024-11-11 13:50:20"	es	6	5	10	7	10	6	7
+237	"Mi deuda"	"2024-11-12 11:10:00"	es	9	9	9	10	10	10	7
+238	"Mi deuda"	"2024-11-22 21:27:52"	es	10	10	10	10	10	10	10
+239	Zorretan	"2024-11-22 21:32:05"	eu	10	10	10	10	10	10	10
+240	"Mi deuda"	"2024-11-22 21:32:38"	es	10	8	10	10	9	8	4
+241	"Mi deuda"	"2024-11-22 21:32:39"	es	9	9	10	10	10	8	4
+242	"Mi deuda"	"2024-11-22 21:32:40"	es	10	8	10	10	9	8	4
+243	"Mi deuda"	"2024-11-22 21:41:03"	es	9	9	10	7	10	10	5
+244	"Mi deuda"	"2024-11-22 21:48:09"	es	9	10	10	10	5	10	8
+245	"Mi deuda"	"2024-11-22 23:00:24"	es	10	10	10	10	10	10	7
+246	"Mi deuda"	"2024-11-23 09:52:56"	es	10	10	10	10	6	10	9
+247	Zorretan	"2024-11-23 14:09:15"	eu	0	0	0	0	0	0	0
+248	"Al otro lado de la puerta"	"2024-11-24 18:03:39"	es	10	10	10	10	10	10	10
+249	"Atearen bestaldean"	"2024-11-24 18:05:05"	eu	8	6	10	10	10	10	10
+250	"Atearen bestaldean"	"2024-11-24 18:05:25"	eu	8	6	8	8	10	8	10
+251	"Al otro lado de la puerta"	"2024-11-24 18:05:46"	es	10	10	10	10	10	10	10
+252	"Al otro lado de la puerta"	"2024-11-24 18:05:46"	es	10	10	10	10	10	10	10
+253	"Al otro lado de la puerta"	"2024-11-24 18:06:15"	es	10	8	10	10	10	10	10
+254	Zorretan	"2024-11-25 08:19:59"	eu	10	10	10	10	10	10	5
+255	"Mi deuda"	"2024-11-27 19:31:37"	es	9	7	9	10	10	10	10
+256	Zorretan	"2024-11-28 07:25:24"	eu	8	8	9	7	3	8	8
+257	Zorretan	"2024-12-09 07:32:46"	eu	9	8	9	8	9	7	8
+258	"Al otro lado de la puerta"	"2024-12-23 18:07:08"	es	10	10	10	10	10	10	7
+259	"Al otro lado de la puerta"	"2024-12-23 18:07:11"	es	10	9	10	10	10	10	10
+260	"Al otro lado de la puerta"	"2024-12-23 18:07:42"	es	10	10	10	5	10	6	6
+261	"Al otro lado de la puerta"	"2024-12-23 18:08:54"	es	10	10	10	10	9	9	8
+262		"2024-12-23 20:16:07"	N/A	10	10	10	10	10	10	6
+263	"Al otro lado de la puerta"	"2024-12-30 14:38:37"	es	0	0	0	0	0	0	0
+264	"Al otro lado de la puerta"	"2025-01-04 18:34:52"	es	10	8	10	10	8	9	10
+265	"Al otro lado de la puerta"	"2025-01-04 18:35:04"	es	9	9	10	10	10	10	7
+266	"Al otro lado de la puerta"	"2025-01-04 18:37:42"	es	10	10	10	10	10	10	10
+267		"2025-01-04 18:37:51"	N/A	0	0	0	0	0	0	0
+268		"2025-01-04 18:37:51"	N/A	0	0	0	0	0	0	0
+269	"Al otro lado de la puerta"	"2025-01-04 18:37:58"	es	8	10	10	10	10	10	10
+270	"Al otro lado de la puerta"	"2025-01-04 18:38:03"	es	10	10	10	10	10	10	10
+271	"Al otro lado de la puerta"	"2025-01-04 18:38:04"	es	10	10	10	10	10	10	10
+272	"Al otro lado de la puerta"	"2025-01-04 18:38:23"	es	10	10	10	10	10	10	7
+273	"Atearen bestaldean"	"2025-01-04 18:39:13"	eu	10	6	10	10	10	10	7
+274	"Al otro lado de la puerta"	"2025-01-04 18:39:16"	es	10	10	10	10	10	10	10
+275		"2025-01-04 18:40:04"	N/A	0	0	0	0	0	0	0
+276	"Al otro lado de la puerta"	"2025-01-04 18:41:37"	es	10	10	10	10	10	10	9
+277	"Al otro lado de la puerta"	"2025-01-04 18:41:49"	es	10	10	10	10	10	10	10
+278	"Al otro lado de la puerta"	"2025-01-04 18:42:24"	es	10	10	10	10	10	10	10
+279	"Al otro lado de la puerta"	"2025-01-04 18:42:46"	es	10	10	10	10	9	10	10
+280	"Al otro lado de la puerta"	"2025-01-04 19:07:54"	es	10	10	10	10	10	10	10
+281	"Al otro lado de la puerta"	"2025-01-04 21:55:07"	es	8	7	8	8	7	7	7
+282	"Al otro lado de la puerta"	"2025-01-05 12:26:09"	es	10	10	10	10	10	10	10
+283	"Mi deuda"	"2025-01-10 22:06:38"	es	6	6	10	6	10	10	9
+284	"Mi deuda"	"2025-01-10 22:07:02"	es	9	10	10	10	10	10	8
+285	"Al otro lado de la puerta"	"2025-01-10 22:07:08"	es	8	8	8	9	10	10	0
+286	Zorretan	"2025-01-10 22:08:31"	eu	10	10	10	10	10	10	9
+287	"Mi deuda"	"2025-01-10 22:58:36"	es	8	8	10	8	10	8	10
+288	Zorretan	"2025-01-11 11:17:25"	eu	5	6	8	5	10	9	5
+289	Zorretan	"2025-01-11 11:17:25"	eu	5	6	8	5	10	9	5
+290	"Mi deuda"	"2025-01-11 19:04:44"	es	8	8	10	8	10	8	10
+291	"Al otro lado de la puerta"	"2025-01-11 19:34:02"	es	9	8	10	8	9	9	7
+292	"Al otro lado de la puerta"	"2025-01-11 19:34:15"	es	10	10	10	10	10	10	10
+293	"Al otro lado de la puerta"	"2025-01-11 19:34:16"	es	10	10	10	10	10	10	10
+294	"Al otro lado de la puerta"	"2025-01-11 19:34:38"	es	10	10	10	10	10	7	8
+295	"Al otro lado de la puerta"	"2025-01-11 19:34:59"	es	10	10	10	10	10	10	10
+296	"Al otro lado de la puerta"	"2025-01-11 19:35:42"	es	10	10	10	10	10	10	10
+297	"Al otro lado de la puerta"	"2025-01-11 19:37:41"	es	10	10	10	10	10	10	10
+298	"Mi deuda"	"2025-01-11 19:37:44"	es	10	9	9	10	7	8	9
+299	"Al otro lado de la puerta"	"2025-01-11 19:37:48"	es	10	10	10	10	10	10	10
+300	"Al otro lado de la puerta"	"2025-01-11 19:38:11"	es	10	10	10	10	10	9	10
+301	"Al otro lado de la puerta"	"2025-01-11 19:38:13"	es	10	10	10	10	10	10	7
+302	"Al otro lado de la puerta"	"2025-01-11 19:39:52"	es	10	10	10	9	10	10	8
+303	"Al otro lado de la puerta"	"2025-01-13 16:12:32"	es	10	10	10	10	10	10	8
+304	"Mi deuda"	"2025-01-17 21:35:35"	es	10	10	10	10	10	10	10
+305	"Mi deuda"	"2025-01-17 21:36:22"	es	10	10	10	10	10	10	10
+306	"Mi deuda"	"2025-01-17 21:37:01"	es	9	10	10	10	10	10	10
+307	"Mi deuda"	"2025-01-17 21:37:19"	es	9	10	10	10	8	10	7
+308	"Mi deuda"	"2025-01-17 21:37:22"	es	9	8	10	6	9	7	10
+309	"Mi deuda"	"2025-01-17 21:37:45"	es	10	10	10	10	10	10	10
+310	"Mi deuda"	"2025-01-17 21:38:40"	es	8	0	0	0	0	0	0
+311	"Mi deuda"	"2025-01-17 21:39:11"	es	7	7	9	5	10	7	6
+312	"Mi deuda"	"2025-01-17 21:39:12"	es	7	7	9	5	10	7	6
+313	"Mi deuda"	"2025-01-17 21:40:40"	es	9	7	10	9	9	6	9
+314	Zorretan	"2025-01-17 21:40:54"	eu	10	10	10	10	10	10	10
+315	"Mi deuda"	"2025-01-17 21:41:07"	es	8	9	9	10	8	6	9
+316	"Mi deuda"	"2025-01-17 21:41:10"	es	10	10	10	10	6	5	8
+317	"Mi deuda"	"2025-01-17 21:47:40"	es	10	10	10	10	10	10	10
+318	"Mi deuda"	"2025-01-17 21:47:41"	es	10	10	10	10	10	10	10
+319	"Mi deuda"	"2025-01-17 21:47:41"	es	10	10	10	10	10	10	10
+320	"Mi deuda"	"2025-01-17 21:47:42"	es	10	10	10	10	10	10	10
+321	"Mi deuda"	"2025-01-17 21:47:42"	es	10	10	10	10	10	10	10
+322	Zorretan	"2025-01-17 21:54:27"	eu	10	10	10	10	10	10	10
+323	"Mi deuda"	"2025-01-17 21:54:42"	es	8	9	10	10	10	10	7
+324	Zorretan	"2025-01-17 22:19:45"	eu	8	9	9	9	10	9	9
+325	"Mi deuda"	"2025-01-17 22:58:41"	es	8	6	9	9	10	10	10
+326	Zorretan	"2025-01-17 23:50:27"	eu	10	10	10	10	9	10	8
+327	Zorretan	"2025-01-18 06:14:15"	eu	9	8	10	9	10	10	8
+328	Zorretan	"2025-01-18 08:31:39"	eu	9	10	10	9	10	10	6
+329	"Mi deuda"	"2025-01-18 08:52:36"	es	8	6	9	9	10	10	10
+330	Zorretan	"2025-01-18 09:34:21"	eu	9	9	9	9	10	9	4
+331	"Al otro lado de la puerta"	"2025-01-18 10:48:52"	es	10	10	10	10	10	10	10
+332	"Mi deuda"	"2025-01-18 11:14:41"	es	8	8	9	8	9	8	10
+333	Zorretan	"2025-01-18 16:19:19"	eu	9	8	10	10	10	10	9
+334	"El viaje"	"2025-01-18 23:55:23"	es	10	10	10	10	8	8	10
+335	Zorretan	"2025-01-19 19:57:22"	eu	8	9	10	10	9	9	10
+336	"Mi deuda"	"2025-01-20 22:48:14"	es	9	7	10	9	9	6	9
+337	Zorretan	"2025-01-21 11:57:55"	eu	10	10	10	10	10	10	10
+338		"2025-01-21 11:58:03"	N/A	0	0	0	0	0	0	0
+339		"2025-01-21 11:58:05"	N/A	0	0	0	0	0	0	0
+340	"Mi deuda"	"2025-01-24 23:57:58"	es	9	8	10	8	10	10	8
+341		"2025-01-26 13:55:03"	N/A	0	0	9	10	0	0	0
+342	"Al otro lado de la puerta"	"2025-01-26 19:01:40"	es	10	10	10	10	10	10	6
+343	"Al otro lado de la puerta"	"2025-01-26 19:02:14"	es	9	9	9	8	10	9	8
+344	"Al otro lado de la puerta"	"2025-01-26 19:03:32"	es	10	8	10	9	10	10	10
+345	"Al otro lado de la puerta"	"2025-01-26 19:06:28"	es	10	8	10	9	10	7	9
+346	"Al otro lado de la puerta"	"2025-01-26 19:06:35"	es	10	8	10	9	10	9	10
+347	"El viaje"	"2025-01-26 19:10:15"	es	9	10	9	10	9	7	9
+348	"El viaje"	"2025-01-26 19:10:16"	es	9	10	9	10	9	7	9
+349	"El viaje"	"2025-01-26 19:10:16"	es	9	10	9	10	9	7	9
+350	"El viaje"	"2025-01-26 19:10:17"	es	9	10	9	10	9	7	9
+351	"El viaje"	"2025-01-26 19:10:18"	es	9	10	9	10	9	7	9
+352	"El viaje"	"2025-01-26 19:10:18"	es	9	10	9	10	9	7	9
+353	"El viaje"	"2025-01-26 19:10:18"	es	9	10	9	10	9	7	9
+354	"Al otro lado de la puerta"	"2025-01-26 19:32:02"	es	9	8	8	10	10	10	6
+355	"Al otro lado de la puerta"	"2025-01-26 19:38:00"	es	10	10	10	10	10	10	9
+356	"Al otro lado de la puerta"	"2025-01-26 21:35:03"	es	10	10	10	10	8	10	10
+357	"Al otro lado de la puerta"	"2025-01-26 21:46:49"	es	10	10	10	10	10	10	10
+358	"Al otro lado de la puerta"	"2025-01-26 22:10:44"	es	9	9	9	8	10	9	8
+359	"Al otro lado de la puerta"	"2025-01-26 22:52:28"	es	10	10	10	10	10	10	8
+360	"Al otro lado de la puerta"	"2025-01-30 05:45:04"	es	10	10	10	10	10	10	6
+361	"Mi deuda"	"2025-02-16 19:33:01"	es	10	9	10	10	10	10	10
+362	"Mi deuda"	"2025-02-16 19:34:04"	es	9	9	10	9	7	9	8
+363	"Mi deuda"	"2025-02-16 19:35:56"	es	10	10	10	10	10	10	10
+364	"Mi deuda"	"2025-02-16 19:37:39"	es	10	10	10	10	10	10	10
+365	"Mi deuda"	"2025-02-16 19:38:17"	es	10	10	10	10	10	10	10
+366	"Mi deuda"	"2025-02-16 19:38:18"	es	10	10	10	10	10	10	10
+367	"Mi deuda"	"2025-02-16 20:53:10"	es	10	10	10	10	10	10	9
+368	Zorretan	"2025-02-16 22:11:15"	eu	9	9	10	9	9	10	5
+369	"Mi deuda"	"2025-02-17 18:10:41"	es	6	9	10	8	8	9	8
+370	"Mi deuda"	"2025-02-18 10:56:00"	es	9	9	10	10	9	9	9
+371	"Al otro lado de la puerta"	"2025-02-25 16:13:43"	es	10	10	10	9	10	10	8
+372	"Mi deuda"	"2025-03-06 21:03:33"	es	10	10	10	10	9	10	8
+373	"Mi deuda"	"2025-03-06 21:03:44"	es	10	10	10	10	10	9	10
+374	"Mi deuda"	"2025-03-06 21:03:48"	es	8	10	9	10	10	9	7
+375	"Mi deuda"	"2025-03-06 21:03:56"	es	7	6	8	7	7	7	8
+376		"2025-03-06 21:04:07"	N/A	0	0	0	0	0	0	0
+377	"Mi deuda"	"2025-03-06 21:04:36"	es	10	10	10	10	10	10	10
+378	"Mi deuda"	"2025-03-06 21:04:38"	es	10	10	10	10	10	10	5
+379	"Mi deuda"	"2025-03-06 21:04:46"	es	7	7	10	7	10	5	7
+380	"Mi deuda"	"2025-03-06 21:04:51"	es	10	10	10	10	10	10	9
+381	"Mi deuda"	"2025-03-06 21:04:56"	es	10	10	10	10	10	10	10
+382	"Mi deuda"	"2025-03-06 21:05:00"	es	10	10	10	10	10	10	10
+383	Zorretan	"2025-03-06 21:08:13"	eu	10	10	10	10	10	10	10
+384	Zorretan	"2025-03-06 21:08:16"	eu	0	0	0	0	10	0	6
+385	Zorretan	"2025-03-06 21:10:48"	eu	10	9	10	10	10	10	7
+386	Zorretan	"2025-03-06 21:10:57"	eu	9	9	10	9	10	9	8
+387	Zorretan	"2025-03-06 21:17:59"	eu	10	10	10	10	0	0	7
+388	"Mi deuda"	"2025-03-06 21:26:41"	es	5	5	8	4	10	5	7
+389	Zorretan	"2025-03-06 21:27:40"	eu	10	10	10	10	9	7	10
+390	"Mi deuda"	"2025-03-06 21:41:18"	es	10	10	10	10	10	10	10
+391	"Mi deuda"	"2025-03-06 21:43:16"	es	6	7	9	6	8	9	8
+392	"Mi deuda"	"2025-03-06 21:43:17"	es	6	7	9	6	8	9	8
+393	Zorretan	"2025-03-06 21:51:23"	eu	7	8	9	7	10	10	5
+394	Zorretan	"2025-03-06 21:59:35"	eu	9	9	9	10	10	10	6
+395	Zorretan	"2025-03-06 22:00:18"	eu	9	10	10	10	10	10	8
+396	"Mi deuda"	"2025-03-07 06:57:22"	es	10	10	10	10	10	10	8
+397	"Mi deuda"	"2025-03-07 16:29:32"	es	10	10	10	10	10	10	10
+398	"Atearen bestaldean"	"2025-03-08 18:36:47"	eu	10	10	10	10	10	10	10
+399	"Al otro lado de la puerta"	"2025-03-08 18:40:28"	es	10	10	10	10	10	10	5
+400		"2025-03-08 18:40:32"	N/A	10	10	10	10	10	10	6
+401	"Al otro lado de la puerta"	"2025-03-08 19:50:42"	es	10	8	10	8	8	8	5
+402		"2025-03-08 20:33:05"	N/A	8	8	9	8	8	8	10
+403		"2025-03-08 21:30:47"	N/A	10	10	10	10	10	10	10
+404	"Mi deuda"	"2025-03-09 10:02:45"	es	10	10	10	10	10	10	10
+405	"Mi deuda"	"2025-03-09 20:54:37"	es	10	10	9	8	10	9	8
+406	"Mi deuda"	"2025-03-09 20:55:53"	es	10	8	10	8	8	8	9
+407	"Mi deuda"	"2025-03-09 20:56:51"	es	8	8	9	5	8	8	8
+408	"Mi deuda"	"2025-03-09 20:56:54"	es	10	10	10	10	10	10	7
+409	"Mi deuda"	"2025-03-09 20:58:37"	es	10	10	10	10	10	10	9
+410	Zorretan	"2025-03-09 20:59:40"	eu	10	10	10	10	10	10	8
+411	"Mi deuda"	"2025-03-09 21:10:51"	es	10	10	10	10	10	7	10
+412	Zorretan	"2025-03-09 21:22:54"	eu	10	10	10	10	10	10	3
+413	"Mi deuda"	"2025-03-09 21:38:11"	es	8	10	10	8	10	10	6
+414	"Mi deuda"	"2025-03-09 22:32:48"	es	10	10	10	10	9	9	10
+415	"Al otro lado de la puerta"	"2025-03-12 21:29:00"	es	10	10	10	10	10	10	8
+416	"Mi deuda"	"2025-03-14 21:30:59"	es	8	8	6	8	6	7	7
+417	"Mi deuda"	"2025-03-14 21:31:02"	es	10	10	10	10	10	10	10
+418	"Mi deuda"	"2025-03-14 21:31:22"	es	10	10	10	10	10	10	0
+419	"Mi deuda"	"2025-03-14 21:31:27"	es	7	7	10	6	10	8	10
+420	"Mi deuda"	"2025-03-14 21:31:56"	es	9	10	10	9	10	10	7
+421	"Mi deuda"	"2025-03-14 21:32:06"	es	10	10	10	7	6	6	9
+422	"Mi deuda"	"2025-03-14 21:33:05"	es	10	10	10	10	10	10	10
+423	"Mi deuda"	"2025-03-14 21:33:09"	es	8	9	10	8	6	5	7
+424	"Mi deuda"	"2025-03-14 21:33:21"	es	10	10	10	10	10	10	9
+425	"Mi deuda"	"2025-03-14 21:33:22"	es	9	9	10	10	10	10	10
+426	"Mi deuda"	"2025-03-14 21:33:32"	es	10	10	10	10	10	10	9
+427	"Mi deuda"	"2025-03-14 21:34:41"	es	8	8	9	8	7	8	9
+428	Zorretan	"2025-03-14 21:34:46"	eu	10	10	10	10	10	10	10
+429	"Mi deuda"	"2025-03-14 21:35:01"	es	10	10	10	10	8	9	8
+430	Zorretan	"2025-03-14 21:36:45"	eu	10	10	10	10	10	10	10
+431	Zorretan	"2025-03-14 21:42:50"	eu	10	10	10	10	9	10	10
+432		"2025-03-14 21:43:11"	N/A	0	0	0	0	0	0	0
+433	"Mi deuda"	"2025-03-14 21:56:04"	es	10	10	10	10	10	10	8
+434	"Mi deuda"	"2025-03-14 21:56:05"	es	10	10	10	10	10	10	8
+435	"Mi deuda"	"2025-03-14 22:39:22"	es	8	8	10	9	9	4	8
+436	"Mi deuda"	"2025-03-14 22:54:57"	es	8	8	9	8	10	8	9
+437	Zorretan	"2025-03-14 23:16:41"	eu	9	9	10	8	10	10	10
+438	Zorretan	"2025-03-14 23:16:42"	eu	9	9	10	8	10	10	10
+439	"Mi deuda"	"2025-03-15 07:22:19"	es	9	8	10	10	10	10	8
+440	"Mi deuda"	"2025-03-16 08:43:41"	es	10	10	10	10	10	10	8
+441	"Mi deuda"	"2025-03-16 13:54:27"	es	8	9	10	8	6	5	7
+442	"Mi deuda"	"2025-03-16 22:29:19"	es	10	10	10	10	10	10	0
+443	"Al otro lado de la puerta"	"2025-03-18 19:25:01"	es	10	10	10	10	7	9	9
+444	"Mi deuda"	"2025-04-10 20:29:52"	es	8	9	9	9	9	8	7
+445		"2025-04-10 20:31:01"	N/A	0	0	0	0	0	0	0
+446		"2025-04-10 20:31:03"	N/A	0	0	0	0	0	0	0
+447	Zorretan	"2025-04-10 20:35:25"	eu	7	9	10	7	10	10	9
+448	Zorretan	"2025-04-10 20:35:47"	eu	0	0	0	0	0	0	0
+449	Zorretan	"2025-04-10 20:35:48"	eu	0	0	0	0	0	0	0
+450	Zorretan	"2025-04-10 20:35:48"	eu	0	0	0	0	0	0	0
+451	Zorretan	"2025-04-10 20:35:49"	eu	0	0	0	0	0	0	0
+452	Zorretan	"2025-04-10 20:43:07"	eu	10	10	10	10	8	10	6
+453	Zorretan	"2025-04-10 20:50:28"	eu	10	10	10	10	10	10	10
+454	Zorretan	"2025-04-10 21:02:11"	eu	10	10	10	10	10	10	10
+455	"Mi deuda"	"2025-04-10 21:47:04"	es	8	7	8	6	9	8	7
+456	Zorretan	"2025-04-10 21:53:28"	eu	10	10	10	10	10	10	8
+457	"Mi deuda"	"2025-04-11 05:54:22"	es	10	10	10	10	7	10	8
+458	"Mi deuda"	"2025-04-11 06:53:48"	es	10	10	10	10	8	10	10
+459		"2025-04-11 09:10:21"	N/A	0	0	0	0	0	0	0
+460		"2025-04-11 15:01:38"	N/A	0	0	0	0	0	0	0
+461		"2025-04-11 15:01:41"	N/A	0	0	0	0	0	0	0
+462	"Mi deuda"	"2025-04-14 15:04:34"	es	10	10	10	10	10	10	10
+463	Zorretan	"2025-04-25 10:12:17"	eu	10	10	10	10	10	10	10
+464	"Mi deuda"	"2025-05-11 20:34:57"	es	10	10	10	10	7	8	9
+465	"Mi deuda"	"2025-05-11 20:41:53"	es	10	10	10	10	7	8	7
+466	"Mi deuda"	"2025-05-25 20:30:02"	es	8	8	9	9	8	0	9
+467	"Mi deuda"	"2025-05-25 20:30:03"	es	8	8	9	9	8	0	9
+468	"Mi deuda"	"2025-05-25 20:30:23"	es	10	10	10	10	10	10	8
+469	"Mi deuda"	"2025-05-25 20:30:58"	es	10	8	10	10	10	8	10
+470	"Mi deuda"	"2025-05-25 20:30:59"	es	10	10	10	9	10	10	10
+471	Zorretan	"2025-05-25 20:31:10"	eu	10	10	10	10	10	10	10
+472	Zorretan	"2025-05-25 20:31:11"	eu	10	10	10	10	10	10	10
+473	Zorretan	"2025-05-25 20:31:15"	eu	10	10	10	10	10	10	10
+474	Zorretan	"2025-05-25 20:33:03"	eu	10	10	10	10	10	10	10
+475	"Mi deuda"	"2025-05-25 20:33:03"	es	10	10	10	10	8	10	9
+476	"Al otro lado de la puerta"	"2025-05-25 20:40:24"	es	9	9	10	10	8	10	8
+477	"Mi deuda"	"2025-05-25 20:41:21"	es	10	9	10	10	9	9	8
+478	Zorretan	"2025-05-25 21:22:48"	eu	10	10	10	10	10	10	10
+479	"Mi deuda"	"2025-05-25 21:34:16"	es	10	10	10	10	10	10	7
+480	Zorretan	"2025-05-25 21:42:43"	eu	10	10	10	10	10	10	10
+481	Zorretan	"2025-05-25 22:02:42"	eu	10	10	10	10	10	10	10
+482	"Mi deuda"	"2025-05-26 06:51:33"	es	8	8	9	9	8	0	9
+483	Zorretan	"2025-05-27 10:08:15"	eu	10	10	10	10	10	10	10
+484	"Mi deuda"	"2025-05-30 21:32:42"	es	10	10	10	10	10	10	9
+485	"Mi deuda"	"2025-05-30 21:33:50"	es	10	10	10	10	10	10	9
+486	"Mi deuda"	"2025-05-30 21:50:18"	es	10	10	10	10	10	10	10
+487	"Mi deuda"	"2025-05-30 21:50:22"	es	10	10	10	10	10	10	10
+488	Zorretan	"2025-05-30 23:26:31"	eu	9	9	9	10	6	10	9
+489	Zorretan	"2025-05-30 23:26:32"	eu	9	9	9	10	6	10	9
+490	Zorretan	"2025-05-30 23:26:33"	eu	9	9	9	10	6	10	9
+491	Zorretan	"2025-05-30 23:26:33"	eu	9	9	9	10	6	10	9
+492	Zorretan	"2025-05-30 23:26:33"	eu	9	9	9	10	6	10	9
+493	Zorretan	"2025-05-30 23:26:34"	eu	9	9	9	10	6	10	9
+494	Zorretan	"2025-05-30 23:26:34"	eu	9	9	9	10	6	10	9
+495	Zorretan	"2025-06-01 17:34:23"	eu	8	8	10	8	7	9	8
+496	"Mi deuda"	"2025-06-13 21:29:37"	es	10	8	10	10	10	10	10
+497	"Al otro lado de la puerta"	"2025-07-02 14:06:49"	es	7	8	8	8	10	9	0
+498	Zorretan	"2025-07-02 14:08:57"	eu	2	1	5	1	10	9	6
+499	Zorretan	"2025-07-18 15:55:40"	eu	0	0	0	0	0	0	0
+500	"Al otro lado de la puerta"	"2025-08-21 19:44:13"	es	10	10	10	10	10	4	10
+501	"Al otro lado de la puerta"	"2025-08-21 19:51:37"	es	10	10	10	10	10	10	10
+502	"Al otro lado de la puerta"	"2025-08-21 19:52:29"	es	10	10	10	10	10	10	10
+503	"Al otro lado de la puerta"	"2025-08-21 19:52:33"	es	10	10	10	10	10	10	10
+504	"Al otro lado de la puerta"	"2025-08-21 19:52:50"	es	10	10	10	10	10	10	10
+505	"Al otro lado de la puerta"	"2025-08-21 19:52:52"	es	10	10	10	10	10	10	9
+506	"Al otro lado de la puerta"	"2025-08-21 19:52:53"	es	10	10	10	10	10	7	8
+507	"Al otro lado de la puerta"	"2025-08-21 19:52:55"	es	10	10	10	10	10	10	10
+508	"Al otro lado de la puerta"	"2025-08-21 19:52:57"	es	10	10	10	10	10	10	10
+509	"Al otro lado de la puerta"	"2025-08-21 19:53:19"	es	10	10	10	10	10	10	10
+510	"Al otro lado de la puerta"	"2025-08-21 19:53:57"	es	10	10	10	10	10	10	10
+511	"Al otro lado de la puerta"	"2025-08-21 19:54:10"	es	10	10	10	10	10	10	10
+512	"Al otro lado de la puerta"	"2025-08-21 19:54:13"	es	10	10	10	10	7	8	10
+513	"Al otro lado de la puerta"	"2025-08-21 19:54:14"	es	10	10	10	10	7	8	10
+514	"Al otro lado de la puerta"	"2025-08-21 19:54:48"	es	10	9	10	10	8	9	6
+515	"Al otro lado de la puerta"	"2025-08-21 19:54:50"	es	10	10	10	10	6	8	5
+516	"Al otro lado de la puerta"	"2025-08-21 19:55:07"	es	10	10	10	10	8	8	6
+517	"Al otro lado de la puerta"	"2025-08-21 19:55:30"	es	10	10	10	10	5	6	5
+518	"Al otro lado de la puerta"	"2025-08-21 19:55:32"	es	10	8	10	10	7	8	8
+519	"Al otro lado de la puerta"	"2025-08-21 19:56:14"	es	10	10	10	10	10	10	10
+520	"Al otro lado de la puerta"	"2025-08-21 19:56:22"	es	9	9	9	9	8	10	7
+521	"Al otro lado de la puerta"	"2025-08-21 19:56:27"	es	8	8	8	8	8	8	8
+522	"Al otro lado de la puerta"	"2025-08-21 19:56:28"	es	8	8	8	8	8	8	8
+523	"Al otro lado de la puerta"	"2025-08-21 19:56:29"	es	8	8	8	8	8	8	8
+524	"Al otro lado de la puerta"	"2025-08-21 19:56:35"	es	10	10	10	10	10	10	10
+525	"Al otro lado de la puerta"	"2025-08-21 19:56:40"	es	0	0	0	0	0	0	0
+526	"Al otro lado de la puerta"	"2025-08-21 19:56:44"	es	10	9	7	8	8	8	7
+527	"Al otro lado de la puerta"	"2025-08-21 19:57:14"	es	10	7	10	10	10	10	9
+528	"Al otro lado de la puerta"	"2025-08-21 19:57:22"	es	10	10	10	10	10	10	10
+529	"Al otro lado de la puerta"	"2025-08-21 19:58:16"	es	10	10	10	10	10	10	10
+530	"Al otro lado de la puerta"	"2025-08-21 19:59:17"	es	10	8	10	10	10	9	8
+531	"Al otro lado de la puerta"	"2025-08-21 20:00:05"	es	10	10	10	10	10	10	10
+532	"Al otro lado de la puerta"	"2025-08-21 20:01:01"	es	10	10	10	10	10	10	10
+533	"Al otro lado de la puerta"	"2025-08-21 20:01:45"	es	10	10	10	10	6	6	9
+534	"Al otro lado de la puerta"	"2025-08-21 20:03:47"	es	9	9	9	9	8	10	7
+535	"Atearen bestaldean"	"2025-08-21 20:15:41"	eu	10	9	10	10	7	10	8
+536	"Atearen bestaldean"	"2025-08-21 20:17:11"	eu	10	10	10	10	10	10	10
+537	"Atearen bestaldean"	"2025-08-21 20:23:33"	eu	6	7	9	10	9	9	5
+538		"2025-08-21 20:29:56"	N/A	10	10	10	10	10	10	7
+539		"2025-08-21 20:29:59"	N/A	10	10	10	10	10	10	7
+540	"Al otro lado de la puerta"	"2025-08-21 21:36:17"	es	9	8	10	10	7	5	6
+541	"Al otro lado de la puerta"	"2025-08-21 21:43:20"	es	10	10	10	10	6	8	5
+542	"Al otro lado de la puerta"	"2025-08-21 21:57:59"	es	10	10	10	10	7	8	8
+543	"Al otro lado de la puerta"	"2025-08-22 12:17:31"	es	10	7	10	10	10	10	9
+544	Zorretan	"2025-09-28 22:07:16"	eu	8	10	10	8	0	0	0
+545	"Mi deuda"	"2025-10-18 13:16:02"	es	10	10	10	10	10	10	10
+546	Zorretan	"2025-10-20 16:35:00"	eu	7	8	10	8	10	10	7
+547		"2025-10-20 16:35:18"	N/A	0	0	0	0	0	0	0
+548		"2025-10-20 16:35:20"	N/A	0	0	0	0	0	0	0
+549		"2025-10-20 16:35:38"	N/A	0	0	0	0	0	0	0
+550	"Al otro lado de la puerta"	"2025-11-23 18:07:09"	es	10	10	10	10	10	10	8
+551	"Al otro lado de la puerta"	"2025-11-23 18:07:51"	es	10	10	10	10	10	10	10
+552	"Al otro lado de la puerta"	"2025-11-23 18:08:56"	es	10	10	10	10	10	10	10
+553	"Atearen bestaldean"	"2025-11-23 18:10:17"	eu	10	10	10	10	10	10	7
+554	"Al otro lado de la puerta"	"2025-11-23 18:10:48"	es	10	10	10	10	10	10	10
+555	"Al otro lado de la puerta"	"2025-11-23 18:14:34"	es	10	10	10	10	10	10	10
+556	"Atearen bestaldean"	"2025-11-23 18:15:29"	eu	3	8	10	10	9	0	10
+557	"Atearen bestaldean"	"2025-11-23 18:15:52"	eu	10	10	10	10	7	9	9
+558	"Al otro lado de la puerta"	"2025-11-23 18:16:55"	es	9	9	10	9	7	7	7
+559	"Al otro lado de la puerta"	"2025-11-23 18:17:49"	es	10	10	9	10	10	10	10
+560	"Atearen bestaldean"	"2025-11-23 18:37:25"	eu	10	10	10	10	9	10	10
+561	"Atearen bestaldean"	"2025-11-23 20:15:53"	eu	10	10	10	10	10	10	7
+562	"Mi deuda"	"2025-12-29 14:49:38"	es	8	8	8	7	5	6	9
+563	"Al otro lado de la puerta"	"2025-12-29 18:05:42"	es	10	10	10	10	10	10	7
+564	"Al otro lado de la puerta"	"2025-12-29 18:06:48"	es	10	10	10	10	10	10	5
+565	"Al otro lado de la puerta"	"2025-12-29 18:06:55"	es	10	10	0	10	10	5	4
+566	"Atearen bestaldean"	"2025-12-29 18:07:00"	eu	10	10	10	10	10	10	6
+567	"Al otro lado de la puerta"	"2025-12-29 18:07:00"	es	10	7	9	9	8	8	7
+568	"Al otro lado de la puerta"	"2025-12-29 18:07:03"	es	9	8	10	9	7	7	7
+569	"Al otro lado de la puerta"	"2025-12-29 18:07:15"	es	10	10	10	10	10	10	6
+570	"Al otro lado de la puerta"	"2025-12-29 18:07:28"	es	10	10	10	8	10	10	10
+571	"Al otro lado de la puerta"	"2025-12-29 18:07:57"	es	10	10	10	10	10	0	10
+572	"Al otro lado de la puerta"	"2025-12-29 18:07:58"	es	10	10	10	10	10	0	10
+573	"Al otro lado de la puerta"	"2025-12-29 18:08:54"	es	10	8	10	10	7	9	5
+574	"Al otro lado de la puerta"	"2025-12-29 18:09:29"	es	10	10	10	10	10	10	7
+575	"Al otro lado de la puerta"	"2025-12-29 18:09:53"	es	10	10	10	10	10	10	10
+576	"Al otro lado de la puerta"	"2025-12-29 18:11:22"	es	10	10	10	10	10	10	3
+577	"Al otro lado de la puerta"	"2025-12-29 18:15:50"	es	10	10	10	10	10	10	6
+578	"Al otro lado de la puerta"	"2026-02-07 19:07:41"	es	10	10	10	2	10	10	10
+579	"Al otro lado de la puerta"	"2026-02-07 19:08:08"	es	10	10	10	10	9	10	10
+580	"Al otro lado de la puerta"	"2026-02-07 19:10:05"	es	10	9	10	10	10	10	10
+581	"Al otro lado de la puerta"	"2026-02-07 19:10:18"	es	10	10	9	10	8	8	9
+582	"Al otro lado de la puerta"	"2026-02-07 19:17:15"	es	10	10	10	10	10	10	10
+583	"Al otro lado de la puerta"	"2026-02-07 19:19:10"	es	10	10	10	10	8	10	10
+584	"Al otro lado de la puerta"	"2026-02-07 19:19:10"	es	10	10	10	10	8	10	10
+585	"Al otro lado de la puerta"	"2026-02-07 19:19:21"	es	10	10	10	10	10	10	10
+586	"Al otro lado de la puerta"	"2026-02-07 19:19:22"	es	10	10	10	10	10	10	10
+587	"Al otro lado de la puerta"	"2026-02-07 19:19:22"	es	10	10	10	10	10	10	10
+588	"Al otro lado de la puerta"	"2026-02-07 19:20:47"	es	10	10	10	10	10	10	10
+589	"Al otro lado de la puerta"	"2026-02-07 19:20:48"	es	10	10	10	10	10	10	10
+590	"Al otro lado de la puerta"	"2026-02-07 19:20:48"	es	10	10	10	10	10	10	10
+591	"Al otro lado de la puerta"	"2026-02-07 19:20:49"	es	10	10	10	10	10	10	10
+592	"Al otro lado de la puerta"	"2026-02-07 19:20:49"	es	10	10	10	10	10	10	10
+593	"Al otro lado de la puerta"	"2026-02-07 19:20:50"	es	10	10	10	10	10	10	10
+594	"Al otro lado de la puerta"	"2026-02-07 19:20:51"	es	10	10	10	10	10	10	10
+595	"Al otro lado de la puerta"	"2026-02-07 19:20:51"	es	10	10	10	10	10	10	10
+596	"Al otro lado de la puerta"	"2026-02-07 19:20:52"	es	10	10	10	10	10	10	10
+597	"Al otro lado de la puerta"	"2026-02-07 19:20:52"	es	10	10	10	10	10	10	10
+598	"Al otro lado de la puerta"	"2026-02-07 19:25:06"	es	10	10	10	10	7	10	10
+599	"Atearen bestaldean"	"2026-02-07 20:27:44"	eu	10	10	10	10	10	10	8
+600	"Al otro lado de la puerta"	"2026-02-07 20:55:33"	es	10	10	9	10	8	8	9
+601	"Al otro lado de la puerta"	"2026-02-07 21:36:47"	es	10	9	10	10	10	10	10
+602	"Al otro lado de la puerta"	"2026-02-07 22:28:24"	es	10	10	10	10	10	10	10
+603	"Al otro lado de la puerta"	"2026-02-08 00:38:59"	es	10	10	10	10	7	10	10
+604	"Al otro lado de la puerta"	"2026-02-08 09:16:52"	es	10	9	10	10	10	10	10
+605	"Al otro lado de la puerta"	"2026-03-09 12:24:24"	es	5	5	5	5	5	5	6
+606	"Mi deuda"	"2026-03-09 12:30:11"	es	5	5	5	5	5	5	0
+607	"Al otro lado de la puerta"	"2026-03-21 19:13:07"	es	10	10	10	10	10	10	10
+608	"Al otro lado de la puerta"	"2026-03-21 19:13:20"	es	10	10	10	10	10	10	10
+609	"Al otro lado de la puerta"	"2026-03-21 19:13:29"	es	10	10	10	10	10	10	10
+610	"Al otro lado de la puerta"	"2026-03-21 19:13:29"	es	10	10	10	10	10	10	10
+611	"Al otro lado de la puerta"	"2026-03-21 19:13:31"	es	10	10	10	10	10	10	10
+612	"Al otro lado de la puerta"	"2026-03-21 19:13:32"	es	10	10	10	10	10	10	10
+613	"Mi deuda"	"2026-03-21 19:13:56"	es	10	10	9	10	10	10	10
+614	"Al otro lado de la puerta"	"2026-03-21 19:14:07"	es	9	7	10	6	8	9	8
+615	"Al otro lado de la puerta"	"2026-03-21 19:14:14"	es	10	10	10	10	10	10	10
+616	"Al otro lado de la puerta"	"2026-03-21 19:14:14"	es	10	10	10	10	10	10	10
+617	"Al otro lado de la puerta"	"2026-03-21 19:14:20"	es	8	7	9	8	9	9	7
+618	"Al otro lado de la puerta"	"2026-03-21 19:14:27"	es	10	10	10	10	10	10	7
+619	"Al otro lado de la puerta"	"2026-03-21 19:15:00"	es	10	10	10	10	10	10	10
+620	"Al otro lado de la puerta"	"2026-03-21 19:15:12"	es	10	10	10	10	10	10	10
+621	"Al otro lado de la puerta"	"2026-03-21 19:15:35"	es	10	10	10	10	10	10	10
+622	"Al otro lado de la puerta"	"2026-03-21 19:15:35"	es	10	10	10	10	10	10	10
+623	"Al otro lado de la puerta"	"2026-03-21 19:15:36"	es	10	10	10	10	10	10	10
+624	"Al otro lado de la puerta"	"2026-03-21 19:15:36"	es	10	10	10	10	10	10	10
+625	"Al otro lado de la puerta"	"2026-03-21 19:16:02"	es	10	8	10	8	10	10	8
+626	"Al otro lado de la puerta"	"2026-03-21 19:17:31"	es	10	9	10	10	10	10	9
+627	"Al otro lado de la puerta"	"2026-03-21 19:19:39"	es	9	9	9	9	9	9	9
+628	"Al otro lado de la puerta"	"2026-03-21 19:29:22"	es	10	10	10	10	10	10	10
+629	"Al otro lado de la puerta"	"2026-03-21 20:08:44"	es	10	10	10	10	10	10	10
+630	"Al otro lado de la puerta"	"2026-03-21 21:40:25"	es	10	10	10	10	10	10	6
+631	"Al otro lado de la puerta"	"2026-03-21 21:56:41"	es	10	10	10	10	10	10	10
+632	"Al otro lado de la puerta"	"2026-03-21 22:04:05"	es	10	10	10	10	10	10	10
+633	"Al otro lado de la puerta"	"2026-03-22 00:13:00"	es	10	10	10	10	10	10	10
+634	"Al otro lado de la puerta"	"2026-03-23 08:39:51"	es	10	10	10	10	10	10	10
+635	"Al otro lado de la puerta"	"2026-03-27 20:04:51"	es	10	10	9	10	10	10	10
+636	"Al otro lado de la puerta"	"2026-03-27 20:04:59"	es	10	10	10	10	10	10	10
+637	"Al otro lado de la puerta"	"2026-03-27 20:05:29"	es	7	8	9	7	8	8	7
+638	"Al otro lado de la puerta"	"2026-03-27 20:05:33"	es	9	9	10	10	9	10	10
+639	"Al otro lado de la puerta"	"2026-03-27 20:07:22"	es	10	10	10	10	8	8	5
+640	"Al otro lado de la puerta"	"2026-03-27 20:07:33"	es	8	8	8	10	10	8	0
+641	"Mi deuda"	"2026-03-27 20:11:07"	es	10	10	10	10	10	10	10
+642	"Al otro lado de la puerta"	"2026-03-28 10:22:11"	es	7	8	9	7	8	8	7
+643	"Atearen bestaldean"	"2026-04-26 13:44:53"	eu	10	10	10	10	10	10	8
+644		"2026-04-26 13:45:19"	N/A	0	0	0	0	0	0	0
+645	"Atearen bestaldean"	"2026-04-29 11:57:29"	eu	10	10	10	10	10	10	10
+646	Zorretan	"2026-04-29 11:58:59"	eu	10	10	10	10	10	10	10
+647	Zorretan	"2026-04-29 12:02:55"	eu	0	0	0	0	0	0	0
+648	Bidaia	"2026-04-29 12:03:27"	eu	10	10	10	10	10	10	10
+649	"Atearen bestaldean"	"2026-04-30 09:29:32"	eu	10	10	10	10	10	10	10
+650	"Atearen bestaldean"	"2026-04-30 09:35:44"	eu	10	10	10	10	10	10	10
+651	"Atearen bestaldean"	"2026-05-08 18:19:35"	eu	8	8	8	8	8	8	8
+652	"Atearen bestaldean"	"2026-05-08 18:20:15"	eu	10	10	10	10	10	10	10
+653	"Atearen bestaldean"	"2026-05-08 18:20:23"	eu	7	7	10	7	10	10	10
+654	"Atearen bestaldean"	"2026-05-08 18:20:36"	eu	10	10	10	10	10	10	10
+655	"Atearen bestaldean"	"2026-05-08 18:21:02"	eu	7	6	8	6	10	8	9
+656	"Atearen bestaldean"	"2026-05-08 18:21:29"	eu	10	10	10	10	10	8	7
+657	"Atearen bestaldean"	"2026-05-08 18:21:47"	eu	10	5	10	7	10	10	8
+658	"Atearen bestaldean"	"2026-05-08 18:22:07"	eu	10	9	10	10	10	10	10
+659	Zorretan	"2026-05-08 19:10:00"	eu	8	8	10	8	10	10	9
+660	"Atearen bestaldean"	"2026-05-09 08:01:15"	eu	10	5	10	7	10	10	8
+661	"Atearen bestaldean"	"2026-05-17 19:08:42"	eu	10	10	10	10	10	10	10
+662	"Atearen bestaldean"	"2026-05-17 19:09:06"	eu	10	10	10	10	10	10	10
+663	"Atearen bestaldean"	"2026-05-17 19:09:07"	eu	9	9	10	10	7	10	10
+664	"Atearen bestaldean"	"2026-05-17 19:09:09"	eu	10	10	10	10	10	10	10
+665	"Atearen bestaldean"	"2026-05-17 19:09:36"	eu	10	10	10	10	10	10	10
+666	"Atearen bestaldean"	"2026-05-17 19:10:03"	eu	10	10	10	10	10	10	10
+667	"Atearen bestaldean"	"2026-05-17 19:13:27"	eu	10	10	9	10	10	10	7
+668		"2026-05-17 19:13:39"	N/A	10	8	10	8	10	7	7
+669	"Atearen bestaldean"	"2026-05-17 19:14:22"	eu	10	10	10	10	10	10	10
+670	"Atearen bestaldean"	"2026-05-17 19:15:03"	eu	9	10	10	10	8	10	7
+671	"Atearen bestaldean"	"2026-05-17 19:15:04"	eu	9	10	10	10	8	10	7
+672	"Atearen bestaldean"	"2026-05-17 19:15:06"	eu	9	10	10	10	8	10	7
+673	"Atearen bestaldean"	"2026-05-17 19:16:14"	eu	10	10	10	10	8	9	5
+674	"Atearen bestaldean"	"2026-05-17 19:16:16"	eu	10	10	10	10	10	10	10
+675	"Atearen bestaldean"	"2026-05-17 19:18:45"	eu	10	10	10	10	10	10	10
+676	"Atearen bestaldean"	"2026-05-17 19:25:32"	eu	10	10	10	10	10	10	8
+677		"2026-05-17 19:25:51"	N/A	0	0	0	0	0	0	0
+678	"Atearen bestaldean"	"2026-05-17 20:21:42"	eu	10	10	10	10	10	10	10
+679		"2026-05-18 07:35:07"	N/A	0	0	0	0	0	0	0
+680	"Atearen bestaldean"	"2026-09-12 13:23:39"	eu	9	9	10	8	9	9	9
+681	"Atearen bestaldean"	"2026-09-12 13:24:06"	eu	10	10	10	10	10	10	10
+682	"Atearen bestaldean"	"2026-09-12 13:24:50"	eu	8	8	10	10	10	10	7
+683	Zorretan	"2026-09-12 13:26:11"	eu	10	10	10	10	10	10	10
+684	"Atearen bestaldean"	"2026-09-12 13:26:43"	eu	10	10	10	10	10	9	9
+685	Zorretan	"2026-09-12 13:26:54"	eu	10	10	10	8	8	8	8
+686	"Atearen bestaldean"	"2026-09-12 13:27:39"	eu	10	10	10	10	10	10	10
+687	Zorretan	"2026-09-12 13:27:40"	eu	9	10	10	10	10	10	9
+688	Zorretan	"2026-09-12 13:27:41"	eu	9	10	10	10	10	10	9
+689	"Atearen bestaldean"	"2026-09-12 13:29:35"	eu	10	10	10	10	9	10	9
+690	MAKILhotsak	"2026-10-19 21:00:48"	eu	10	7	10	7	10	0	8
+691	MAKILhotsak	"2026-10-19 21:00:50"	eu	10	10	10	10	8	10	10
+692	MAKILhotsak	"2026-10-19 21:01:05"	eu	10	10	10	10	10	10	10
+693	MAKILhotsak	"2026-10-19 21:01:30"	eu	9	8	9	8	10	9	5
+694	MAKILhotsak	"2026-10-19 21:01:31"	eu	9	8	9	8	10	9	5
+695	"MAKILhotsak (Golpes de guerra)"	"2026-10-19 21:01:57"	es	10	10	10	10	10	10	0
+696	MAKILhotsak	"2026-10-19 22:37:54"	eu	10	7	10	7	10	0	8</script>
+<script>
+"use strict";
+
+// ---------------------------------------------------------------- Config
+
+const CONFIG_ORIGEN = {"obras": {"atearen-bestaldean": {"eu": "Atearen bestaldean", "es": "Al otro lado de la puerta", "alias": ["Atearen bestaldean", "Al otro lado de la puerta"], "imagen": "https://hikateatroa.eus/wp-content/uploads/2023/11/txalo_atearen_bestaldean.jpg"}, "zorretan": {"eu": "Zorretan", "es": "Mi deuda", "alias": ["Zorretan", "Mi deuda"], "imagen": "https://hikateatroa.eus/wp-content/uploads/2025/09/mi-deuda_irudia-1.jpg"}, "bidaia": {"eu": "Bidaia", "es": "El viaje", "alias": ["Bidaia", "El viaje"], "imagen": "https://hikateatroa.eus/wp-content/uploads/2023/03/EL-VIAJE10-e1715110447566.jpg"}, "makilhotsak": {"eu": "MAKILhotsak", "es": "MAKILhotsak (Golpes de guerra)", "alias": ["MAKILhotsak", "MAKILhotsak (Golpes de guerra)"], "imagen": "https://hikateatroa.eus/wp-content/uploads/2026/01/makil_tsak_irudia.jpg"}}, "preguntas": {"GAL1": {"bloque": "obra", "eu": "Gogobetetzea", "es": "Satisfacción", "texto_eu": "Orokorrean, zein da zure gogobetetze-maila?", "texto_es": "¿Cuál es el grado de satisfacción general?"}, "GAL2": {"bloque": "obra", "eu": "Trama", "es": "Trama", "texto_eu": "Zer iruditu zaizu obra honen trama?", "texto_es": "¿Qué te ha parecido la trama de esta obra?"}, "GAL3": {"bloque": "obra", "eu": "Aktoreak", "es": "Reparto", "texto_eu": "Nola baloratuko zenituzke aktoreak?", "texto_es": "¿Cómo valorarías el reparto?"}, "GAL4": {"bloque": "obra", "eu": "Gomendatzea", "es": "Recomendaría", "texto_eu": "Zenbateraino da posible obra hau norbaiti gomendatzea?", "texto_es": "¿Cuánto de probable es que recomiendes esta obra a alguien?"}, "GAL5": {"bloque": "publico", "eu": "Antzerkira itzuli", "es": "Volver al teatro", "texto_eu": "Laster beste antzezlanen bat ikusiko duzula uste al duzu?", "texto_es": "¿Cuánto de posible es que vuelvas al teatro dentro de poco?"}, "GAL6": {"bloque": "publico", "eu": "Hikara itzuli", "es": "Volver a Hika", "texto_eu": "Zenbateraino da posible Hikaren beste antzezlan bat ikustera itzultzea?", "texto_es": "¿Cuánto de posible es que vuelvas a ver una obra de Hika?"}, "GAL7": {"bloque": "localidad", "eu": "Herriko programazioa", "es": "Programación local", "texto_eu": "Nola baloratuko zenuke herri honetako kultur programazioa?", "texto_es": "¿Cómo valorarías la programación cultural de esta localidad?"}}, "bloques": {"obra": {"eu": "Obra", "es": "La obra"}, "publico": {"eu": "Ikuslearen leialtasuna", "es": "Fidelidad del público"}, "localidad": {"eu": "Herria", "es": "La localidad"}}, "nota_obra": ["GAL1", "GAL2", "GAL3", "GAL4"], "pregunta_recomendacion": "GAL4", "limpieza": {"segundos_duplicado": 10, "horas_entre_funciones": 3, "min_respuestas_funcion": 5}, "publicacion": {"min_respuestas_obra": 10, "preguntas_publicas": ["GAL1", "GAL2", "GAL3", "GAL4", "GAL6"]}, "web": {"eu": "https://hikateatroa.eus/txalometroa/", "es": "https://hikateatroa.eus/es/txalometroa/"}};
+const CLAVE = "txalometroa-app", CLAVE_CONFIG_ANTIGUA = "txalometroa-config";
+
+// Lo guardado en el navegador: configuración (obras incluidas) y el último export cargado.
+function cargarGuardado() {
+  let g = null;
+  try { g = JSON.parse(localStorage.getItem(CLAVE)); } catch (e) { /* almacenamiento no disponible */ }
+  if (!g || !g.cfg) {
+    let cfg = structuredClone(CONFIG_ORIGEN);
+    try {
+      const vieja = JSON.parse(localStorage.getItem(CLAVE_CONFIG_ANTIGUA));
+      if (vieja) cfg = { ...cfg, ...vieja, publicacion: { ...cfg.publicacion, ...vieja.publicacion } };
+    } catch (e) {}
+    g = { cfg, fichero: null, vaciado: false };
+  }
+  // Completa los campos que una versión anterior no guardaba.
+  g.cfg.publicacion = { ...CONFIG_ORIGEN.publicacion, ...g.cfg.publicacion };
+  g.cfg.web = g.cfg.web || CONFIG_ORIGEN.web;
+  for (const [id, o] of Object.entries(g.cfg.obras)) if (!o.imagen && CONFIG_ORIGEN.obras[id]) o.imagen = CONFIG_ORIGEN.obras[id].imagen;
+  return g;
+}
+let guardado = cargarGuardado();
+function guardarTodo() { try { localStorage.setItem(CLAVE, JSON.stringify(guardado)); return true; } catch (e) { return false; } }
+function guardarConfig(cfg) { guardado.cfg = cfg; guardarTodo(); }
+
+// Export en uso: el último cargado o, si no se ha vaciado, el incluido en la app.
+function datosGuardados() {
+  if (guardado.fichero) return guardado.fichero;
+  if (guardado.vaciado) return null;
+  const el = document.getElementById("datos-iniciales");
+  return { nombre: el.dataset.nombre, filas: aObjetos(parsearTexto(el.textContent.trim())), incluido: true };
+}
+
+// Núcleo del Txalometroa: lectura del export, limpieza, análisis y bloque
+// público. Lo comparten la app (app/txalometroa.src.html) y la réplica de la
+// web (replica/replica.src.html); construir.py lo incrusta en las dos.
+
+const PREG = ["GAL1", "GAL2", "GAL3", "GAL4", "GAL5", "GAL6", "GAL7"];
+
+// ---------------------------------------------------------------- Lectura
+
+const BOM = String.fromCharCode(0xFEFF);
+
+function parsearTexto(texto) {
+  if (texto.startsWith(BOM)) texto = texto.slice(1);
+  const primera = texto.split(/\r?\n/, 1)[0];
+  const delim = primera.includes("\t") ? "\t" : primera.includes(";") ? ";" : ",";
+  const filas = [];
+  let fila = [], campo = "", comillas = false;
+  for (let i = 0; i < texto.length; i++) {
+    const c = texto[i];
+    if (comillas) {
+      if (c === '"' && texto[i + 1] === '"') { campo += '"'; i++; }
+      else if (c === '"') comillas = false;
+      else campo += c;
+    } else if (c === '"') comillas = true;
+    else if (c === delim) { fila.push(campo); campo = ""; }
+    else if (c === "\n" || c === "\r") {
+      if (c === "\r" && texto[i + 1] === "\n") i++;
+      fila.push(campo); filas.push(fila); fila = []; campo = "";
+    } else campo += c;
+  }
+  if (campo || fila.length) { fila.push(campo); filas.push(fila); }
+  return filas.filter(f => f.some(v => String(v).trim() !== ""));
+}
+
+function aObjetos(matriz) {
+  const cab = matriz[0].map(h => String(h).trim().toUpperCase());
+  const faltan = ["PRODUKZIOA", "NOIZ", ...PREG].filter(c => !cab.includes(c));
+  if (faltan.length) throw new Error(`Al fichero le faltan columnas: ${faltan.join(", ")}. ¿Es el export del Txalometroa?`);
+  return matriz.slice(1).map(f => Object.fromEntries(cab.map((h, i) => [h, f[i] ?? ""])));
+}
+
+function cargarSheetJS() {
+  if (window.XLSX) return Promise.resolve();
+  return new Promise((ok, ko) => {
+    const s = document.createElement("script");
+    s.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+    s.onload = ok; s.onerror = () => ko(new Error("No se pudo cargar el lector de Excel. Guarda el fichero como CSV o texto con tabulaciones."));
+    document.head.append(s);
+  });
+}
+
+async function leerFichero(buf) {
+  const b = new Uint8Array(buf.slice(0, 4));
+  const binario = (b[0] === 0xD0 && b[1] === 0xCF) || (b[0] === 0x50 && b[1] === 0x4B);
+  if (binario) {
+    await cargarSheetJS();
+    const libro = XLSX.read(buf, { type: "array", cellDates: true });
+    const hoja = libro.Sheets[libro.SheetNames[0]];
+    const filas = aObjetos(XLSX.utils.sheet_to_json(hoja, { header: 1, raw: true, defval: "" }));
+    // Las fechas de Excel llegan como Date: se pasan a texto local para poder guardarlas.
+    for (const f of filas) if (f.NOIZ instanceof Date) {
+      const d = f.NOIZ;
+      f.NOIZ = `${d.getFullYear()}-${dd(d.getMonth() + 1)}-${dd(d.getDate())} ${dd(d.getHours())}:${dd(d.getMinutes())}:${dd(d.getSeconds())}`;
+    }
+    return filas;
+  }
+  let texto;
+  try { texto = new TextDecoder("utf-8", { fatal: true }).decode(buf); }
+  catch (e) { texto = new TextDecoder("windows-1252").decode(buf); }
+  return aObjetos(parsearTexto(texto));
+}
+
+function parsearFecha(v) {
+  if (v instanceof Date) return isNaN(v) ? null : v;
+  const s = String(v).trim();
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if (m) return new Date(+m[1], m[2] - 1, +m[3], +m[4], +m[5], +(m[6] || 0));
+  m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})[ T](\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if (m) return new Date(+m[3], m[2] - 1, +m[1], +m[4], +m[5], +(m[6] || 0));
+  return null;
+}
+
+// ---------------------------------------------------------------- Limpieza y análisis
+
+const slug = s => s.toLowerCase().normalize("NFD").replace(/\p{M}/gu, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const media = xs => xs.reduce((a, b) => a + b, 0) / xs.length;
+const pct = (parte, total) => total ? Math.round(100 * parte / total) : 0;
+const r2 = x => Math.round(x * 100) / 100;
+
+function limpiar(filas, cfg) {
+  const alias = {};
+  for (const [id, o] of Object.entries(cfg.obras)) for (const n of o.alias) alias[n.trim().toLowerCase()] = id;
+  const validas = [], sinMapear = new Set(), ultima = {};
+  const descartes = { vacias: 0, sin_obra: 0, duplicadas: 0, sin_fecha: 0 };
+
+  for (const f of filas) {
+    const notas = {};
+    for (const g of PREG) { const v = parseInt(f[g], 10) || 0; notas[g] = v >= 1 && v <= 10 ? v : null; }
+    if (PREG.every(g => notas[g] === null)) { descartes.vacias++; continue; }
+    const nombre = String(f.PRODUKZIOA ?? "").trim();
+    if (!nombre) { descartes.sin_obra++; continue; }
+    const cuando = parsearFecha(f.NOIZ);
+    if (!cuando) { descartes.sin_fecha++; continue; }
+    let obra = alias[nombre.toLowerCase()];
+    if (!obra) { obra = slug(nombre); sinMapear.add(nombre); }
+
+    const prev = ultima[obra];
+    const firma = PREG.map(g => notas[g]).join(",");
+    if (prev && prev.firma === firma && (cuando - prev.cuando) / 1000 <= cfg.limpieza.segundos_duplicado) { descartes.duplicadas++; continue; }
+
+    const deObra = cfg.nota_obra.map(g => notas[g]).filter(v => v !== null);
+    const r = { id: f.ID, obra, nombre, idioma: String(f.HIZKUNTZA ?? "").trim(), cuando, notas, firma,
+                media: deObra.length ? media(deObra) : null };
+    validas.push(r); ultima[obra] = r;
+  }
+  validas.sort((a, b) => a.cuando - b.cuando);
+
+  // Funciones: bloques de respuestas de una obra sin huecos de más de N horas.
+  const hueco = cfg.limpieza.horas_entre_funciones * 3600e3, finPorObra = {};
+  for (const r of validas) {
+    const act = finPorObra[r.obra];
+    if (!act || r.cuando - act.fin > hueco) finPorObra[r.obra] = { id: `${r.obra}-${+r.cuando}`, fin: r.cuando };
+    finPorObra[r.obra].fin = r.cuando;
+    r.funcion = finPorObra[r.obra].id;
+  }
+  return { validas, descartes, sinMapear: [...sinMapear].sort() };
+}
+
+function metricas(rs, cfg) {
+  const ms = rs.map(r => r.media).filter(m => m !== null);
+  const rec = rs.map(r => r.notas[cfg.pregunta_recomendacion]).filter(v => v !== null);
+  const prom = pct(rec.filter(v => v >= 9).length, rec.length), detr = pct(rec.filter(v => v <= 6).length, rec.length);
+  return {
+    n: rs.length,
+    nota: ms.length ? r2(media(ms)) : null,
+    pct_muy_satisfechos: pct(ms.filter(m => m >= 9).length, ms.length),
+    pct_insatisfechos: pct(ms.filter(m => m <= 6).length, ms.length),
+    pct_recomendaria: prom,
+    indice_recomendacion: rec.length ? prom - detr : null,
+  };
+}
+
+function metricasPregunta(rs, g) {
+  const vs = rs.map(r => r.notas[g]).filter(v => v !== null);
+  return { n: vs.length, media: vs.length ? r2(media(vs)) : null,
+           pct_10: pct(vs.filter(v => v === 10).length, vs.length), pct_bajo: pct(vs.filter(v => v <= 6).length, vs.length) };
+}
+
+function analizar(filas, cfg) {
+  const { validas, descartes, sinMapear } = limpiar(filas, cfg);
+  if (!validas.length) throw new Error("No hay ninguna respuesta válida en el fichero.");
+  const ids = [...new Set(validas.map(r => r.obra))];
+  const obras = ids.map(id => {
+    const rs = validas.filter(r => r.obra === id);
+    const info = cfg.obras[id] || { eu: rs[0].nombre, es: rs[0].nombre };
+    const funciones = [...new Set(rs.map(r => r.funcion))].map(fid => {
+      const fr = rs.filter(r => r.funcion === fid);
+      return { id: fid, inicio: fr[0].cuando, fin: fr.at(-1).cuando, fiable: fr.length >= cfg.limpieza.min_respuestas_funcion, ...metricas(fr, cfg) };
+    });
+    return { id, eu: info.eu, es: info.es, imagen: info.imagen || "", primera: rs[0].cuando, ultima: rs.at(-1).cuando, ...metricas(rs, cfg),
+             preguntas: Object.fromEntries(PREG.map(g => [g, metricasPregunta(rs, g)])), funciones };
+  }).sort((a, b) => b.n - a.n);
+
+  const res = { generado: new Date(), filas: filas.length, validas, descartes, sinMapear, obras,
+                desde: validas[0].cuando, hasta: validas.at(-1).cuando, global: metricas(validas, cfg) };
+  res.conclusiones = conclusiones(res, cfg);
+  return res;
+}
+
+function conclusiones(res, cfg) {
+  const t = [], et = g => cfg.preguntas[g].es;
+  for (const o of res.obras) {
+    if (o.n < cfg.publicacion.min_respuestas_obra) { t.push(`«${o.es}» solo tiene ${o.n} respuestas: aún no es representativo.`); continue; }
+    const ms = cfg.nota_obra.filter(g => o.preguntas[g].media !== null).map(g => [g, o.preguntas[g].media]);
+    const floja = ms.reduce((a, b) => b[1] < a[1] ? b : a), fuerte = ms.reduce((a, b) => b[1] > a[1] ? b : a);
+    const ind = o.indice_recomendacion;
+    t.push(`«${o.es}»: ${fmt(o.nota)} de nota con ${o.n} respuestas; el ${o.pct_recomendaria}% la recomendaría (índice de recomendación ${ind >= 0 ? "+" : ""}${ind}). ` +
+           `Lo mejor valorado: ${et(fuerte[0]).toLowerCase()} (${fmt(fuerte[1])}); lo más flojo: ${et(floja[0]).toLowerCase()} (${fmt(floja[1])}).`);
+    const fiables = o.funciones.filter(f => f.fiable && f.nota !== null);
+    if (fiables.length >= 3) {
+      const peor = fiables.reduce((a, b) => b.nota < a.nota ? b : a);
+      if (o.nota - peor.nota >= 0.5)
+        t.push(`«${o.es}»: la función del ${fecha(peor.inicio)} quedó por debajo (${fmt(peor.nota)} con ${peor.n} respuestas). Vale la pena revisar qué pasó ese día.`);
+    }
+  }
+  const bloque = b => PREG.filter(g => cfg.preguntas[g].bloque === b).map(g => [g, metricasPregunta(res.validas, g)]);
+  const fid = bloque("publico");
+  if (fid.length) t.push("Fidelidad: " + fid.map(([g, m]) => `«${et(g)}» ${fmt(m.media)} (${m.pct_bajo}% da 6 o menos)`).join("; ") + ". Es lo que indica si el público volverá.");
+  for (const [g, m] of bloque("localidad"))
+    t.push(`«${et(g)}» saca ${fmt(m.media)}, pero no habla de la obra sino del municipio: no entra en la nota de las obras. El formulario no guarda la localidad, así que solo se puede cruzar por fecha de función.`);
+  const d = res.descartes;
+  if (d.vacias) t.push(`${d.vacias} envíos llegaron con todos los deslizadores a 0 (se pulsó TXALOTU sin mover nada). El formulario debería exigir al menos una respuesta.`);
+  if (d.sin_obra) t.push(`${d.sin_obra} respuestas llegaron sin obra y no se pueden usar; el formulario no debería guardar un envío si no sabe a qué obra pertenece.`);
+  if (d.duplicadas) t.push(`${d.duplicadas} envíos eran duplicados (mismas notas en pocos segundos, típico doble clic o recarga). Se evita desactivando el botón tras enviar.`);
+  const todas = res.validas.flatMap(r => PREG.map(g => r.notas[g])).filter(v => v !== null);
+  const p10 = pct(todas.filter(v => v === 10).length, todas.length);
+  if (p10 >= 50) t.push(`El ${p10}% de las notas son un 10: la escala se satura y las medias se parecen mucho. Por eso conviene mirar también el % de notas bajas (≤6) y el % que la recomendaría.`);
+  if (res.sinMapear.length) t.push(`Hay nombres de obra que no están en Ajustes: ${res.sinMapear.join(", ")}. Añádelos para unir sus versiones eu/es.`);
+  return t;
+}
+
+// ---------------------------------------------------------------- Formato
+
+const fmt = (x, d = 1) => x === null || x === undefined ? "–" : x.toFixed(d).replace(".", ",");
+const dd = n => String(n).padStart(2, "0");
+const fecha = d => `${dd(d.getDate())}/${dd(d.getMonth() + 1)}/${d.getFullYear()}`;
+const fechaHora = d => `${fecha(d)} ${dd(d.getHours())}:${dd(d.getMinutes())}`;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+// ---------------------------------------------------------------- Bloque público (reseña)
+
+const TXT_BLOQUE = {
+  eu: { titulo: "Ikusleen iritzia", sub: "Txalometroan jasotako balorazioak, 1etik 10era",
+        resp: n => `${n} balorazio`, pct: p => `%${p}k gomendatuko luke`, act: f => `Eguneratua: ${f}` },
+  es: { titulo: "La opinión del público", sub: "Valoraciones recogidas en el Txalometro, del 1 al 10",
+        resp: n => `${n} valoraciones`, pct: p => `El ${p}% la recomendaría`, act: f => `Actualizado: ${f}` },
+};
+
+const CSS_BLOQUE = `
+.txalo-emaitzak { --txalo-gorria: #ff3c42; --txalo-testua: #595b60; margin: 40px 0; color: var(--txalo-testua); }
+.txalo-emaitzak * { box-sizing: border-box; }
+.txalo-emaitzak .txalo-izenburua { font-weight: 300; font-size: 2.2rem; letter-spacing: .03em; text-align: center; margin: 0; color: var(--txalo-testua); }
+.txalo-emaitzak .txalo-azpi { text-align: center; font-size: .95rem; margin: 6px 0 28px; opacity: .8; }
+.txalo-emaitzak .txalo-lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 28px; }
+.txalo-emaitzak .txalo-obra { background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 28px rgba(30, 20, 20, .10); display: flex; flex-direction: column; }
+.txalo-emaitzak .txalo-irudia { position: relative; aspect-ratio: 3 / 2; background: #4d3733; }
+.txalo-emaitzak .txalo-irudia img { display: block; width: 100%; height: 100%; object-fit: cover; margin: 0; }
+.txalo-emaitzak .txalo-irudia::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.72)); }
+.txalo-emaitzak .txalo-izena { position: absolute; left: 20px; right: 120px; bottom: 16px; z-index: 1; margin: 0; color: #fff; font-weight: 700; font-size: 1.45rem; line-height: 1.15; }
+.txalo-emaitzak .txalo-nota { position: absolute; right: 16px; bottom: -52px; z-index: 2; width: 104px; border-radius: 14px; background: #fdeec7;
+  padding: 10px 10px 8px; display: grid; justify-items: center; gap: 2px; box-shadow: 0 6px 18px rgba(0,0,0,.22); }
+.txalo-emaitzak .txalo-nota svg { display: block; width: 100%; height: auto; }
+.txalo-emaitzak .txalo-nota span { font-weight: 700; font-size: 1.5rem; line-height: 1; color: #231f20; font-variant-numeric: tabular-nums; }
+.txalo-emaitzak .txalo-nota small { font-size: .7rem; font-weight: 400; color: var(--txalo-testua); margin-left: 2px; }
+.txalo-emaitzak .txalo-gorputza { padding: 18px 20px 22px; display: grid; gap: 16px; }
+.txalo-emaitzak .txalo-datuak { display: flex; flex-wrap: wrap; gap: 6px; margin-right: 118px; min-height: 40px; font-size: .82rem; }
+.txalo-emaitzak .txalo-txip { background: #f2f2f3; border-radius: 999px; padding: 3px 10px; }
+.txalo-emaitzak .txalo-txip.gorria { background: #ffe8e9; color: #c4161c; font-weight: 600; }
+.txalo-emaitzak .txalo-barrak { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: .9rem; }
+.txalo-emaitzak .txalo-barrak li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; margin: 0; padding: 0; }
+.txalo-emaitzak .txalo-barrak li::before { content: none; }
+.txalo-emaitzak .txalo-barrak b { font-weight: 700; color: #231f20; font-variant-numeric: tabular-nums; }
+.txalo-emaitzak .txalo-barra { grid-column: 1 / -1; height: 6px; background: #eeeeef; border-radius: 3px; overflow: hidden; }
+.txalo-emaitzak .txalo-barra i { display: block; height: 100%; background: var(--txalo-gorria); border-radius: 3px; }
+.txalo-emaitzak .txalo-pie { text-align: center; font-size: .82rem; opacity: .7; margin: 24px 0 0; }`;
+
+// Genera la reseña pública como HTML estático (sin JavaScript), para pegar en
+// un bloque «HTML personalizado» de WordPress. opts.obras limita a esas obras.
+function bloqueWordpress(res, cfg, lang, opts = {}) {
+  const t = TXT_BLOQUE[lang], pub = cfg.publicacion;
+  const preguntas = pub.preguntas_publicas || cfg.nota_obra;
+  const obras = res.obras.filter(o => o.n >= pub.min_respuestas_obra && o.nota !== null && (!opts.obras || opts.obras.includes(o.id)));
+  const tarjetas = obras.map(o => {
+    const img = o.imagen ? `<img src="${esc(o.imagen)}" alt="${esc(o[lang])}" loading="lazy">` : "";
+    const barras = preguntas.filter(g => o.preguntas[g].media !== null).map(g => {
+      const m = o.preguntas[g].media;
+      return `<li><span>${esc(cfg.preguntas[g][lang])}</span><b>${fmt(m)}</b><span class="txalo-barra"><i style="width:${Math.round(m * 10)}%"></i></span></li>`;
+    }).join("");
+    return `<article class="txalo-obra">
+<div class="txalo-irudia">${img}<h4 class="txalo-izena">${esc(o[lang])}</h4>
+<div class="txalo-nota">${svgLogoLiquido(o.nota)}<span>${fmt(o.nota)}<small>/ 10</small></span></div></div>
+<div class="txalo-gorputza"><div class="txalo-datuak"><span class="txalo-txip">${t.resp(o.n)}</span><span class="txalo-txip gorria">${t.pct(o.pct_recomendaria)}</span></div>
+<ul class="txalo-barrak">${barras}</ul></div>
+</article>`;
+  }).join("\n");
+  const cabecera = opts.sinCabecera ? "" : `<h3 class="txalo-izenburua">${t.titulo}</h3>\n<p class="txalo-azpi">${t.sub}</p>\n`;
+  return `<!-- Txalometroa · generado el ${fechaHora(res.generado)}. No lo edites a mano: vuelve a generarlo y pégalo entero. -->
+<style>${CSS_BLOQUE}
+</style>
+<div class="txalo-emaitzak" lang="${lang}">
+${cabecera}<div class="txalo-lista">
+${tarjetas}
+</div>
+<p class="txalo-pie">${t.act(fecha(res.hasta))}</p>
+</div>`;
+}
+
+// ---------------------------------------------------------------- Alta de obras desde el export
+
+// Por cada nombre de obra del export: respuestas, idioma predominante y días con respuestas.
+function infoNombres(filas) {
+  const info = {};
+  for (const f of filas) {
+    const n = String(f.PRODUKZIOA ?? "").trim(); if (!n) continue;
+    const i = info[n] ||= { n: 0, eu: 0, es: 0, dias: new Set() };
+    i.n++;
+    const h = String(f.HIZKUNTZA ?? "").trim().toLowerCase();
+    if (h === "eu" || h === "es") i[h]++;
+    const d = parsearFecha(f.NOIZ); if (d) i.dias.add(fecha(d));
+  }
+  for (const i of Object.values(info)) i.idioma = i.eu > i.es ? "eu" : "es";
+  return info;
+}
+
+// Si dos nombres en idiomas distintos reciben respuestas los mismos días, lo más
+// probable es que sean la misma obra (versión eu y versión es). Puntuación: parte
+// de los días del nombre con menos días que coinciden con el otro. Se empareja de
+// mayor a menor puntuación, cada nombre una sola vez. Devuelve { i: j } con j < i.
+function emparejar(nombres, info) {
+  const pares = [];
+  for (let i = 0; i < nombres.length; i++) for (let j = 0; j < i; j++) {
+    const a = info[nombres[i]], b = info[nombres[j]];
+    if (!a || !b || a.idioma === b.idioma) continue;
+    const comunes = [...a.dias].filter(d => b.dias.has(d)).length;
+    const p = comunes / Math.min(a.dias.size, b.dias.size);
+    if (comunes && p >= 0.35) pares.push({ i, j, p });
+  }
+  const usado = new Set(), res = {};
+  for (const { i, j } of pares.sort((x, y) => y.p - x.p)) {
+    if (usado.has(i) || usado.has(j)) continue;
+    usado.add(i); usado.add(j); res[i] = j;
+  }
+  return res;
+}
+
+// Tabla para decidir, por cada nombre nuevo del export, si es una obra nueva o la
+// misma que otra. Los controles llevan id nueva-<i> y foto-<i>.
+function htmlTablaObrasNuevas(nombres, cfg, filas) {
+  const info = infoNombres(filas), parejas = emparejar(nombres, info);
+  const filasHtml = nombres.map((n, i) => {
+    const sug = parejas[i] ?? null;
+    const opciones = [`<option value="nueva">Una obra nueva</option>`,
+      ...Object.entries(cfg.obras).map(([id, o]) => `<option value="id:${esc(id)}">La misma que «${esc(o.es)}»</option>`),
+      ...nombres.slice(0, i).map((m, j) => `<option value="n:${j}" ${j === sug ? "selected" : ""}>La misma que «${esc(m)}»${j === sug ? " (sugerido)" : ""}</option>`)];
+    return `<tr><td><b>${esc(n)}</b></td><td class="num">${info[n]?.n ?? 0}</td><td>${info[n]?.idioma ?? "–"}</td>
+      <td><select id="nueva-${i}" aria-label="Qué es «${esc(n)}»">${opciones.join("")}</select>${sug !== null ? `<span class="sugerido">Mismas fechas que «${esc(nombres[sug])}»</span>` : ""}</td>
+      <td><input id="foto-${i}" type="url" aria-label="Foto de «${esc(n)}»" placeholder="https://…/foto.jpg (opcional)"></td></tr>`;
+  }).join("");
+  return `<table class="nuevas"><tr><th>Nombre en el export</th><th>Respuestas</th><th>Idioma</th><th>Es…</th><th>Foto</th></tr>${filasHtml}</table>`;
+}
+
+// Lee las decisiones de la tabla anterior y crea o amplía las obras en cfg.
+function aplicarObrasNuevas(cfg, nombres, filas) {
+  const info = infoNombres(filas);
+  const valor = i => document.getElementById(`nueva-${i}`).value;
+  const foto = i => document.getElementById(`foto-${i}`).value.trim();
+  const idDe = {};
+  nombres.forEach((n, i) => {
+    if (valor(i) !== "nueva") return;
+    let id = slug(n) || "obra", k = 2;
+    while (cfg.obras[id]) id = `${slug(n) || "obra"}-${k++}`;
+    cfg.obras[id] = { eu: n, es: n, alias: [n], imagen: foto(i) };
+    idDe[i] = id;
+  });
+  const destino = i => { const v = valor(i); return v === "nueva" ? idDe[i] : v.startsWith("id:") ? v.slice(3) : destino(+v.slice(2)); };
+  nombres.forEach((n, i) => {
+    if (valor(i) === "nueva") return;
+    const o = cfg.obras[destino(i)];
+    if (!o.alias.includes(n)) o.alias.push(n);
+    o[info[n]?.idioma ?? "es"] = n;
+    if (!o.imagen && foto(i)) o.imagen = foto(i);
+  });
+  return cfg;
+}
+
+// ---------------------------------------------------------------- Piezas visuales
+
+// Logo de la app (A de Hika): forma negra en «<» y A roja con su hueco triangular.
+const LOGO = {
+  vista: "0 0 400 380",
+  negro: "M103 50 L214 50 L121 183 L217 338 L110 338 L50 246 L44 114 Z",
+  rojo: "M253 7 L292 57 L280 71 L315 122 L330 120 L366 170 L148 221 L122 186 Z",
+  hueco: "M181 173 L212 141 L217 167 Z",
+};
+
+let idLiquido = 0;
+// nota: 0–10. Devuelve un SVG con la forma vacía y el líquido (con ola) hasta nota/10.
+function svgLogoLiquido(nota, opts = {}) {
+  const id = `liq${++idLiquido}`, nivel = Math.max(0, Math.min(1, (nota ?? 0) / 10));
+  const arriba = 7, abajo = 338, y = abajo - (abajo - arriba) * nivel;
+  const ola = "M0 0 Q 50 -14 100 0 T 200 0 T 300 0 T 400 0 T 500 0 T 600 0 T 700 0 T 800 0 L 800 400 L 0 400 Z";
+  const vacio = opts.vacio || "rgba(35,31,32,.14)";
+  const animar = opts.animar !== false;
+  return `<svg class="logo-liquido" viewBox="${LOGO.vista}" role="img" aria-label="${opts.etiqueta || `Nota ${fmt(nota)} de 10`}">
+  <defs>
+    <mask id="${id}-ola" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="380"><g transform="translate(0 ${y.toFixed(1)})">
+      ${animar ? `<animateTransform attributeName="transform" type="translate" from="0 ${abajo + 20}" to="0 ${y.toFixed(1)}" dur="1.8s" fill="freeze" calcMode="spline" keySplines=".2 .7 .3 1" keyTimes="0;1"/>` : ""}
+      <path d="${ola}" fill="#fff">${animar ? `<animateTransform attributeName="transform" type="translate" from="0 0" to="-200 0" dur="2.6s" repeatCount="indefinite"/>` : ""}</path>
+    </g></mask>
+  </defs>
+  <g fill="${vacio}"><path d="${LOGO.negro}"/><path d="${LOGO.rojo}" fill-rule="evenodd"/></g>
+  <g mask="url(#${id}-ola)">
+    <path d="${LOGO.negro}" fill="#0d0d0d"/>
+    <path d="${LOGO.rojo} ${LOGO.hueco}" fill="#c8361b" fill-rule="evenodd"/>
+  </g>
+  <path d="${LOGO.hueco}" fill="var(--hueco, #fdeec7)"/>
+</svg>`;
+}
+
+// Máscara de teatro. k: -1 (drama) … 1 (comedia). relleno: 0–1 (parte roja, de izquierda a derecha).
+let idMascara = 0;
+function svgMascara(k, relleno = 1, opts = {}) {
+  const id = `msk${++idMascara}`;
+  const sube = k;                       // >0 sonríe, <0 llora
+  // Boca: comisuras arriba (comedia) o abajo (drama); la abertura se agranda en los extremos.
+  const cy = 76 - 7 * sube, abre = 6 + 8 * Math.abs(k);
+  const boca = sube >= 0
+    ? `M28 ${cy} Q50 ${cy + 4 + abre * 1.6} 72 ${cy} Q50 ${cy + 6} 28 ${cy} Z`
+    : `M28 ${cy} Q50 ${cy - 6 - abre * 1.3} 72 ${cy} Q50 ${cy - 2} 28 ${cy} Z`;
+  // Ojos: media luna feliz o caída triste.
+  const ojo = (x, lado) => {
+    const caida = -sube * 5 * lado;      // la esquina exterior cae en drama
+    return sube >= 0
+      ? `M${x - 10} ${44 + 2} Q${x} ${32 + 2 - 6 * sube} ${x + 10} ${44 + 2} Q${x} ${40 + 2} ${x - 10} ${44 + 2} Z`
+      : `M${x - 10} ${42 + (lado < 0 ? -caida : 0)} Q${x} ${50} ${x + 10} ${42 + (lado > 0 ? caida : 0)} Q${x} ${34} ${x - 10} ${42 + (lado < 0 ? -caida : 0)} Z`;
+  };
+  // Cejas: arqueadas (comedia) o con la parte interior levantada (drama).
+  const ceja = (x, lado) => {
+    const int = x + (lado < 0 ? 9 : -9), ext = x + (lado < 0 ? -11 : 11);
+    const yInt = 27 - Math.max(0, -sube) * 7, yExt = 27 + Math.max(0, -sube) * 3;
+    return `M${ext} ${yExt} Q${x} ${21 - 3 * Math.max(0, sube)} ${int} ${yInt}`;
+  };
+  const cara = "M50 4 C78 4 95 14 95 40 C95 70 80 101 50 106 C20 101 5 70 5 40 C5 14 22 4 50 4 Z";
+  const agujeros = `${ojo(32, -1)} ${ojo(68, 1)} ${boca}`;
+  const capa = (fondo, borde, sombra) => `
+    <path d="${cara} ${agujeros}" fill-rule="evenodd" fill="${fondo}" stroke="${borde}" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="${ceja(32, -1)} ${ceja(68, 1)}" fill="none" stroke="${sombra}" stroke-width="3.2" stroke-linecap="round"/>`;
+  return `<svg class="mascara" viewBox="-2 0 104 110" aria-hidden="true">
+  <defs>
+    <linearGradient id="${id}-r" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="#ef5a4f"/><stop offset=".55" stop-color="#d0322a"/><stop offset="1" stop-color="#9f1d17"/></linearGradient>
+    <linearGradient id="${id}-c" x1="0" y1="0" x2=".3" y2="1"><stop offset="0" stop-color="#fff6dc"/><stop offset="1" stop-color="#ecd29b"/></linearGradient>
+    <clipPath id="${id}-m"><rect x="-2" y="0" width="${(104 * relleno).toFixed(1)}" height="110"/></clipPath>
+  </defs>
+  ${opts.vacia === false ? "" : capa(`url(#${id}-c)`, "#cfae6c", "#b8955a")}
+  <g clip-path="url(#${id}-m)">${capa(`url(#${id}-r)`, "#7d1712", "#7d1712")}
+    <path d="M30 14 C40 9 60 9 70 14" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="4" stroke-linecap="round"/></g>
+</svg>`;
+}
+
+
+// ---------------------------------------------------------------- Mapa de calor
+
+const RAMPA = ["#cde2fb", "#b7d3f6", "#9ec5f4", "#86b6ef", "#6da7ec", "#5598e7", "#3987e5", "#2a78d6", "#256abf", "#1c5cab", "#184f95", "#104281", "#0d366b"];
+function colorCelda(m, min = 8, max = 10) {
+  const i = Math.round(Math.min(Math.max((m - min) / (max - min), 0), 1) * (RAMPA.length - 1));
+  return [RAMPA[i], i <= 4 ? "#0b0b0b" : "#ffffff"];
+}
+
+// ---------------------------------------------------------------- Vista: informe
+
+function svgEvolucion(o, cfg) {
+  const fs = o.funciones.filter(f => f.fiable && f.nota !== null);
+  if (fs.length < 2) return `<p class="small muted">Aún no hay dos funciones con ≥${cfg.limpieza.min_respuestas_funcion} respuestas para ver la evolución.</p>`;
+  const W = 640, H = 170, mx = 34, my = 18;
+  const yMin = Math.min(7, Math.floor(Math.min(...fs.map(f => f.nota))));
+  const x = i => mx + i * (W - 2 * mx) / (fs.length - 1);
+  const y = v => my + (10 - v) / (10 - yMin) * (H - 2 * my);
+  let s = `<svg class="evol" viewBox="0 0 ${W} ${H}" role="img" aria-label="Nota de ${esc(o.es)} por función">`;
+  for (let v = yMin; v <= 10; v++) s += `<line class="grid" x1="${mx}" x2="${W - mx}" y1="${y(v)}" y2="${y(v)}"/><text class="eje" x="${mx - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+  s += `<polyline class="linea" points="${fs.map((f, i) => `${x(i)},${y(f.nota)}`).join(" ")}"/>`;
+  fs.forEach((f, i) => {
+    const tip = `${fecha(f.inicio)} · nota ${fmt(f.nota)} · ${f.n} respuestas · ${f.pct_recomendaria}% la recomendaría`;
+    s += `<circle class="punto" cx="${x(i)}" cy="${y(f.nota)}" r="4"/><circle class="hit" cx="${x(i)}" cy="${y(f.nota)}" r="12" data-tip="${esc(tip)}"/>`;
+  });
+  s += `<text class="eje" x="${x(0)}" y="${H - 2}">${fecha(fs[0].inicio)}</text><text class="eje" x="${x(fs.length - 1)}" y="${H - 2}" text-anchor="end">${fecha(fs.at(-1).inicio)}</text></svg>`;
+  return s;
+}
+
+function htmlInforme(res, cfg) {
+  const et = g => esc(cfg.preguntas[g].es);
+  const fiables = res.obras.flatMap(o => o.funciones).filter(f => f.fiable).length;
+  let h = `<div class="tiles">
+    <div class="card tile"><div class="k">Respuestas válidas</div><div class="v">${res.validas.length}</div><div class="d">de ${res.filas} filas recibidas</div></div>
+    <div class="card tile"><div class="k">Nota media de las obras</div><div class="v">${fmt(res.global.nota)}</div><div class="d">satisfacción, trama, reparto y recomendación</div></div>
+    <div class="card tile"><div class="k">La recomendarían</div><div class="v">${res.global.pct_recomendaria}%</div><div class="d">dan 9 o 10 a «¿la recomendarías?»</div></div>
+    <div class="card tile"><div class="k">Funciones medidas</div><div class="v">${fiables}</div><div class="d">con ≥${cfg.limpieza.min_respuestas_funcion} respuestas cada una</div></div>
+  </div>`;
+
+  h += `<div class="card"><div class="cab-seccion"><h2>Lo que dicen los datos</h2><button type="button" id="copiar-conc">Copiar texto</button></div>
+    <ul class="conc">${res.conclusiones.map(c => `<li>${esc(c)}</li>`).join("")}</ul></div>`;
+
+  // Mapa de calor
+  h += `<div class="card"><div class="cab-seccion"><h2>Nota por obra y pregunta</h2><span class="small muted">Pasa el ratón por una celda para ver el detalle</span></div><div class="scroll"><table><tr class="grupos"><th></th><th></th>`;
+  for (const [b, info] of Object.entries(cfg.bloques)) {
+    const span = PREG.filter(g => cfg.preguntas[g].bloque === b).length;
+    if (span) h += `<th colspan="${span}">${esc(info.es)}</th>`;
+  }
+  h += `</tr><tr><th>Obra</th><th>n</th>${PREG.map(g => `<th title="${esc(cfg.preguntas[g].texto_es)}">${et(g)}</th>`).join("")}</tr>`;
+  for (const o of res.obras) {
+    h += `<tr><td>${esc(o.es)}</td><td class="num muted">${o.n}</td>`;
+    for (const g of PREG) {
+      const m = o.preguntas[g];
+      if (m.media === null) { h += `<td class="c muted">–</td>`; continue; }
+      const [bg, ink] = colorCelda(m.media);
+      const tip = `${o.es} · ${cfg.preguntas[g].es}: ${fmt(m.media, 2)} · ${m.pct_10}% dieron 10 · ${m.pct_bajo}% ≤6 · ${m.n} respuestas`;
+      h += `<td class="c" style="background:${bg};color:${ink}" data-tip="${esc(tip)}">${fmt(m.media)}</td>`;
+    }
+    h += `</tr>`;
+  }
+  h += `</table></div><div class="leyenda">8,0 o menos<span class="rampa" style="background:linear-gradient(90deg,${RAMPA.join(",")})"></span>10</div>
+    <p class="small muted">Las obras con pocas respuestas no son comparables con el resto.</p></div>`;
+
+  // Fichas
+  h += `<div><h2 style="margin-bottom:12px">Detalle por obra</h2><div class="obras">`;
+  for (const o of res.obras) {
+    const fs = o.funciones.filter(f => f.fiable);
+    const sueltas = o.n - fs.reduce((a, f) => a + f.n, 0);
+    h += `<div class="card obra"><div class="cab"><div><h3>${esc(o.es)}</h3>
+      <div class="small muted">${esc(o.eu)} · ${o.n} respuestas · ${fecha(o.primera)} – ${fecha(o.ultima)}</div>
+      <div class="chips"><span class="chip">${o.pct_recomendaria}% la recomendaría</span><span class="chip">${o.pct_muy_satisfechos}% muy satisfechos</span><span class="chip">${o.pct_insatisfechos}% insatisfechos</span></div></div>
+      <div class="grande">${fmt(o.nota)}<small> /10</small></div></div>
+      <div class="filas"><span class="h">Pregunta</span><span class="h">Media</span><span class="h">% que dio un 10</span><span class="h">% ≤6</span>`;
+    let bloqueAct = null;
+    for (const g of PREG) {
+      if (cfg.preguntas[g].bloque !== bloqueAct) { bloqueAct = cfg.preguntas[g].bloque; h += `<span class="bloque">${esc(cfg.bloques[bloqueAct]?.es ?? bloqueAct)}</span>`; }
+      const m = o.preguntas[g];
+      h += `<span>${et(g)}</span><span class="num">${fmt(m.media)}</span>
+        <div class="barra" data-tip="${esc(`${cfg.preguntas[g].texto_es} — ${m.pct_10}% dieron 10 (${m.n} respuestas)`)}"><span style="width:${m.pct_10}%"></span></div>
+        <span class="num muted">${m.pct_bajo}%</span>`;
+    }
+    h += `</div>${svgEvolucion(o, cfg)}
+      <details><summary>Funciones (${fs.length})</summary><div class="scroll"><table>
+      <tr><th>Fecha</th><th>Respuestas</th><th>Nota</th><th>% la recomendaría</th><th>% insatisfechos</th></tr>
+      ${fs.map(f => `<tr><td>${fechaHora(f.inicio)}</td><td class="num">${f.n}</td><td class="num">${fmt(f.nota)}</td><td class="num">${f.pct_recomendaria}%</td><td class="num">${f.pct_insatisfechos}%</td></tr>`).join("")}
+      </table></div><p class="small muted">Solo funciones con ≥${cfg.limpieza.min_respuestas_funcion} respuestas. Otras ${sueltas} respuestas llegaron sueltas (días después o en funciones con poca participación) y cuentan en la nota de la obra.</p></details></div>`;
+  }
+  h += `</div></div>`;
+
+  const d = res.descartes;
+  h += `<div class="card"><h2>Calidad de los datos</h2>
+    <p>Filas recibidas: <b class="num">${res.filas}</b> · válidas: <b class="num">${res.validas.length}</b> · periodo: ${fecha(res.desde)} – ${fecha(res.hasta)}</p>
+    <ul><li>${d.vacias} envíos vacíos (todos los deslizadores a 0)</li><li>${d.sin_obra} sin obra</li>
+    <li>${d.duplicadas} duplicados (mismas notas en ≤${cfg.limpieza.segundos_duplicado} s)</li>${d.sin_fecha ? `<li>${d.sin_fecha} con fecha ilegible</li>` : ""}</ul>
+    <p class="small muted" style="max-width:80ch">Los deslizadores del formulario empiezan en 0, así que un 0 es «no contestada» y la escala real es 1–10.
+    La nota de cada obra es la media de ${cfg.nota_obra.map(g => cfg.preguntas[g].es.toLowerCase()).join(", ")}. Una función es un bloque de respuestas de la misma obra sin huecos de más de ${cfg.limpieza.horas_entre_funciones} h.</p></div>`;
+  return h;
+}
+
+// ---------------------------------------------------------------- Sin datos y obras nuevas del export
+
+function htmlVacio() {
+  return `<div class="card vacio">
+    <div class="icono">↓</div>
+    <h2>Carga un export del Txalometroa</h2>
+    <p class="muted">Exporta las respuestas del Txalometroa desde WordPress y arrastra el fichero a esta ventana, o elígelo con el botón.</p>
+    <button class="primary" type="button" id="vacio-cargar">Elegir fichero</button>
+    <p class="small muted">Acepta el .xls que descarga la web, y también .xlsx, .csv o .tsv. Debe tener las columnas PRODUKZIOA, NOIZ y GAL1…GAL7.</p>
+  </div>`;
+}
+
+function htmlObrasNuevas(nombres, cfg, filas) {
+  return `<div class="card destacada">
+    <div class="cab-seccion"><h2>Obras nuevas en este export</h2><span class="small muted">${nombres.length} nombre(s) sin configurar</span></div>
+    <p class="small muted" style="max-width:80ch;margin-top:0">Indica si cada nombre es una obra nueva o la misma obra en el otro idioma.
+    He marcado como sugerencia los nombres que reciben respuestas en las mismas fechas. La foto se puede añadir ahora o más tarde en «Publicar en la web».</p>
+    <div class="scroll">${htmlTablaObrasNuevas(nombres, cfg, filas)}</div>
+    <div class="fila-botones"><button class="primary" type="button" id="guardar-obras">Guardar obras</button></div>
+  </div>`;
+}
+
+function guardarObrasNuevas() {
+  guardarConfig(aplicarObrasNuevas(estado.cfg, estado.nuevos, estado.filas));
+  recalcular();
+}
+
+// ---------------------------------------------------------------- Vista: publicar
+
+let idiomaPub = "eu";
+function pintarPublicar() {
+  const cfg = estado.cfg, res = estado.res, pub = cfg.publicacion;
+  const codigo = bloqueWordpress(res, cfg, idiomaPub);
+  const ocultas = res.obras.filter(o => o.n < pub.min_respuestas_obra);
+  const pagina = cfg.web?.[idiomaPub] || "";
+  const pasoPagina = pagina
+    ? `Abre en WordPress la página <a href="${esc(pagina)}" target="_blank" rel="noopener">${esc(pagina.replace(/^https?:\/\//, ""))}</a> (Editar página).`
+    : `Abre en WordPress la página donde quieras mostrar las valoraciones (Editar página).`;
+  document.getElementById("vista-publicar").innerHTML = `
+    <div class="card"><h2>Publicar en la web</h2>
+      <div class="controles" style="margin-top:12px">
+        <span class="seg" role="group" aria-label="Idioma">
+          <button type="button" data-lang="eu" aria-pressed="${idiomaPub === "eu"}">Euskara</button>
+          <button type="button" data-lang="es" aria-pressed="${idiomaPub === "es"}">Castellano</button>
+        </span>
+        <label for="min-resp">Mínimo de respuestas por obra <input id="min-resp" type="number" min="1" value="${pub.min_respuestas_obra}"></label>
+      </div>
+      <div class="controles" style="margin-top:12px"><span class="small muted">Medias que se muestran:</span>
+        ${PREG.filter(g => cfg.preguntas[g].bloque !== "localidad").map(g => `<label class="chk" for="pp-${g}"><input id="pp-${g}" type="checkbox" data-preg="${g}" ${(pub.preguntas_publicas || []).includes(g) ? "checked" : ""}> ${esc(cfg.preguntas[g].es)}</label>`).join("")}
+      </div>
+      ${ocultas.length ? `<p class="small muted" style="margin-bottom:0">No se publican por tener pocas respuestas: ${ocultas.map(o => `${esc(o[idiomaPub])} (${o.n})`).join(", ")}.</p>` : ""}
+    </div>
+    <div class="card"><div class="cab-seccion"><h3>Vista previa</h3><span class="small muted">Así se verá en la página del Txalometroa</span></div>
+        <div class="preview">${codigo}</div></div>
+    <div class="pub">
+      <div class="card"><div class="cab-seccion"><h3>Código para WordPress</h3></div>
+        <textarea id="codigo" rows="14" readonly spellcheck="false">${esc(codigo)}</textarea>
+        <div class="fila-botones"><button class="primary" type="button" id="copiar-codigo">Copiar código</button><span class="ok" id="copiado"></span></div>
+        <ol class="pasos small" style="margin-top:14px">
+          <li>${pasoPagina}</li>
+          <li>Añade un bloque <b>HTML personalizado</b> donde quieras los resultados (o selecciona el que ya pegaste y borra su contenido).</li>
+          <li>Pega el código y pulsa <b>Actualizar</b>. Repite con la otra versión de idioma.</li>
+        </ol>
+      </div>
+      <div class="card"><h3>Fotos de las obras</h3>
+        <p class="small muted">Cada reseña usa la foto destacada de la obra en la web. Si se estrena una obra o cambia la foto, pega aquí la dirección de la imagen.</p>
+        <div class="fotos">${Object.entries(cfg.obras).map(([id, o]) => `<label for="img-${id}"><span>${esc(o.es)}</span><input id="img-${id}" type="url" data-img="${id}" value="${esc(o.imagen || "")}" placeholder="https://…/foto-de-la-obra.jpg"></label>`).join("") || `<p class="small muted">Todavía no hay obras configuradas.</p>`}</div>
+      </div>
+    </div>`;
+}
+
+// ---------------------------------------------------------------- Estado y eventos
+
+const estado = { cfg: null, filas: null, nombre: "", incluido: false, res: null, nuevos: [] };
+
+function mensaje(texto) {
+  const m = document.getElementById("mensaje");
+  m.hidden = !texto; m.className = "error"; m.textContent = texto || "";
+}
+
+function pintarFichero() {
+  document.getElementById("nombre-fichero").textContent = !estado.filas ? "Sin datos todavía"
+    : `${estado.nombre} · ${estado.filas.length} filas${estado.incluido ? " (incluido)" : ""}`;
+}
+
+function cargarEstado() {
+  const d = datosGuardados();
+  estado.cfg = guardado.cfg;
+  estado.filas = d ? d.filas : null;
+  estado.nombre = d ? d.nombre : "";
+  estado.incluido = !!d?.incluido;
+  recalcular();
+}
+
+// Lista de obras en Ajustes, con sus respuestas válidas y el botón para quitarla.
+let quitarArmado = null;
+function pintarObras() {
+  const cfg = estado.cfg, ids = Object.keys(cfg.obras);
+  const n = id => estado.res?.obras.find(o => o.id === id)?.n ?? 0;
+  document.getElementById("obras-cuenta").textContent = `${ids.length} obra(s)`;
+  document.getElementById("lista-obras").innerHTML = ids.map(id => {
+    const o = cfg.obras[id];
+    return `<div class="obra-fila">${o.imagen ? `<img src="${esc(o.imagen)}" alt="">` : `<span class="mini"></span>`}
+      <div><b>${esc(o.eu)}</b>${o.es !== o.eu ? ` · ${esc(o.es)}` : ""}<div class="small muted">${n(id)} respuestas válidas</div></div>
+      <button type="button" data-quitar="${esc(id)}" class="${quitarArmado === id ? "armado" : ""}">${quitarArmado === id ? "Pulsa otra vez" : "Quitar"}</button></div>`;
+  }).join("") || `<p class="small muted">No hay obras configuradas.</p>`;
+}
+
+function recalcular() {
+  const informe = document.getElementById("vista-informe");
+  document.getElementById("cfg").value = JSON.stringify(estado.cfg, null, 2);
+  pintarFichero();
+  if (!estado.filas) {
+    estado.res = null; mensaje("");
+    informe.innerHTML = htmlVacio();
+    document.getElementById("vista-publicar").innerHTML = `<div class="card"><h2>Publicar en la web</h2><p class="muted">Primero carga un export en la pestaña «Informe».</p></div>`;
+    pintarObras();
+    return;
+  }
+  try {
+    estado.res = analizar(estado.filas, estado.cfg);
+    mensaje("");
+    estado.nuevos = estado.res.sinMapear;
+    informe.innerHTML = (estado.nuevos.length ? htmlObrasNuevas(estado.nuevos, estado.cfg, estado.filas) : "") + htmlInforme(estado.res, estado.cfg);
+    pintarPublicar();
+  } catch (e) { mensaje(e.message); }
+  pintarObras();
+}
+
+async function abrirFichero(file) {
+  try {
+    const filas = await leerFichero(await file.arrayBuffer());
+    estado.filas = filas; estado.nombre = file.name; estado.incluido = false;
+    guardado.fichero = { nombre: file.name, filas };
+    const ok = guardarTodo();
+    recalcular();
+    mostrarVista("informe");
+    if (!ok) mensaje("El informe está listo, pero el fichero es demasiado grande para guardarlo en este navegador: la próxima vez habrá que volver a cargarlo.");
+  } catch (e) { mensaje(`No he podido leer «${file.name}»: ${e.message}`); }
+}
+
+function mostrarVista(v) {
+  if (!["informe", "publicar", "ajustes"].includes(v)) v = "informe";
+  for (const s of document.querySelectorAll("section.vista")) s.hidden = s.id !== `vista-${v}`;
+  for (const a of document.querySelectorAll("nav.tabs a")) {
+    if (a.dataset.vista === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  }
+}
+
+async function copiar(texto, boton, aviso) {
+  try { await navigator.clipboard.writeText(texto); aviso.textContent = "Copiado"; }
+  catch (e) {
+    const ta = document.getElementById("codigo");
+    if (ta && ta.value === texto) { ta.focus(); ta.select(); }
+    aviso.textContent = "Selecciónalo y copia con Ctrl+C";
+  }
+  setTimeout(() => { aviso.textContent = ""; }, 3000);
+}
+
+document.querySelector("nav.tabs").addEventListener("click", e => {
+  const a = e.target.closest("a[data-vista]"); if (!a) return;
+  mostrarVista(a.dataset.vista);
+});
+window.addEventListener("hashchange", () => mostrarVista(location.hash.slice(1)));
+
+document.getElementById("btn-cargar").addEventListener("click", () => document.getElementById("input-fichero").click());
+document.getElementById("input-fichero").addEventListener("change", e => { if (e.target.files[0]) abrirFichero(e.target.files[0]); e.target.value = ""; });
+
+const capa = document.getElementById("soltar");
+let arrastres = 0;
+window.addEventListener("dragenter", e => { if (e.dataTransfer?.types.includes("Files")) { arrastres++; capa.hidden = false; } });
+window.addEventListener("dragleave", () => { if (--arrastres <= 0) { arrastres = 0; capa.hidden = true; } });
+window.addEventListener("dragover", e => e.preventDefault());
+window.addEventListener("drop", e => { e.preventDefault(); arrastres = 0; capa.hidden = true; const f = e.dataTransfer.files[0]; if (f) abrirFichero(f); });
+
+document.getElementById("vista-informe").addEventListener("click", e => {
+  if (e.target.id === "vacio-cargar") { document.getElementById("input-fichero").click(); return; }
+  if (e.target.id === "guardar-obras") { guardarObrasNuevas(); return; }
+  if (e.target.id === "copiar-conc") {
+    const texto = estado.res.conclusiones.map(c => "• " + c).join("\n");
+    navigator.clipboard.writeText(texto).then(() => { e.target.textContent = "Copiado"; }, () => { e.target.textContent = "No se pudo copiar"; });
+    setTimeout(() => { e.target.textContent = "Copiar texto"; }, 2500);
+  }
+});
+
+const vPub = document.getElementById("vista-publicar");
+vPub.addEventListener("click", e => {
+  const l = e.target.closest("[data-lang]");
+  if (l) { idiomaPub = l.dataset.lang; pintarPublicar(); return; }
+  if (e.target.id === "copiar-codigo") copiar(document.getElementById("codigo").value, e.target, document.getElementById("copiado"));
+});
+vPub.addEventListener("change", e => {
+  const pub = estado.cfg.publicacion;
+  if (e.target.id === "min-resp") pub.min_respuestas_obra = Math.max(1, parseInt(e.target.value, 10) || 1);
+  if (e.target.dataset.preg) pub.preguntas_publicas = PREG.filter(g => document.getElementById(`pp-${g}`)?.checked);
+  if (e.target.dataset.img) estado.cfg.obras[e.target.dataset.img].imagen = e.target.value.trim();
+  guardarConfig(estado.cfg); recalcular();
+});
+
+document.getElementById("cfg-aplicar").addEventListener("click", () => {
+  const est = document.getElementById("cfg-estado");
+  try {
+    const nueva = JSON.parse(document.getElementById("cfg").value);
+    for (const k of ["obras", "preguntas", "bloques", "nota_obra", "pregunta_recomendacion", "limpieza", "publicacion"])
+      if (!(k in nueva)) throw new Error(`falta la sección «${k}»`);
+    estado.cfg = nueva; guardarConfig(nueva); recalcular(); est.textContent = "Aplicado y guardado";
+  } catch (e) { est.textContent = `No es válido: ${e.message}`; }
+});
+document.getElementById("cfg-reset").addEventListener("click", () => {
+  estado.cfg = structuredClone(CONFIG_ORIGEN);
+  guardarConfig(estado.cfg); recalcular(); document.getElementById("cfg-estado").textContent = "Restablecido";
+});
+
+// Obras: añadir y quitar.
+document.getElementById("form-obra").addEventListener("submit", e => {
+  e.preventDefault();
+  const est = document.getElementById("obra-estado");
+  const eu = document.getElementById("obra-eu").value.trim(), es = document.getElementById("obra-es").value.trim() || eu;
+  const imagen = document.getElementById("obra-foto").value.trim();
+  if (!eu) { est.textContent = "Escribe al menos el título en euskera."; return; }
+  const existentes = new Set(Object.values(estado.cfg.obras).flatMap(o => o.alias.map(a => a.toLowerCase())));
+  if (existentes.has(eu.toLowerCase()) || existentes.has(es.toLowerCase())) { est.textContent = "Ya hay una obra con ese título."; return; }
+  let id = slug(eu) || "obra", k = 2;
+  while (estado.cfg.obras[id]) id = `${slug(eu) || "obra"}-${k++}`;
+  estado.cfg.obras[id] = { eu, es, alias: [...new Set([eu, es])], imagen };
+  guardarConfig(estado.cfg); recalcular();
+  e.target.reset();
+  est.textContent = `Añadida «${eu}». Las respuestas con ese título ya cuentan para ella.`;
+});
+let quitarTimer = null;
+document.getElementById("lista-obras").addEventListener("click", e => {
+  const b = e.target.closest("[data-quitar]"); if (!b) return;
+  const id = b.dataset.quitar;
+  clearTimeout(quitarTimer);
+  if (quitarArmado === id) {
+    const nombre = estado.cfg.obras[id].eu;
+    delete estado.cfg.obras[id]; quitarArmado = null;
+    guardarConfig(estado.cfg); recalcular();
+    document.getElementById("obra-estado").textContent = `Quitada «${nombre}».`;
+  } else {
+    quitarArmado = id; pintarObras();
+    quitarTimer = setTimeout(() => { quitarArmado = null; pintarObras(); }, 4000);
+  }
+});
+
+// Las acciones que borran piden un segundo clic en los 4 s siguientes (el visor no permite confirm()).
+function conConfirmacion(boton, aviso, accion) {
+  const est = document.getElementById("datos-estado"), texto = boton.textContent;
+  let armado = null;
+  boton.addEventListener("click", () => {
+    if (!armado) {
+      boton.textContent = "Pulsa otra vez para confirmar"; est.textContent = aviso();
+      armado = setTimeout(() => { armado = null; boton.textContent = texto; est.textContent = ""; }, 4000);
+      return;
+    }
+    clearTimeout(armado); armado = null; boton.textContent = texto; est.textContent = "";
+    accion(est);
+  });
+}
+
+conConfirmacion(document.getElementById("dat-vaciar"),
+  () => "Se quitará el export; las obras se conservan.",
+  est => { guardado.fichero = null; guardado.vaciado = true; guardarTodo(); cargarEstado(); mostrarVista("informe"); est.textContent = "Datos vaciados. Carga el export de nuevo."; });
+conConfirmacion(document.getElementById("dat-cero"),
+  () => `Se quitarán el export y las ${Object.keys(estado.cfg.obras).length} obras configuradas.`,
+  est => {
+    guardado.fichero = null; guardado.vaciado = true; guardado.cfg = { ...guardado.cfg, obras: {} };
+    guardarTodo(); cargarEstado(); mostrarVista("informe"); est.textContent = "Todo vacío. Añade obras o carga el export.";
+  });
+conConfirmacion(document.getElementById("dat-serie"),
+  () => "Volverán las obras, los ajustes y el export incluidos en la app.",
+  est => { guardado = { cfg: structuredClone(CONFIG_ORIGEN), fichero: null, vaciado: false }; guardarTodo(); cargarEstado(); est.textContent = "Restaurado como al principio."; });
+
+const tip = document.getElementById("tip");
+document.addEventListener("mousemove", e => {
+  const t = e.target.closest?.("[data-tip]");
+  if (!t) { tip.style.opacity = 0; return; }
+  tip.textContent = t.dataset.tip;
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px";
+  tip.style.top = (e.clientY + 14) + "px"; tip.style.opacity = 1;
+});
+
+// Arranque con lo guardado (la primera vez, las obras y el export incluidos).
+cargarEstado();
+mostrarVista(location.hash.slice(1));
+</script>

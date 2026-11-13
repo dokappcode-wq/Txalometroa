@@ -1,0 +1,632 @@
+<meta charset="utf-8">
+<title>Txalometroa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=Raleway:wght@300;400;600;700&display=swap">
+<style>
+/* Layout: banda negra de cabecera (eco del logo de Hika) + pestañas; contenido en una columna de 1040px. */
+:root {
+  --bg: #f4f4f5; --surface: #ffffff; --line: #e1e1e4;
+  --ink: #141414; --ink-2: #55565b; --ink-3: #85868b;
+  --accent: #d4401f; --head: #141414; --head-ink: #ffffff;
+  --series: #2a78d6; --track: #ebebee; --warn-bg: #fff4e5; --warn-ink: #8a4b00;
+  --display: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111113; --surface: #1b1b1e; --line: #2f2f34;
+    --ink: #f2f2f3; --ink-2: #b9babf; --ink-3: #85868b;
+    --accent: #ef5a37; --head: #000000; --head-ink: #ffffff;
+    --series: #3987e5; --track: #2a2a2e; --warn-bg: #2e2312; --warn-ink: #f0b860;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111113; --surface: #1b1b1e; --line: #2f2f34;
+  --ink: #f2f2f3; --ink-2: #b9babf; --ink-3: #85868b;
+  --accent: #ef5a37; --head: #000000; --head-ink: #ffffff;
+  --series: #3987e5; --track: #2a2a2e; --warn-bg: #2e2312; --warn-ink: #f0b860;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+.wrap { max-width: 1040px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; text-wrap: balance; margin: 0; }
+h2 { font-size: 26px; letter-spacing: .01em; }
+h3 { font-size: 22px; }
+.muted { color: var(--ink-2); } .small { font-size: 13px; } .num { font-variant-numeric: tabular-nums; }
+button, .btn { font: 600 14px var(--body); border-radius: 8px; padding: 8px 14px; cursor: pointer; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button:focus-visible, textarea:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Cabecera */
+header { background: var(--head); color: var(--head-ink); }
+header .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-block: 18px 0; }
+.marca { display: flex; align-items: baseline; gap: 12px; }
+.marca h1 { font-size: 34px; letter-spacing: .06em; text-transform: uppercase; }
+.marca h1 span { color: var(--accent); }
+.marca .sub { font-size: 13px; opacity: .7; }
+.fichero { display: flex; align-items: center; gap: 10px; font-size: 13px; min-width: 0; }
+.fichero .nombre { opacity: .75; overflow-wrap: anywhere; }
+.fichero button { background: transparent; color: var(--head-ink); border-color: rgba(255,255,255,.35); }
+nav.tabs { flex-basis: 100%; display: flex; gap: 4px; margin-top: 6px; overflow-x: auto; }
+nav.tabs a { color: var(--head-ink); opacity: .7; text-decoration: none; font: 600 15px var(--body); padding: 10px 14px; border-bottom: 3px solid transparent; white-space: nowrap; }
+nav.tabs a[aria-current="page"] { opacity: 1; border-bottom-color: var(--accent); }
+
+main { padding-block: 28px 64px; }
+section.vista { display: grid; gap: 28px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; min-width: 0; }
+.aviso { background: var(--warn-bg); color: var(--warn-ink); border-radius: 10px; padding: 12px 16px; font-size: 14px; }
+.error { background: var(--warn-bg); color: var(--warn-ink); border-radius: 10px; padding: 12px 16px; }
+
+/* Arrastrar fichero */
+#soltar { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: color-mix(in srgb, var(--head) 80%, transparent); color: #fff; font: 700 32px var(--display); letter-spacing: .04em; text-transform: uppercase; }
+
+/* Informe */
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.tile .k { color: var(--ink-2); font-size: 13px; }
+.tile .v { font: 700 44px/1.05 var(--display); font-variant-numeric: tabular-nums; margin-top: 2px; }
+.tile .d { color: var(--ink-3); font-size: 13px; }
+.cab-seccion { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+ul.conc { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 80ch; }
+.scroll { overflow-x: auto; }
+table { border-collapse: separate; border-spacing: 2px; width: 100%; font-size: 14px; }
+th { text-align: left; font-weight: 600; color: var(--ink-2); padding: 6px 8px; white-space: nowrap; }
+th[title] { cursor: help; }
+tr.grupos th { text-align: center; border-bottom: 1px solid var(--line); font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+td { padding: 6px 8px; }
+td.c { text-align: center; border-radius: 4px; font-variant-numeric: tabular-nums; min-width: 64px; }
+.leyenda { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-2); margin-top: 10px; }
+.leyenda .rampa { height: 10px; width: 160px; border-radius: 3px; }
+.obras { display: grid; gap: 16px; }
+.obra .cab { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 8px 16px; }
+.obra .grande { font: 700 48px/1 var(--display); font-variant-numeric: tabular-nums; }
+.obra .grande small { font: 400 15px var(--body); color: var(--ink-2); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.chip { font-size: 12px; padding: 2px 8px; border-radius: 999px; background: var(--track); color: var(--ink-2); }
+.filas { display: grid; grid-template-columns: minmax(96px, 150px) 40px minmax(80px, 1fr) 44px; gap: 6px 12px; align-items: center; margin-top: 16px; font-size: 14px; }
+.filas .h { color: var(--ink-3); font-size: 12px; }
+.filas .bloque { grid-column: 1 / -1; font-size: 12px; font-weight: 600; color: var(--ink-2); text-transform: uppercase; letter-spacing: .05em; margin-top: 8px; }
+.barra { height: 10px; background: var(--track); border-radius: 4px; overflow: hidden; }
+.barra span { display: block; height: 100%; background: var(--series); border-radius: 0 4px 4px 0; }
+svg.evol { width: 100%; height: auto; margin-top: 18px; display: block; }
+svg .grid { stroke: var(--line); stroke-width: 1; }
+svg .eje { fill: var(--ink-3); font: 11px var(--body); }
+svg .linea { fill: none; stroke: var(--series); stroke-width: 2; stroke-linejoin: round; }
+svg .punto { fill: var(--series); stroke: var(--surface); stroke-width: 2; }
+svg .hit { fill: transparent; cursor: pointer; }
+details { margin-top: 12px; } summary { cursor: pointer; color: var(--ink-2); font-size: 14px; }
+#tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--surface); font-size: 12px; padding: 6px 8px; border-radius: 6px; opacity: 0; z-index: 60; max-width: 320px; }
+
+/* Publicar */
+.pub { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 760px) { .pub { grid-template-columns: minmax(0, 1fr); } }
+.controles { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; font-size: 14px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; padding: 6px 14px; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--surface); }
+.controles input[type=number] { width: 64px; font: inherit; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
+textarea { width: 100%; font: 12px/1.5 ui-monospace, Consolas, monospace; background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 10px; resize: vertical; }
+ol.pasos { margin: 0; padding-left: 20px; display: grid; gap: 6px; max-width: 70ch; }
+.preview { border-radius: 10px; padding: 8px 24px; background: #ffffff; font-family: Raleway, system-ui, sans-serif; overflow: hidden; }
+.preview h3, .preview h4 { font-family: inherit; }
+main a { color: var(--accent); }
+label.chk { display: inline-flex; align-items: center; gap: 6px; }
+.fotos { display: grid; gap: 10px; margin-top: 10px; }
+.fotos label { display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
+.fotos input { font: 13px var(--body); padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); width: 100%; }
+.fila-botones { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+.ok { color: var(--ink-2); font-size: 13px; }
+.lista-obras { display: grid; gap: 8px; margin-top: 12px; }
+.obra-fila { display: grid; grid-template-columns: 60px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.obra-fila img, .obra-fila .mini { width: 60px; height: 40px; object-fit: cover; border-radius: 4px; background: linear-gradient(135deg, #3a2b29, #6b4d47); display: block; }
+.obra-fila button.armado { background: var(--accent); border-color: var(--accent); color: #fff; }
+.nueva-obra { margin-top: 18px; padding-top: 6px; }
+.nueva-obra .campos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 8px; }
+.nueva-obra label { display: grid; gap: 4px; font-size: 13px; color: var(--ink-2); }
+.nueva-obra label span { color: var(--ink-3); }
+.nueva-obra input { font: 15px var(--body); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); width: 100%; }
+input[type=text] { font: 15px var(--body); padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--ink); min-width: 0; flex: 1 1 220px; }
+.alta { max-width: 640px; }
+.vacio { border: 2px dashed var(--line); text-align: center; padding-block: 56px; display: grid; justify-items: center; gap: 12px; }
+.vacio h2 { font-size: 32px; }
+.vacio p { margin: 0; max-width: 56ch; }
+.vacio .icono { font: 700 56px/1 var(--display); color: var(--accent); }
+.destacada { border: 2px solid var(--accent); }
+table.nuevas td { vertical-align: middle; }
+table.nuevas select, table.nuevas input { font: 14px var(--body); padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); width: 100%; min-width: 180px; }
+.sugerido { display: inline-block; font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
+@media (prefers-reduced-motion: no-preference) { #tip { transition: opacity .1s; } }
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="marca"><h1>Txalometro<span>a</span></h1>
+      <span class="sub">Hika Teatroa · feedback del público</span></div>
+    <div class="fichero">
+      <span class="nombre" id="nombre-fichero"></span>
+      <button id="btn-cargar" type="button">Cargar export</button>
+      <input id="input-fichero" type="file" accept=".xls,.xlsx,.csv,.tsv,.txt" hidden>
+    </div>
+    <nav class="tabs" aria-label="Secciones">
+      <a href="#informe" data-vista="informe">Informe</a>
+      <a href="#publicar" data-vista="publicar">Publicar en la web</a>
+      <a href="#ajustes" data-vista="ajustes">Ajustes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="mensaje" hidden></div>
+  <section class="vista" id="vista-informe"></section>
+  <section class="vista" id="vista-publicar" hidden></section>
+  <section class="vista" id="vista-ajustes" hidden>
+    <div class="card">
+      <div class="cab-seccion"><h2>Obras</h2><span class="small muted" id="obras-cuenta"></span></div>
+      <p class="small muted" style="max-width:75ch;margin-top:0">Cuando Hika estrene una obra, añádela aquí con su título en los dos idiomas y la dirección de su foto.
+      Las respuestas del export con esos títulos se suman a la obra y su reseña sale en «Publicar en la web» al llegar al mínimo de respuestas.</p>
+      <div class="lista-obras" id="lista-obras"></div>
+      <form id="form-obra" class="nueva-obra" novalidate>
+        <h3>Añadir obra</h3>
+        <div class="campos">
+          <label for="obra-eu">Título en euskera<input id="obra-eu" type="text" maxlength="80" autocomplete="off" placeholder="Itsasoaren ahotsa"></label>
+          <label for="obra-es">Título en castellano <span>(vacío si es el mismo)</span><input id="obra-es" type="text" maxlength="80" autocomplete="off" placeholder="La voz del mar"></label>
+          <label for="obra-foto">Foto (dirección de la imagen)<input id="obra-foto" type="url" placeholder="https://hikateatroa.eus/wp-content/uploads/…"></label>
+        </div>
+        <div class="fila-botones"><button class="primary" type="submit">Añadir obra</button><span class="ok" id="obra-estado" aria-live="polite"></span></div>
+      </form>
+      <h3 style="margin-top:22px">Probar desde cero</h3>
+      <p class="small muted" style="max-width:75ch;margin:4px 0 0">«Vaciar datos» quita el export cargado y conserva las obras. «Empezar de cero» quita también las obras,
+      para volver a cargar el export o añadir las obras a mano y comprobar que todo cuadra.</p>
+      <div class="fila-botones">
+        <button type="button" id="dat-vaciar">Vaciar datos</button>
+        <button type="button" id="dat-cero">Empezar de cero</button>
+        <button type="button" id="dat-serie">Restaurar como al principio</button>
+      </div>
+      <p class="ok" id="datos-estado" aria-live="polite"></p>
+    </div>
+    <div class="card">
+      <h2>Ajustes</h2>
+      <p class="muted" style="max-width:75ch">Aquí se unen los nombres en euskera y castellano de cada obra, se definen las preguntas y los criterios de limpieza.
+      Para añadir o quitar obras es más cómodo usar la sección «Obras». Los cambios se guardan en este navegador.</p>
+      <label for="cfg" class="small muted">Configuración (JSON)</label>
+      <textarea id="cfg" rows="22" spellcheck="false"></textarea>
+      <div class="fila-botones">
+        <button class="primary" id="cfg-aplicar" type="button">Aplicar y recalcular</button>
+        <button id="cfg-reset" type="button">Volver a los valores de origen</button>
+        <span class="ok" id="cfg-estado"></span>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="soltar" hidden>Suelta el export aquí</div>
+<div id="tip"></div>
+
+<script type="text/plain" id="datos-iniciales" data-nombre="__NOMBRE__">__DATOS__</script>
+<script>
+"use strict";
+
+// ---------------------------------------------------------------- Config
+
+const CONFIG_ORIGEN = __CONFIG__;
+const CLAVE = "txalometroa-app", CLAVE_CONFIG_ANTIGUA = "txalometroa-config";
+
+// Lo guardado en el navegador: configuración (obras incluidas) y el último export cargado.
+function cargarGuardado() {
+  let g = null;
+  try { g = JSON.parse(localStorage.getItem(CLAVE)); } catch (e) { /* almacenamiento no disponible */ }
+  if (!g || !g.cfg) {
+    let cfg = structuredClone(CONFIG_ORIGEN);
+    try {
+      const vieja = JSON.parse(localStorage.getItem(CLAVE_CONFIG_ANTIGUA));
+      if (vieja) cfg = { ...cfg, ...vieja, publicacion: { ...cfg.publicacion, ...vieja.publicacion } };
+    } catch (e) {}
+    g = { cfg, fichero: null, vaciado: false };
+  }
+  // Completa los campos que una versión anterior no guardaba.
+  g.cfg.publicacion = { ...CONFIG_ORIGEN.publicacion, ...g.cfg.publicacion };
+  g.cfg.web = g.cfg.web || CONFIG_ORIGEN.web;
+  for (const [id, o] of Object.entries(g.cfg.obras)) if (!o.imagen && CONFIG_ORIGEN.obras[id]) o.imagen = CONFIG_ORIGEN.obras[id].imagen;
+  return g;
+}
+let guardado = cargarGuardado();
+function guardarTodo() { try { localStorage.setItem(CLAVE, JSON.stringify(guardado)); return true; } catch (e) { return false; } }
+function guardarConfig(cfg) { guardado.cfg = cfg; guardarTodo(); }
+
+// Export en uso: el último cargado o, si no se ha vaciado, el incluido en la app.
+function datosGuardados() {
+  if (guardado.fichero) return guardado.fichero;
+  if (guardado.vaciado) return null;
+  const el = document.getElementById("datos-iniciales");
+  return { nombre: el.dataset.nombre, filas: aObjetos(parsearTexto(el.textContent.trim())), incluido: true };
+}
+
+__NUCLEO__
+
+// ---------------------------------------------------------------- Mapa de calor
+
+const RAMPA = ["#cde2fb", "#b7d3f6", "#9ec5f4", "#86b6ef", "#6da7ec", "#5598e7", "#3987e5", "#2a78d6", "#256abf", "#1c5cab", "#184f95", "#104281", "#0d366b"];
+function colorCelda(m, min = 8, max = 10) {
+  const i = Math.round(Math.min(Math.max((m - min) / (max - min), 0), 1) * (RAMPA.length - 1));
+  return [RAMPA[i], i <= 4 ? "#0b0b0b" : "#ffffff"];
+}
+
+// ---------------------------------------------------------------- Vista: informe
+
+function svgEvolucion(o, cfg) {
+  const fs = o.funciones.filter(f => f.fiable && f.nota !== null);
+  if (fs.length < 2) return `<p class="small muted">Aún no hay dos funciones con ≥${cfg.limpieza.min_respuestas_funcion} respuestas para ver la evolución.</p>`;
+  const W = 640, H = 170, mx = 34, my = 18;
+  const yMin = Math.min(7, Math.floor(Math.min(...fs.map(f => f.nota))));
+  const x = i => mx + i * (W - 2 * mx) / (fs.length - 1);
+  const y = v => my + (10 - v) / (10 - yMin) * (H - 2 * my);
+  let s = `<svg class="evol" viewBox="0 0 ${W} ${H}" role="img" aria-label="Nota de ${esc(o.es)} por función">`;
+  for (let v = yMin; v <= 10; v++) s += `<line class="grid" x1="${mx}" x2="${W - mx}" y1="${y(v)}" y2="${y(v)}"/><text class="eje" x="${mx - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+  s += `<polyline class="linea" points="${fs.map((f, i) => `${x(i)},${y(f.nota)}`).join(" ")}"/>`;
+  fs.forEach((f, i) => {
+    const tip = `${fecha(f.inicio)} · nota ${fmt(f.nota)} · ${f.n} respuestas · ${f.pct_recomendaria}% la recomendaría`;
+    s += `<circle class="punto" cx="${x(i)}" cy="${y(f.nota)}" r="4"/><circle class="hit" cx="${x(i)}" cy="${y(f.nota)}" r="12" data-tip="${esc(tip)}"/>`;
+  });
+  s += `<text class="eje" x="${x(0)}" y="${H - 2}">${fecha(fs[0].inicio)}</text><text class="eje" x="${x(fs.length - 1)}" y="${H - 2}" text-anchor="end">${fecha(fs.at(-1).inicio)}</text></svg>`;
+  return s;
+}
+
+function htmlInforme(res, cfg) {
+  const et = g => esc(cfg.preguntas[g].es);
+  const fiables = res.obras.flatMap(o => o.funciones).filter(f => f.fiable).length;
+  let h = `<div class="tiles">
+    <div class="card tile"><div class="k">Respuestas válidas</div><div class="v">${res.validas.length}</div><div class="d">de ${res.filas} filas recibidas</div></div>
+    <div class="card tile"><div class="k">Nota media de las obras</div><div class="v">${fmt(res.global.nota)}</div><div class="d">satisfacción, trama, reparto y recomendación</div></div>
+    <div class="card tile"><div class="k">La recomendarían</div><div class="v">${res.global.pct_recomendaria}%</div><div class="d">dan 9 o 10 a «¿la recomendarías?»</div></div>
+    <div class="card tile"><div class="k">Funciones medidas</div><div class="v">${fiables}</div><div class="d">con ≥${cfg.limpieza.min_respuestas_funcion} respuestas cada una</div></div>
+  </div>`;
+
+  h += `<div class="card"><div class="cab-seccion"><h2>Lo que dicen los datos</h2><button type="button" id="copiar-conc">Copiar texto</button></div>
+    <ul class="conc">${res.conclusiones.map(c => `<li>${esc(c)}</li>`).join("")}</ul></div>`;
+
+  // Mapa de calor
+  h += `<div class="card"><div class="cab-seccion"><h2>Nota por obra y pregunta</h2><span class="small muted">Pasa el ratón por una celda para ver el detalle</span></div><div class="scroll"><table><tr class="grupos"><th></th><th></th>`;
+  for (const [b, info] of Object.entries(cfg.bloques)) {
+    const span = PREG.filter(g => cfg.preguntas[g].bloque === b).length;
+    if (span) h += `<th colspan="${span}">${esc(info.es)}</th>`;
+  }
+  h += `</tr><tr><th>Obra</th><th>n</th>${PREG.map(g => `<th title="${esc(cfg.preguntas[g].texto_es)}">${et(g)}</th>`).join("")}</tr>`;
+  for (const o of res.obras) {
+    h += `<tr><td>${esc(o.es)}</td><td class="num muted">${o.n}</td>`;
+    for (const g of PREG) {
+      const m = o.preguntas[g];
+      if (m.media === null) { h += `<td class="c muted">–</td>`; continue; }
+      const [bg, ink] = colorCelda(m.media);
+      const tip = `${o.es} · ${cfg.preguntas[g].es}: ${fmt(m.media, 2)} · ${m.pct_10}% dieron 10 · ${m.pct_bajo}% ≤6 · ${m.n} respuestas`;
+      h += `<td class="c" style="background:${bg};color:${ink}" data-tip="${esc(tip)}">${fmt(m.media)}</td>`;
+    }
+    h += `</tr>`;
+  }
+  h += `</table></div><div class="leyenda">8,0 o menos<span class="rampa" style="background:linear-gradient(90deg,${RAMPA.join(",")})"></span>10</div>
+    <p class="small muted">Las obras con pocas respuestas no son comparables con el resto.</p></div>`;
+
+  // Fichas
+  h += `<div><h2 style="margin-bottom:12px">Detalle por obra</h2><div class="obras">`;
+  for (const o of res.obras) {
+    const fs = o.funciones.filter(f => f.fiable);
+    const sueltas = o.n - fs.reduce((a, f) => a + f.n, 0);
+    h += `<div class="card obra"><div class="cab"><div><h3>${esc(o.es)}</h3>
+      <div class="small muted">${esc(o.eu)} · ${o.n} respuestas · ${fecha(o.primera)} – ${fecha(o.ultima)}</div>
+      <div class="chips"><span class="chip">${o.pct_recomendaria}% la recomendaría</span><span class="chip">${o.pct_muy_satisfechos}% muy satisfechos</span><span class="chip">${o.pct_insatisfechos}% insatisfechos</span></div></div>
+      <div class="grande">${fmt(o.nota)}<small> /10</small></div></div>
+      <div class="filas"><span class="h">Pregunta</span><span class="h">Media</span><span class="h">% que dio un 10</span><span class="h">% ≤6</span>`;
+    let bloqueAct = null;
+    for (const g of PREG) {
+      if (cfg.preguntas[g].bloque !== bloqueAct) { bloqueAct = cfg.preguntas[g].bloque; h += `<span class="bloque">${esc(cfg.bloques[bloqueAct]?.es ?? bloqueAct)}</span>`; }
+      const m = o.preguntas[g];
+      h += `<span>${et(g)}</span><span class="num">${fmt(m.media)}</span>
+        <div class="barra" data-tip="${esc(`${cfg.preguntas[g].texto_es} — ${m.pct_10}% dieron 10 (${m.n} respuestas)`)}"><span style="width:${m.pct_10}%"></span></div>
+        <span class="num muted">${m.pct_bajo}%</span>`;
+    }
+    h += `</div>${svgEvolucion(o, cfg)}
+      <details><summary>Funciones (${fs.length})</summary><div class="scroll"><table>
+      <tr><th>Fecha</th><th>Respuestas</th><th>Nota</th><th>% la recomendaría</th><th>% insatisfechos</th></tr>
+      ${fs.map(f => `<tr><td>${fechaHora(f.inicio)}</td><td class="num">${f.n}</td><td class="num">${fmt(f.nota)}</td><td class="num">${f.pct_recomendaria}%</td><td class="num">${f.pct_insatisfechos}%</td></tr>`).join("")}
+      </table></div><p class="small muted">Solo funciones con ≥${cfg.limpieza.min_respuestas_funcion} respuestas. Otras ${sueltas} respuestas llegaron sueltas (días después o en funciones con poca participación) y cuentan en la nota de la obra.</p></details></div>`;
+  }
+  h += `</div></div>`;
+
+  const d = res.descartes;
+  h += `<div class="card"><h2>Calidad de los datos</h2>
+    <p>Filas recibidas: <b class="num">${res.filas}</b> · válidas: <b class="num">${res.validas.length}</b> · periodo: ${fecha(res.desde)} – ${fecha(res.hasta)}</p>
+    <ul><li>${d.vacias} envíos vacíos (todos los deslizadores a 0)</li><li>${d.sin_obra} sin obra</li>
+    <li>${d.duplicadas} duplicados (mismas notas en ≤${cfg.limpieza.segundos_duplicado} s)</li>${d.sin_fecha ? `<li>${d.sin_fecha} con fecha ilegible</li>` : ""}</ul>
+    <p class="small muted" style="max-width:80ch">Los deslizadores del formulario empiezan en 0, así que un 0 es «no contestada» y la escala real es 1–10.
+    La nota de cada obra es la media de ${cfg.nota_obra.map(g => cfg.preguntas[g].es.toLowerCase()).join(", ")}. Una función es un bloque de respuestas de la misma obra sin huecos de más de ${cfg.limpieza.horas_entre_funciones} h.</p></div>`;
+  return h;
+}
+
+// ---------------------------------------------------------------- Sin datos y obras nuevas del export
+
+function htmlVacio() {
+  return `<div class="card vacio">
+    <div class="icono">↓</div>
+    <h2>Carga un export del Txalometroa</h2>
+    <p class="muted">Exporta las respuestas del Txalometroa desde WordPress y arrastra el fichero a esta ventana, o elígelo con el botón.</p>
+    <button class="primary" type="button" id="vacio-cargar">Elegir fichero</button>
+    <p class="small muted">Acepta el .xls que descarga la web, y también .xlsx, .csv o .tsv. Debe tener las columnas PRODUKZIOA, NOIZ y GAL1…GAL7.</p>
+  </div>`;
+}
+
+function htmlObrasNuevas(nombres, cfg, filas) {
+  return `<div class="card destacada">
+    <div class="cab-seccion"><h2>Obras nuevas en este export</h2><span class="small muted">${nombres.length} nombre(s) sin configurar</span></div>
+    <p class="small muted" style="max-width:80ch;margin-top:0">Indica si cada nombre es una obra nueva o la misma obra en el otro idioma.
+    He marcado como sugerencia los nombres que reciben respuestas en las mismas fechas. La foto se puede añadir ahora o más tarde en «Publicar en la web».</p>
+    <div class="scroll">${htmlTablaObrasNuevas(nombres, cfg, filas)}</div>
+    <div class="fila-botones"><button class="primary" type="button" id="guardar-obras">Guardar obras</button></div>
+  </div>`;
+}
+
+function guardarObrasNuevas() {
+  guardarConfig(aplicarObrasNuevas(estado.cfg, estado.nuevos, estado.filas));
+  recalcular();
+}
+
+// ---------------------------------------------------------------- Vista: publicar
+
+let idiomaPub = "eu";
+function pintarPublicar() {
+  const cfg = estado.cfg, res = estado.res, pub = cfg.publicacion;
+  const codigo = bloqueWordpress(res, cfg, idiomaPub);
+  const ocultas = res.obras.filter(o => o.n < pub.min_respuestas_obra);
+  const pagina = cfg.web?.[idiomaPub] || "";
+  const pasoPagina = pagina
+    ? `Abre en WordPress la página <a href="${esc(pagina)}" target="_blank" rel="noopener">${esc(pagina.replace(/^https?:\/\//, ""))}</a> (Editar página).`
+    : `Abre en WordPress la página donde quieras mostrar las valoraciones (Editar página).`;
+  document.getElementById("vista-publicar").innerHTML = `
+    <div class="card"><h2>Publicar en la web</h2>
+      <div class="controles" style="margin-top:12px">
+        <span class="seg" role="group" aria-label="Idioma">
+          <button type="button" data-lang="eu" aria-pressed="${idiomaPub === "eu"}">Euskara</button>
+          <button type="button" data-lang="es" aria-pressed="${idiomaPub === "es"}">Castellano</button>
+        </span>
+        <label for="min-resp">Mínimo de respuestas por obra <input id="min-resp" type="number" min="1" value="${pub.min_respuestas_obra}"></label>
+      </div>
+      <div class="controles" style="margin-top:12px"><span class="small muted">Medias que se muestran:</span>
+        ${PREG.filter(g => cfg.preguntas[g].bloque !== "localidad").map(g => `<label class="chk" for="pp-${g}"><input id="pp-${g}" type="checkbox" data-preg="${g}" ${(pub.preguntas_publicas || []).includes(g) ? "checked" : ""}> ${esc(cfg.preguntas[g].es)}</label>`).join("")}
+      </div>
+      ${ocultas.length ? `<p class="small muted" style="margin-bottom:0">No se publican por tener pocas respuestas: ${ocultas.map(o => `${esc(o[idiomaPub])} (${o.n})`).join(", ")}.</p>` : ""}
+    </div>
+    <div class="card"><div class="cab-seccion"><h3>Vista previa</h3><span class="small muted">Así se verá en la página del Txalometroa</span></div>
+        <div class="preview">${codigo}</div></div>
+    <div class="pub">
+      <div class="card"><div class="cab-seccion"><h3>Código para WordPress</h3></div>
+        <textarea id="codigo" rows="14" readonly spellcheck="false">${esc(codigo)}</textarea>
+        <div class="fila-botones"><button class="primary" type="button" id="copiar-codigo">Copiar código</button><span class="ok" id="copiado"></span></div>
+        <ol class="pasos small" style="margin-top:14px">
+          <li>${pasoPagina}</li>
+          <li>Añade un bloque <b>HTML personalizado</b> donde quieras los resultados (o selecciona el que ya pegaste y borra su contenido).</li>
+          <li>Pega el código y pulsa <b>Actualizar</b>. Repite con la otra versión de idioma.</li>
+        </ol>
+      </div>
+      <div class="card"><h3>Fotos de las obras</h3>
+        <p class="small muted">Cada reseña usa la foto destacada de la obra en la web. Si se estrena una obra o cambia la foto, pega aquí la dirección de la imagen.</p>
+        <div class="fotos">${Object.entries(cfg.obras).map(([id, o]) => `<label for="img-${id}"><span>${esc(o.es)}</span><input id="img-${id}" type="url" data-img="${id}" value="${esc(o.imagen || "")}" placeholder="https://…/foto-de-la-obra.jpg"></label>`).join("") || `<p class="small muted">Todavía no hay obras configuradas.</p>`}</div>
+      </div>
+    </div>`;
+}
+
+// ---------------------------------------------------------------- Estado y eventos
+
+const estado = { cfg: null, filas: null, nombre: "", incluido: false, res: null, nuevos: [] };
+
+function mensaje(texto) {
+  const m = document.getElementById("mensaje");
+  m.hidden = !texto; m.className = "error"; m.textContent = texto || "";
+}
+
+function pintarFichero() {
+  document.getElementById("nombre-fichero").textContent = !estado.filas ? "Sin datos todavía"
+    : `${estado.nombre} · ${estado.filas.length} filas${estado.incluido ? " (incluido)" : ""}`;
+}
+
+function cargarEstado() {
+  const d = datosGuardados();
+  estado.cfg = guardado.cfg;
+  estado.filas = d ? d.filas : null;
+  estado.nombre = d ? d.nombre : "";
+  estado.incluido = !!d?.incluido;
+  recalcular();
+}
+
+// Lista de obras en Ajustes, con sus respuestas válidas y el botón para quitarla.
+let quitarArmado = null;
+function pintarObras() {
+  const cfg = estado.cfg, ids = Object.keys(cfg.obras);
+  const n = id => estado.res?.obras.find(o => o.id === id)?.n ?? 0;
+  document.getElementById("obras-cuenta").textContent = `${ids.length} obra(s)`;
+  document.getElementById("lista-obras").innerHTML = ids.map(id => {
+    const o = cfg.obras[id];
+    return `<div class="obra-fila">${o.imagen ? `<img src="${esc(o.imagen)}" alt="">` : `<span class="mini"></span>`}
+      <div><b>${esc(o.eu)}</b>${o.es !== o.eu ? ` · ${esc(o.es)}` : ""}<div class="small muted">${n(id)} respuestas válidas</div></div>
+      <button type="button" data-quitar="${esc(id)}" class="${quitarArmado === id ? "armado" : ""}">${quitarArmado === id ? "Pulsa otra vez" : "Quitar"}</button></div>`;
+  }).join("") || `<p class="small muted">No hay obras configuradas.</p>`;
+}
+
+function recalcular() {
+  const informe = document.getElementById("vista-informe");
+  document.getElementById("cfg").value = JSON.stringify(estado.cfg, null, 2);
+  pintarFichero();
+  if (!estado.filas) {
+    estado.res = null; mensaje("");
+    informe.innerHTML = htmlVacio();
+    document.getElementById("vista-publicar").innerHTML = `<div class="card"><h2>Publicar en la web</h2><p class="muted">Primero carga un export en la pestaña «Informe».</p></div>`;
+    pintarObras();
+    return;
+  }
+  try {
+    estado.res = analizar(estado.filas, estado.cfg);
+    mensaje("");
+    estado.nuevos = estado.res.sinMapear;
+    informe.innerHTML = (estado.nuevos.length ? htmlObrasNuevas(estado.nuevos, estado.cfg, estado.filas) : "") + htmlInforme(estado.res, estado.cfg);
+    pintarPublicar();
+  } catch (e) { mensaje(e.message); }
+  pintarObras();
+}
+
+async function abrirFichero(file) {
+  try {
+    const filas = await leerFichero(await file.arrayBuffer());
+    estado.filas = filas; estado.nombre = file.name; estado.incluido = false;
+    guardado.fichero = { nombre: file.name, filas };
+    const ok = guardarTodo();
+    recalcular();
+    mostrarVista("informe");
+    if (!ok) mensaje("El informe está listo, pero el fichero es demasiado grande para guardarlo en este navegador: la próxima vez habrá que volver a cargarlo.");
+  } catch (e) { mensaje(`No he podido leer «${file.name}»: ${e.message}`); }
+}
+
+function mostrarVista(v) {
+  if (!["informe", "publicar", "ajustes"].includes(v)) v = "informe";
+  for (const s of document.querySelectorAll("section.vista")) s.hidden = s.id !== `vista-${v}`;
+  for (const a of document.querySelectorAll("nav.tabs a")) {
+    if (a.dataset.vista === v) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  }
+}
+
+async function copiar(texto, boton, aviso) {
+  try { await navigator.clipboard.writeText(texto); aviso.textContent = "Copiado"; }
+  catch (e) {
+    const ta = document.getElementById("codigo");
+    if (ta && ta.value === texto) { ta.focus(); ta.select(); }
+    aviso.textContent = "Selecciónalo y copia con Ctrl+C";
+  }
+  setTimeout(() => { aviso.textContent = ""; }, 3000);
+}
+
+document.querySelector("nav.tabs").addEventListener("click", e => {
+  const a = e.target.closest("a[data-vista]"); if (!a) return;
+  mostrarVista(a.dataset.vista);
+});
+window.addEventListener("hashchange", () => mostrarVista(location.hash.slice(1)));
+
+document.getElementById("btn-cargar").addEventListener("click", () => document.getElementById("input-fichero").click());
+document.getElementById("input-fichero").addEventListener("change", e => { if (e.target.files[0]) abrirFichero(e.target.files[0]); e.target.value = ""; });
+
+const capa = document.getElementById("soltar");
+let arrastres = 0;
+window.addEventListener("dragenter", e => { if (e.dataTransfer?.types.includes("Files")) { arrastres++; capa.hidden = false; } });
+window.addEventListener("dragleave", () => { if (--arrastres <= 0) { arrastres = 0; capa.hidden = true; } });
+window.addEventListener("dragover", e => e.preventDefault());
+window.addEventListener("drop", e => { e.preventDefault(); arrastres = 0; capa.hidden = true; const f = e.dataTransfer.files[0]; if (f) abrirFichero(f); });
+
+document.getElementById("vista-informe").addEventListener("click", e => {
+  if (e.target.id === "vacio-cargar") { document.getElementById("input-fichero").click(); return; }
+  if (e.target.id === "guardar-obras") { guardarObrasNuevas(); return; }
+  if (e.target.id === "copiar-conc") {
+    const texto = estado.res.conclusiones.map(c => "• " + c).join("\n");
+    navigator.clipboard.writeText(texto).then(() => { e.target.textContent = "Copiado"; }, () => { e.target.textContent = "No se pudo copiar"; });
+    setTimeout(() => { e.target.textContent = "Copiar texto"; }, 2500);
+  }
+});
+
+const vPub = document.getElementById("vista-publicar");
+vPub.addEventListener("click", e => {
+  const l = e.target.closest("[data-lang]");
+  if (l) { idiomaPub = l.dataset.lang; pintarPublicar(); return; }
+  if (e.target.id === "copiar-codigo") copiar(document.getElementById("codigo").value, e.target, document.getElementById("copiado"));
+});
+vPub.addEventListener("change", e => {
+  const pub = estado.cfg.publicacion;
+  if (e.target.id === "min-resp") pub.min_respuestas_obra = Math.max(1, parseInt(e.target.value, 10) || 1);
+  if (e.target.dataset.preg) pub.preguntas_publicas = PREG.filter(g => document.getElementById(`pp-${g}`)?.checked);
+  if (e.target.dataset.img) estado.cfg.obras[e.target.dataset.img].imagen = e.target.value.trim();
+  guardarConfig(estado.cfg); recalcular();
+});
+
+document.getElementById("cfg-aplicar").addEventListener("click", () => {
+  const est = document.getElementById("cfg-estado");
+  try {
+    const nueva = JSON.parse(document.getElementById("cfg").value);
+    for (const k of ["obras", "preguntas", "bloques", "nota_obra", "pregunta_recomendacion", "limpieza", "publicacion"])
+      if (!(k in nueva)) throw new Error(`falta la sección «${k}»`);
+    estado.cfg = nueva; guardarConfig(nueva); recalcular(); est.textContent = "Aplicado y guardado";
+  } catch (e) { est.textContent = `No es válido: ${e.message}`; }
+});
+document.getElementById("cfg-reset").addEventListener("click", () => {
+  estado.cfg = structuredClone(CONFIG_ORIGEN);
+  guardarConfig(estado.cfg); recalcular(); document.getElementById("cfg-estado").textContent = "Restablecido";
+});
+
+// Obras: añadir y quitar.
+document.getElementById("form-obra").addEventListener("submit", e => {
+  e.preventDefault();
+  const est = document.getElementById("obra-estado");
+  const eu = document.getElementById("obra-eu").value.trim(), es = document.getElementById("obra-es").value.trim() || eu;
+  const imagen = document.getElementById("obra-foto").value.trim();
+  if (!eu) { est.textContent = "Escribe al menos el título en euskera."; return; }
+  const existentes = new Set(Object.values(estado.cfg.obras).flatMap(o => o.alias.map(a => a.toLowerCase())));
+  if (existentes.has(eu.toLowerCase()) || existentes.has(es.toLowerCase())) { est.textContent = "Ya hay una obra con ese título."; return; }
+  let id = slug(eu) || "obra", k = 2;
+  while (estado.cfg.obras[id]) id = `${slug(eu) || "obra"}-${k++}`;
+  estado.cfg.obras[id] = { eu, es, alias: [...new Set([eu, es])], imagen };
+  guardarConfig(estado.cfg); recalcular();
+  e.target.reset();
+  est.textContent = `Añadida «${eu}». Las respuestas con ese título ya cuentan para ella.`;
+});
+let quitarTimer = null;
+document.getElementById("lista-obras").addEventListener("click", e => {
+  const b = e.target.closest("[data-quitar]"); if (!b) return;
+  const id = b.dataset.quitar;
+  clearTimeout(quitarTimer);
+  if (quitarArmado === id) {
+    const nombre = estado.cfg.obras[id].eu;
+    delete estado.cfg.obras[id]; quitarArmado = null;
+    guardarConfig(estado.cfg); recalcular();
+    document.getElementById("obra-estado").textContent = `Quitada «${nombre}».`;
+  } else {
+    quitarArmado = id; pintarObras();
+    quitarTimer = setTimeout(() => { quitarArmado = null; pintarObras(); }, 4000);
+  }
+});
+
+// Las acciones que borran piden un segundo clic en los 4 s siguientes (el visor no permite confirm()).
+function conConfirmacion(boton, aviso, accion) {
+  const est = document.getElementById("datos-estado"), texto = boton.textContent;
+  let armado = null;
+  boton.addEventListener("click", () => {
+    if (!armado) {
+      boton.textContent = "Pulsa otra vez para confirmar"; est.textContent = aviso();
+      armado = setTimeout(() => { armado = null; boton.textContent = texto; est.textContent = ""; }, 4000);
+      return;
+    }
+    clearTimeout(armado); armado = null; boton.textContent = texto; est.textContent = "";
+    accion(est);
+  });
+}
+
+conConfirmacion(document.getElementById("dat-vaciar"),
+  () => "Se quitará el export; las obras se conservan.",
+  est => { guardado.fichero = null; guardado.vaciado = true; guardarTodo(); cargarEstado(); mostrarVista("informe"); est.textContent = "Datos vaciados. Carga el export de nuevo."; });
+conConfirmacion(document.getElementById("dat-cero"),
+  () => `Se quitarán el export y las ${Object.keys(estado.cfg.obras).length} obras configuradas.`,
+  est => {
+    guardado.fichero = null; guardado.vaciado = true; guardado.cfg = { ...guardado.cfg, obras: {} };
+    guardarTodo(); cargarEstado(); mostrarVista("informe"); est.textContent = "Todo vacío. Añade obras o carga el export.";
+  });
+conConfirmacion(document.getElementById("dat-serie"),
+  () => "Volverán las obras, los ajustes y el export incluidos en la app.",
+  est => { guardado = { cfg: structuredClone(CONFIG_ORIGEN), fichero: null, vaciado: false }; guardarTodo(); cargarEstado(); est.textContent = "Restaurado como al principio."; });
+
+const tip = document.getElementById("tip");
+document.addEventListener("mousemove", e => {
+  const t = e.target.closest?.("[data-tip]");
+  if (!t) { tip.style.opacity = 0; return; }
+  tip.textContent = t.dataset.tip;
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8) + "px";
+  tip.style.top = (e.clientY + 14) + "px"; tip.style.opacity = 1;
+});
+
+// Arranque con lo guardado (la primera vez, las obras y el export incluidos).
+cargarEstado();
+mostrarVista(location.hash.slice(1));
+</script>

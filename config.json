@@ -1,0 +1,131 @@
+{
+  "obras": {
+    "atearen-bestaldean": {
+      "eu": "Atearen bestaldean",
+      "es": "Al otro lado de la puerta",
+      "alias": [
+        "Atearen bestaldean",
+        "Al otro lado de la puerta"
+      ],
+      "imagen": "https://hikateatroa.eus/wp-content/uploads/2023/11/txalo_atearen_bestaldean.jpg"
+    },
+    "zorretan": {
+      "eu": "Zorretan",
+      "es": "Mi deuda",
+      "alias": [
+        "Zorretan",
+        "Mi deuda"
+      ],
+      "imagen": "https://hikateatroa.eus/wp-content/uploads/2025/09/mi-deuda_irudia-1.jpg"
+    },
+    "bidaia": {
+      "eu": "Bidaia",
+      "es": "El viaje",
+      "alias": [
+        "Bidaia",
+        "El viaje"
+      ],
+      "imagen": "https://hikateatroa.eus/wp-content/uploads/2023/03/EL-VIAJE10-e1715110447566.jpg"
+    },
+    "makilhotsak": {
+      "eu": "MAKILhotsak",
+      "es": "MAKILhotsak (Golpes de guerra)",
+      "alias": [
+        "MAKILhotsak",
+        "MAKILhotsak (Golpes de guerra)"
+      ],
+      "imagen": "https://hikateatroa.eus/wp-content/uploads/2026/01/makil_tsak_irudia.jpg"
+    }
+  },
+  "preguntas": {
+    "GAL1": {
+      "bloque": "obra",
+      "eu": "Gogobetetzea",
+      "es": "Satisfacción",
+      "texto_eu": "Orokorrean, zein da zure gogobetetze-maila?",
+      "texto_es": "¿Cuál es el grado de satisfacción general?"
+    },
+    "GAL2": {
+      "bloque": "obra",
+      "eu": "Trama",
+      "es": "Trama",
+      "texto_eu": "Zer iruditu zaizu obra honen trama?",
+      "texto_es": "¿Qué te ha parecido la trama de esta obra?"
+    },
+    "GAL3": {
+      "bloque": "obra",
+      "eu": "Aktoreak",
+      "es": "Reparto",
+      "texto_eu": "Nola baloratuko zenituzke aktoreak?",
+      "texto_es": "¿Cómo valorarías el reparto?"
+    },
+    "GAL4": {
+      "bloque": "obra",
+      "eu": "Gomendatzea",
+      "es": "Recomendaría",
+      "texto_eu": "Zenbateraino da posible obra hau norbaiti gomendatzea?",
+      "texto_es": "¿Cuánto de probable es que recomiendes esta obra a alguien?"
+    },
+    "GAL5": {
+      "bloque": "publico",
+      "eu": "Antzerkira itzuli",
+      "es": "Volver al teatro",
+      "texto_eu": "Laster beste antzezlanen bat ikusiko duzula uste al duzu?",
+      "texto_es": "¿Cuánto de posible es que vuelvas al teatro dentro de poco?"
+    },
+    "GAL6": {
+      "bloque": "publico",
+      "eu": "Hikara itzuli",
+      "es": "Volver a Hika",
+      "texto_eu": "Zenbateraino da posible Hikaren beste antzezlan bat ikustera itzultzea?",
+      "texto_es": "¿Cuánto de posible es que vuelvas a ver una obra de Hika?"
+    },
+    "GAL7": {
+      "bloque": "localidad",
+      "eu": "Herriko programazioa",
+      "es": "Programación local",
+      "texto_eu": "Nola baloratuko zenuke herri honetako kultur programazioa?",
+      "texto_es": "¿Cómo valorarías la programación cultural de esta localidad?"
+    }
+  },
+  "bloques": {
+    "obra": {
+      "eu": "Obra",
+      "es": "La obra"
+    },
+    "publico": {
+      "eu": "Ikuslearen leialtasuna",
+      "es": "Fidelidad del público"
+    },
+    "localidad": {
+      "eu": "Herria",
+      "es": "La localidad"
+    }
+  },
+  "nota_obra": [
+    "GAL1",
+    "GAL2",
+    "GAL3",
+    "GAL4"
+  ],
+  "pregunta_recomendacion": "GAL4",
+  "limpieza": {
+    "segundos_duplicado": 10,
+    "horas_entre_funciones": 3,
+    "min_respuestas_funcion": 5
+  },
+  "publicacion": {
+    "min_respuestas_obra": 10,
+    "preguntas_publicas": [
+      "GAL1",
+      "GAL2",
+      "GAL3",
+      "GAL4",
+      "GAL6"
+    ]
+  },
+  "web": {
+    "eu": "https://hikateatroa.eus/txalometroa/",
+    "es": "https://hikateatroa.eus/es/txalometroa/"
+  }
+}

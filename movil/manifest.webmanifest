@@ -1,0 +1,17 @@
+{
+  "name": "Txalometroa · Hika Teatroa",
+  "short_name": "Txalometroa",
+  "description": "Txalotu Hikaren antzezlanak, ikusi zure konstelazioa eta Wrapped-a. / Aplaude las obras de Hika, mira tu constelación y tu Wrapped.",
+  "lang": "eu",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#2a2a2a",
+  "theme_color": "#2a2a2a",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

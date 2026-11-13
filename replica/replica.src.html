@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="eu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Txalometroa · réplica de prueba</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&family=Roboto+Slab:wght@300&display=swap">
+<style>
+/* Réplica local de hikateatroa.eus/txalometroa para probar el circuito
+   votar -> analizar -> publicar. Solo para pruebas: no se publica. */
+:root {
+  --gorria: #ff3c42; --testua: #595b60; --iluna: #231f20; --grisa: #85868a;
+  --lerroa: #e6e6e8; --oina: #4a4b4f; --demo: #111214;
+  --raleway: Raleway, "Segoe UI", system-ui, sans-serif; --slab: "Roboto Slab", Georgia, serif;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: #fff; color: var(--testua); font: 18px/1.55 var(--raleway); }
+a { color: var(--gorria); text-decoration: none; }
+img { max-width: 100%; }
+.edukiontzia { max-width: 1140px; margin: 0 auto; padding-left: 20px; padding-right: 20px; }
+
+/* Franja de aviso */
+.demo-franja { background: var(--demo); color: #fff; font-size: 13px; text-align: center; padding: 7px 16px; letter-spacing: .02em; }
+.demo-franja b { color: #ffd34d; font-weight: 700; letter-spacing: .08em; }
+
+/* Cabecera */
+header.gunea { padding-top: 22px; }
+.logoa { display: block; width: min(250px, 60vw); margin: 0 auto; }
+nav.menua { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 4px 26px; padding: 18px 20px 16px; }
+nav.menua a { color: var(--grisa); text-transform: uppercase; font-size: 15px; letter-spacing: .02em; }
+nav.menua a:hover, nav.menua a.aktibo { color: var(--gorria); }
+nav.menua .hizkuntzak { display: inline-flex; gap: 10px; margin-left: 8px; }
+nav.menua .hizkuntzak button { background: none; border: 0; padding: 0; font: 600 15px var(--raleway); color: var(--grisa); cursor: pointer; }
+nav.menua .hizkuntzak button[aria-pressed="true"] { color: var(--gorria); }
+.menu-botoia { display: none; margin: 14px auto 0; background: #fff; border: 1px solid #ccc; border-radius: 6px; padding: 8px 14px; font: 600 15px var(--raleway); color: var(--testua); }
+@media (max-width: 900px) {
+  .menu-botoia { display: block; }
+  nav.menua { flex-direction: column; gap: 10px; }
+  nav.menua.itxita a:not(.hizkuntzak *) { display: none; }
+}
+
+/* Portada */
+.azala { position: relative; height: clamp(200px, 26vw, 342px); background: #4d3733 center 35% / cover no-repeat; display: grid; place-items: center; }
+.azala::before { content: ""; position: absolute; inset: 0; background: rgba(77, 55, 51, .45); }
+.azala h2 { position: relative; margin: 0; color: #fff; font: 300 clamp(36px, 5vw, 60px) var(--slab); letter-spacing: .02em; }
+
+/* Lista de obras (como en la web) */
+.zerrenda { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 28px; margin-top: 84px; }
+.txartela { position: relative; display: block; aspect-ratio: 3 / 2; overflow: hidden; background: #ddd; }
+.txartela img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+.txartela:hover img { transform: scale(1.04); }
+.txartela .info { position: absolute; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, .86); padding: 12px 24px 14px; }
+.txartela .titulo { display: block; color: var(--testua); font-weight: 700; font-size: 26px; line-height: 1.2; }
+.txalotu { display: inline-flex; align-items: center; gap: 10px; color: var(--gorria); font-size: 20px; text-transform: uppercase; }
+.txalotu img { width: 30px; height: 30px; }
+
+/* Bloque insertado */
+.emaitzak-gunea { margin-top: 90px; position: relative; }
+.bloke-marka { position: absolute; top: -26px; left: 0; font: 600 11px var(--raleway); letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--demo); padding: 4px 10px; border-radius: 4px 4px 0 0; }
+.erakutsi-blokea .emaitzak-gunea { outline: 2px dashed rgba(17, 18, 20, .55); outline-offset: 10px; border-radius: 4px; }
+.erakutsi-blokea .emaitzak-gunea .bloke-marka { top: -36px; left: -10px; }
+.emaitzak-gunea:not(.erakutsi) .bloke-marka { display: none; }
+@keyframes distira { 0% { box-shadow: 0 0 0 0 rgba(255, 60, 66, .55); } 100% { box-shadow: 0 0 0 18px rgba(255, 60, 66, 0); } }
+.berria .txalo-obra { animation: distira 1.2s ease-out 2; }
+
+/* Formulario */
+.atzera { display: inline-flex; gap: 8px; align-items: center; margin-top: 40px; font-size: 16px; }
+.galdetegia { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; margin-top: 24px; align-items: start; }
+@media (max-width: 860px) { .galdetegia { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+.obra-irudia { position: sticky; top: 20px; }
+.obra-irudia img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; border-radius: 4px; }
+.obra-irudia h2 { font: 700 34px/1.15 var(--raleway); color: var(--testua); margin: 16px 0 6px; }
+.obra-irudia p { margin: 0; font-size: 16px; }
+.aurpegiak { display: grid; grid-template-columns: minmax(0, 1fr) 190px; align-items: center; margin-bottom: 4px; }
+.aurpegiak div { grid-column: 2; display: flex; justify-content: space-between; padding-right: 44px; }
+.aurpegiak img, .aurpegiak svg { width: 28px; height: 30px; }
+.galdera { display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 8px 20px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--lerroa); }
+.galdera label { font-size: 17px; line-height: 1.35; }
+.galdera .eskala { display: flex; align-items: center; gap: 12px; }
+.galdera output { width: 32px; text-align: right; font-weight: 700; font-size: 22px; color: #b4b5b8; font-variant-numeric: tabular-nums; }
+.galdera output.jarrita { color: var(--gorria); }
+@media (max-width: 560px) { .galdera, .aurpegiak { grid-template-columns: minmax(0, 1fr); } .aurpegiak div { grid-column: 1; } }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--gorria) var(--bete, 0%), #dcdcde var(--bete, 0%)); outline-offset: 6px; cursor: pointer; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #fff; border: 3px solid var(--gorria); box-shadow: 0 2px 6px rgba(0,0,0,.2); }
+input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 3px solid var(--gorria); }
+.bidali { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+.botoia { display: inline-flex; align-items: center; gap: 12px; background: var(--gorria); color: #fff; border: 0; border-radius: 40px; padding: 14px 30px; font: 600 20px var(--raleway); letter-spacing: .04em; cursor: pointer; }
+.botoia:disabled { opacity: .45; cursor: not-allowed; }
+.botoia.bigarren { background: #fff; color: var(--gorria); border: 2px solid var(--gorria); }
+.oharra { font-size: 15px; color: var(--grisa); }
+.oharra.errorea { color: #c4161c; }
+
+/* Gracias */
+.eskerrik { text-align: center; margin-top: 56px; }
+.eskerrik h2 { font: 300 clamp(40px, 6vw, 64px) var(--slab); color: var(--iluna); margin: 0; }
+.eskerrik p { margin: 8px auto 0; max-width: 46ch; }
+.aldaketa { display: inline-flex; align-items: center; gap: 12px; margin-top: 20px; padding: 10px 20px; border-radius: 40px; background: #fff0f0; color: var(--iluna); font-weight: 600; font-variant-numeric: tabular-nums; }
+.aldaketa .gezia { color: var(--gorria); }
+.eskerrik .txalo-emaitzak { max-width: 420px; margin: 32px auto 0; text-align: left; }
+.eskerrik .bidali { justify-content: center; }
+.konfetia { position: fixed; inset: 0; pointer-events: none; z-index: 40; }
+
+/* Pie */
+.babesleak { margin-top: 110px; padding: 0 20px 20px; }
+.babesleak img { display: block; margin: 0 auto; max-width: 1000px; width: 100%; }
+footer { background: #e9e9ea; color: var(--testua); font-size: 16px; }
+footer .edukiontzia { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; padding-block: 22px; }
+footer img { width: 92px; filter: brightness(.35); }
+
+/* Panel de prueba */
+.demo-panela { position: fixed; right: 16px; bottom: 16px; z-index: 50; width: min(340px, calc(100vw - 32px)); background: var(--demo); color: #e9e9ea; border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.35); font: 14px/1.45 system-ui, "Segoe UI", sans-serif; }
+.demo-panela > button { width: 100%; display: flex; justify-content: space-between; align-items: center; background: none; border: 0; color: #fff; font: 700 13px system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; padding: 12px 16px; cursor: pointer; }
+.demo-panela > button span { color: #ffd34d; }
+.demo-gorputza { padding: 0 16px 16px; display: grid; gap: 12px; max-height: calc(100vh - 90px); overflow-y: auto; }
+.demo-gorputza .zbk { font-size: 30px; font-weight: 700; color: #fff; line-height: 1; font-variant-numeric: tabular-nums; }
+.demo-gorputza fieldset { border: 1px solid #33353a; border-radius: 10px; padding: 8px 12px 10px; margin: 0; display: grid; gap: 6px; }
+.demo-gorputza legend { padding: 0 4px; color: #a9abb0; font-size: 12px; }
+.demo-gorputza label { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; }
+.demo-gorputza .lauso { color: #a9abb0; font-size: 12.5px; }
+.demo-gorputza .botoiak { display: flex; flex-wrap: wrap; gap: 8px; }
+.demo-gorputza .botoiak button { background: #26282d; color: #fff; border: 1px solid #3a3d43; border-radius: 8px; padding: 7px 12px; font: 600 13px system-ui, sans-serif; cursor: pointer; }
+.demo-gorputza .botoiak button.nagusia { background: var(--gorria); border-color: var(--gorria); }
+
+/* Obras sin foto y estados vacíos */
+.txartela.irudi-gabe { background: linear-gradient(135deg, #3a2b29, #6b4d47); }
+.txartela .hizki { position: absolute; inset: 0 0 30% 0; display: grid; place-items: center; font: 300 96px var(--slab); color: rgba(255,255,255,.55); }
+.obra-irudia .ordezko { aspect-ratio: 3 / 2; border-radius: 4px; background: linear-gradient(135deg, #3a2b29, #6b4d47); display: grid; place-items: center; font: 300 120px var(--slab); color: rgba(255,255,255,.55); }
+@keyframes estreinaldia { 0% { box-shadow: 0 0 0 0 rgba(255, 60, 66, .7); } 100% { box-shadow: 0 0 0 22px rgba(255, 60, 66, 0); } }
+.txartela.berria { animation: estreinaldia 1.1s ease-out 3; }
+.txartela .estreinua { position: absolute; top: 14px; left: 14px; background: var(--gorria); color: #fff; font: 700 12px var(--raleway); letter-spacing: .1em; text-transform: uppercase; padding: 5px 10px; border-radius: 3px; }
+.hutsik { margin-top: 84px; text-align: center; border: 2px dashed var(--lerroa); border-radius: 12px; padding: 56px 20px; }
+.hutsik h3 { font: 300 32px var(--slab); color: var(--iluna); margin: 0 0 8px; }
+.hutsik p { margin: 0 auto; max-width: 52ch; font-size: 16px; }
+.emaitzak-hutsik { text-align: center; }
+.emaitzak-hutsik h3 { font-weight: 300; font-size: 2.2rem; margin: 0; }
+.emaitzak-hutsik p { font-size: .95rem; opacity: .8; }
+
+/* Panel: controles de administración */
+.demo-gorputza input[type=number] { width: 60px; font: 14px system-ui, sans-serif; padding: 4px 6px; border-radius: 6px; border: 1px solid #3a3d43; background: #1c1e22; color: #fff; }
+.demo-gorputza .botoiak button.armado { background: #8a1c1f; border-color: #c4161c; }
+.demo-gorputza .botoiak button:disabled { opacity: .4; cursor: not-allowed; }
+.demo-gorputza .abisua { background: #2e2312; color: #f0b860; border-radius: 8px; padding: 8px 10px; font-size: 13px; }
+.demo-gorputza .abisua button { margin-top: 6px; width: 100%; background: #ff3c42; color: #fff; border: 0; border-radius: 8px; padding: 7px 12px; font: 600 13px system-ui, sans-serif; cursor: pointer; }
+.demo-gorputza .oharra-panel { color: #ffd34d; font-size: 12.5px; min-height: 1em; }
+.obra-zerrenda { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.obra-zerrenda li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.obra-zerrenda .miniatura { width: 34px; height: 24px; border-radius: 3px; object-fit: cover; background: linear-gradient(135deg, #3a2b29, #6b4d47); display: block; }
+.obra-zerrenda .izena { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #fff; }
+.obra-zerrenda .izena small { display: block; color: #a9abb0; font-size: 11.5px; }
+.obra-zerrenda button { background: #26282d; color: #fff; border: 1px solid #3a3d43; border-radius: 6px; padding: 4px 8px; font: 600 12px system-ui, sans-serif; cursor: pointer; }
+.obra-zerrenda button.armado { background: #8a1c1f; border-color: #c4161c; }
+.demo-gorputza label.lerro { align-items: center; }
+
+/* Ventanas: obras nuevas del export y añadir obra */
+.modala { position: fixed; inset: 0; z-index: 70; background: rgba(17, 18, 20, .6); display: grid; place-items: center; padding: 16px; }
+.modala .kutxa { background: #fff; color: var(--testua); border-radius: 14px; width: min(900px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: 24px; box-shadow: 0 20px 60px rgba(0,0,0,.4); font: 15px/1.5 system-ui, "Segoe UI", sans-serif; }
+.modala .kutxa.estua { width: min(620px, 100%); }
+.modala h3 { font: 600 24px var(--raleway); color: var(--iluna); margin: 0 0 6px; }
+.modala p { margin: 0 0 14px; font-size: 14px; }
+.modala .scroll { overflow-x: auto; }
+table.nuevas { border-collapse: collapse; width: 100%; font-size: 14px; }
+table.nuevas th { text-align: left; font-weight: 600; color: var(--grisa); padding: 6px 8px; white-space: nowrap; border-bottom: 1px solid var(--lerroa); }
+table.nuevas td { padding: 8px; border-bottom: 1px solid var(--lerroa); vertical-align: middle; }
+table.nuevas select, table.nuevas input { font: 14px system-ui, sans-serif; padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px; width: 100%; min-width: 180px; }
+.sugerido { display: inline-block; font-size: 11px; font-weight: 700; color: #c4161c; text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
+.modala .bidali { margin-top: 18px; }
+.modala .botoia { font-size: 16px; padding: 10px 22px; }
+.obra-berria { display: grid; gap: 6px; }
+.obra-berria > label, .obra-berria .etiketa { font-weight: 600; font-size: 14px; color: var(--iluna); margin-top: 8px; }
+.obra-berria label span { font-weight: 400; color: var(--grisa); }
+.obra-berria input[type=text], .obra-berria input[type=url] { font: 15px system-ui, sans-serif; padding: 9px 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%; }
+.argazkia { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 14px; align-items: center; }
+@media (max-width: 560px) { .argazkia { grid-template-columns: minmax(0, 1fr); } }
+.aurrebista { aspect-ratio: 3 / 2; border-radius: 8px; overflow: hidden; background: linear-gradient(135deg, #3a2b29, #6b4d47); display: grid; place-items: center; color: rgba(255,255,255,.7); font-size: 13px; }
+.aurrebista img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.argazkia .aukerak { display: grid; gap: 8px; }
+.botoia.txikia { font-size: 14px; padding: 8px 16px; justify-content: center; cursor: pointer; }
+#soltar { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; background: rgba(17, 18, 20, .82); color: #fff; font: 300 40px var(--slab); }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, label.botoia:focus-within { outline: 2px solid var(--gorria); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .txartela img, .berria .txalo-obra, .txartela.berria { transition: none; animation: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<div class="demo-franja"><b>RÉPLICA DE PRUEBA</b> · No es hikateatroa.eus · Los datos se guardan solo en este navegador</div>
+
+<header class="gunea" id="goiburua"></header>
+<div class="azala" style="background-image:url('https://hikateatroa.eus/wp-content/uploads/2024/05/txalometroa_bannerra.jpg')"><h2>TXALOMETROA</h2></div>
+<main class="edukiontzia" id="edukia"></main>
+<div class="babesleak"><img src="https://hikateatroa.eus/wp-content/uploads/2021/03/logoak-3.png" alt="Erakunde eta entitate laguntzaileen logoak"></div>
+<footer><div class="edukiontzia"><img src="https://hikateatroa.eus/wp-content/uploads/2024/04/hika_logo_zuria-300x169.png" alt="Hika"><span>Aldapa Kalea 14. 20012 Donostia-San Sebastián. hika@hikateatroa.eus</span></div></footer>
+
+<aside class="demo-panela" id="demo-panela" aria-label="Panel de prueba"></aside>
+<div class="modala" id="modala" hidden role="dialog" aria-modal="true" aria-labelledby="modala-izenburua"></div>
+<div id="soltar" hidden>Suelta el export aquí</div>
+<input type="file" id="input-fichero" accept=".xls,.xlsx,.csv,.tsv,.txt" hidden>
+<canvas class="konfetia" id="konfetia" hidden></canvas>
+
+<script type="text/plain" id="datos-iniciales" data-nombre="__NOMBRE__">__DATOS__</script>
+<script>
+"use strict";
+
+__NUCLEO__
+
+// ---------------------------------------------------------------- Datos
+
+const CONFIG_ORIGEN = __CONFIG__;
+const HIKA = "https://hikateatroa.eus/wp-content/";
+const ASSETS = HIKA + "plugins/txalometroa/assets/";
+const ORDEN_HIKA = ["makilhotsak", "zorretan", "atearen-bestaldean", "bidaia"];
+const CLAVE = "txalometroa-replica-hika";
+
+const T = {
+  eu: {
+    menua: ["Hasiera", "Antzezlanak", "Kultur zerbitzuak", "Bitartekaritza programak", "Konpainia", "Ibilbidea", "Agenda", "Kontaktua"],
+    txalotu: "Txalotu", atzera: "Txalometroa", irudiOharra: "Mugitu barrak 1etik 10era. Ez duzu guztiak erantzun beharrik.",
+    gutxienez: "Mugitu gutxienez galdera bat txalotu aurretik.", bidaltzen: "Bidaltzen…",
+    eskerrik: "Eskerrik asko!", jaso: obra => `Zure txaloa jaso dugu. Hau da orain «${obra}» obraren balorazioa:`,
+    falta: (obra, n, min) => `Zure txaloa jaso dugu. «${obra}» obrak ${n} balorazio ditu; ${min} lortzean argitaratuko da.`,
+    beste: "Beste obra bat txalotu", guztiak: "Balorazio guztiak ikusi", aldaketa: "Zure txaloarekin",
+    obrarikEz: "Oraindik ez dago obrarik Txalometroan", baloraziorikEz: "Oraindik ez dago argitaratutako baloraziorik.", berria: "Berria",
+  },
+  es: {
+    menua: ["Inicio", "Obras", "Servicios culturales", "Programas de mediación", "Compañía", "Trayectoria", "Agenda", "Contacto"],
+    txalotu: "Txalotu", atzera: "Txalometro", irudiOharra: "Mueve las barras del 1 al 10. No hace falta responderlas todas.",
+    gutxienez: "Mueve al menos una pregunta antes de enviar.", bidaltzen: "Enviando…",
+    eskerrik: "¡Gracias!", jaso: obra => `Hemos recibido tu aplauso. Así queda ahora la valoración de «${obra}»:`,
+    falta: (obra, n, min) => `Hemos recibido tu aplauso. «${obra}» tiene ${n} valoraciones; se publicará al llegar a ${min}.`,
+    beste: "Valorar otra obra", guztiak: "Ver todas las valoraciones", aldaketa: "Con tu voto",
+    obrarikEz: "Todavía no hay obras en el Txalometro", baloraziorikEz: "Todavía no hay valoraciones publicadas.", berria: "Nueva",
+  },
+};
+
+// Estado guardado en el navegador: obras y ajustes, export cargado y votos de prueba.
+const estadoDeSerie = () => ({ modo: "directo", cfg: structuredClone(CONFIG_ORIGEN), fichero: null, vaciado: false, votos: [], pegado: { votos: 0, cuando: null }, estrenos: [] });
+function cargar() {
+  try { const g = JSON.parse(localStorage.getItem(CLAVE)); if (g && g.cfg) return { ...estadoDeSerie(), ...g }; } catch (e) { /* almacenamiento no disponible */ }
+  return estadoDeSerie();
+}
+let G = cargar();
+function guardar() { try { localStorage.setItem(CLAVE, JSON.stringify(G)); return true; } catch (e) { return false; } }
+
+const INCLUIDO = (() => {
+  const el = document.getElementById("datos-iniciales");
+  return { nombre: el.dataset.nombre, filas: aObjetos(parsearTexto(el.textContent.trim())), incluido: true };
+})();
+// Export en uso: el cargado a mano o, si no se ha vaciado, el incluido.
+function datosExport() {
+  if (G.fichero) return G.fichero;
+  return G.vaciado ? null : INCLUIDO;
+}
+
+const estado = { lang: "eu", marcarBloque: false, panelAbierto: innerWidth > 900 && innerHeight > 700, aviso: "", armado: null, foto: "", destacar: null };
+
+// Lo que «ve» la web: en directo, todos los votos; en manual, solo los que había al pegar el bloque.
+function resultadoPublicado() {
+  const d = datosExport();
+  const votos = G.modo === "directo" ? G.votos : G.votos.slice(0, G.pegado.votos);
+  const filas = [...(d ? d.filas : []), ...votos];
+  if (!filas.length) return null;
+  try { return analizar(filas, G.cfg); } catch (e) { return null; }
+}
+function sinConfigurar() {
+  const d = datosExport(); if (!d) return [];
+  try { return analizar(d.filas, G.cfg).sinMapear; } catch (e) { return []; }
+}
+// Como en la web: las obras estrenadas más recientemente, primero.
+function obrasOrdenadas() {
+  const ids = Object.keys(G.cfg.obras);
+  const estrenos = G.estrenos.filter(id => ids.includes(id)).reverse();
+  const resto = [...ORDEN_HIKA.filter(id => ids.includes(id)), ...ids.filter(id => !ORDEN_HIKA.includes(id))].filter(id => !estrenos.includes(id));
+  return [...estrenos, ...resto];
+}
+const inicial = o => esc(((o[estado.lang] || "?").trim()[0] || "?").toUpperCase());
+
+// ---------------------------------------------------------------- Cabecera
+
+function pintarCabecera() {
+  const t = T[estado.lang];
+  document.documentElement.lang = estado.lang;
+  const abierto = document.getElementById("menua")?.classList.contains("itxita") === false;
+  document.getElementById("goiburua").innerHTML = `<a href="#zerrenda" data-joan="zerrenda"><img class="logoa" src="${HIKA}themes/bootscore-child-main/img/logo/logo-hika.svg" alt="Hika Teatroa"></a>
+    <button class="menu-botoia" id="menu-botoia" type="button" aria-expanded="${abierto}">☰ Menu</button>
+    <nav class="menua ${abierto ? "" : "itxita"}" id="menua" aria-label="Menú principal">${t.menua.map(m => `<a href="#zerrenda" data-joan="zerrenda">${m}</a>`).join("")}
+      <span class="hizkuntzak"><button type="button" data-lang="eu" aria-pressed="${estado.lang === "eu"}">EU</button><button type="button" data-lang="es" aria-pressed="${estado.lang === "es"}">ES</button></span></nav>`;
+}
+
+// ---------------------------------------------------------------- Vistas
+
+function htmlBloque(res, opts) {
+  try { return bloqueWordpress(res, G.cfg, estado.lang, opts); }
+  catch (e) { return `<p>${esc(e.message)}</p>`; }
+}
+
+function vistaZerrenda() {
+  const t = T[estado.lang], cfg = G.cfg, ids = obrasOrdenadas();
+  const tarjetas = ids.length ? `<div class="zerrenda">${ids.map(id => {
+    const o = cfg.obras[id], nueva = id === estado.destacar;
+    const imagen = o.imagen ? `<img src="${esc(o.imagen)}" alt="">` : `<span class="hizki">${inicial(o)}</span>`;
+    return `<div><a class="txartela ${o.imagen ? "" : "irudi-gabe"} ${nueva ? "berria" : ""}" id="txartela-${esc(id)}" href="#txalotu-${esc(id)}" data-txalotu="${esc(id)}">${imagen}
+      ${G.estrenos.includes(id) ? `<span class="estreinua">${t.berria}</span>` : ""}
+      <span class="info"><span class="titulo">${esc(o[estado.lang])}</span><span class="txalotu"><img src="${ASSETS}icono_gezia.svg" alt="">${t.txalotu.toUpperCase()}</span></span></a></div>`;
+  }).join("")}</div>`
+    : `<div class="hutsik"><h3>${t.obrarikEz}</h3><p>Añade una obra desde el panel «Modo prueba» o carga un export.</p></div>`;
+  const res = resultadoPublicado();
+  const hayPublicadas = res && res.obras.some(o => o.n >= cfg.publicacion.min_respuestas_obra && o.nota !== null && cfg.obras[o.id]);
+  const bloque = hayPublicadas ? htmlBloque(res, { obras: Object.keys(cfg.obras) })
+    : `<div class="emaitzak-hutsik"><h3>${TXT_BLOQUE[estado.lang].titulo}</h3><p>${t.baloraziorikEz}</p></div>`;
+  return `${tarjetas}
+    <section class="emaitzak-gunea ${estado.marcarBloque ? "erakutsi" : ""}" id="emaitzak">
+      <span class="bloke-marka">Bloque «HTML personalizado» · Txalometroa</span>
+      ${bloque}
+    </section>`;
+}
+
+function vistaGaldetegia(id) {
+  const t = T[estado.lang], cfg = G.cfg, o = cfg.obras[id];
+  const galderak = PREG.map(g => `<div class="galdera">
+      <label for="${g}">${esc(cfg.preguntas[g]["texto_" + estado.lang])}</label>
+      <div class="eskala"><input type="range" id="${g}" name="${g}" min="0" max="10" value="0" style="--bete:0%"><output for="${g}" id="out-${g}">0</output></div>
+    </div>`).join("");
+  const imagen = o.imagen ? `<img src="${esc(o.imagen)}" alt="">` : `<div class="ordezko">${inicial(o)}</div>`;
+  return `<a class="atzera" href="#zerrenda" data-joan="zerrenda">← ${t.atzera}</a>
+    <div class="galdetegia">
+      <div class="obra-irudia">${imagen}<h2>${esc(o[estado.lang])}</h2><p>${t.irudiOharra}</p></div>
+      <form id="formularioa" data-obra="${esc(id)}" novalidate>
+        <div class="aurpegiak" aria-hidden="true"><span></span><div>${[-1, -0.5, 0, 0.5, 1].map(k => svgMascara(k)).join("")}</div></div>
+        ${galderak}
+        <div class="bidali"><button class="botoia" type="submit" id="bidali">${t.txalotu.toUpperCase()}</button><span class="oharra" id="oharra" aria-live="polite"></span></div>
+      </form>
+    </div>`;
+}
+
+function vistaEskerrik(id, antes) {
+  const t = T[estado.lang], cfg = G.cfg, nombre = cfg.obras[id][estado.lang];
+  const res = resultadoPublicado();
+  const o = res?.obras.find(x => x.id === id);
+  const publicada = o && o.n >= cfg.publicacion.min_respuestas_obra;
+  const cambio = G.modo === "directo" && publicada && antes && antes.nota !== null
+    ? `<div class="aldaketa">${t.aldaketa}: ${fmt(antes.nota, 2)} <span class="gezia">→</span> ${fmt(o.nota, 2)} · ${antes.n} <span class="gezia">→</span> ${o.n}</div>` : "";
+  const manual = G.modo === "manual"
+    ? `<p class="oharra" style="margin-top:16px">Modo manual: tu voto ya está en los datos, pero la reseña de la web no cambia hasta que se pegue el bloque de nuevo (botón «Pegar bloque actualizado» del panel).</p>` : "";
+  return `<div class="eskerrik">
+      <h2>${t.eskerrik}</h2>
+      <p>${publicada ? t.jaso(esc(nombre)) : t.falta(esc(nombre), o ? o.n : 0, cfg.publicacion.min_respuestas_obra)}</p>
+      ${cambio}${manual}
+      ${publicada ? `<div class="berria">${htmlBloque(res, { obras: [id], sinCabecera: true })}</div>` : ""}
+      <div class="bidali" style="margin-top:32px"><a class="botoia bigarren" href="#zerrenda" data-joan="zerrenda">${t.beste}</a><a class="botoia" href="#emaitzak" data-joan="emaitzak">${t.guztiak}</a></div>
+    </div>`;
+}
+
+// ---------------------------------------------------------------- Panel de prueba (administración)
+
+const nombreObra = id => G.cfg.obras[id]?.eu || id;
+const AVISOS = {
+  vaciar: () => "Se quitará el export; las obras y los votos de prueba se conservan.",
+  cero: () => `Se quitarán el export, las ${Object.keys(G.cfg.obras).length} obras y los votos de prueba.`,
+  serie: () => "La réplica volverá a estar como al principio: obras, fotos y export de Hika.",
+  votos: () => `Se borrarán ${G.votos.length} votos de prueba.`,
+  quitar: id => `Se quitará «${nombreObra(id)}» del Txalometroa, con sus votos de prueba.`,
+};
+const ACCIONES = {
+  vaciar() { G.fichero = null; G.vaciado = true; return "Datos vaciados. Carga el export de nuevo o añade obras."; },
+  cero() {
+    G.fichero = null; G.vaciado = true; G.cfg.obras = {}; G.votos = []; G.pegado = { votos: 0, cuando: null }; G.estrenos = [];
+    return "Todo vacío. Añade obras o carga el export para empezar.";
+  },
+  serie() { const modo = G.modo; G = estadoDeSerie(); G.modo = modo; return "Réplica restaurada como al principio."; },
+  votos() { G.votos = []; G.pegado = { votos: 0, cuando: null }; return "Votos de prueba borrados."; },
+  quitar(id) {
+    const o = G.cfg.obras[id], nombres = new Set(o.alias.map(a => a.toLowerCase()));
+    const quedan = G.votos.filter(v => !nombres.has(String(v.PRODUKZIOA).toLowerCase()));
+    G.pegado.votos = Math.min(G.pegado.votos, quedan.length);
+    G.votos = quedan; delete G.cfg.obras[id]; G.estrenos = G.estrenos.filter(x => x !== id);
+    return `Quitada «${o.eu}».`;
+  },
+};
+const aviso = clave => { const [id, arg] = clave.split(":"); return AVISOS[id](arg); };
+
+function botonConfirmar(clave, texto, desactivado = false) {
+  const armado = estado.armado?.id === clave;
+  return `<button type="button" data-accion="${esc(clave)}" class="${armado ? "armado" : ""}" ${desactivado ? "disabled" : ""}>${armado ? "Pulsa otra vez" : texto}</button>`;
+}
+
+function pintarPanel() {
+  const d = datosExport(), n = G.votos.length, pend = n - G.pegado.votos, nuevas = sinConfigurar(), res = resultadoPublicado();
+  const valoraciones = id => res?.obras.find(o => o.id === id)?.n ?? 0;
+  const obras = obrasOrdenadas().map(id => {
+    const o = G.cfg.obras[id];
+    return `<li>${o.imagen ? `<img class="miniatura" src="${esc(o.imagen)}" alt="">` : `<span class="miniatura"></span>`}
+      <span class="izena">${esc(o.eu)}<small>${o.es !== o.eu ? `${esc(o.es)} · ` : ""}${valoraciones(id)} valoraciones</small></span>
+      ${botonConfirmar(`quitar:${id}`, "Quitar")}</li>`;
+  }).join("");
+  document.getElementById("demo-panela").innerHTML = `<button type="button" id="panel-toggle" aria-expanded="${estado.panelAbierto}">Modo prueba <span>${estado.panelAbierto ? "▾" : "▸"}</span></button>
+    <div class="demo-gorputza" ${estado.panelAbierto ? "" : "hidden"}>
+      <fieldset><legend>Obras en el Txalometroa (${Object.keys(G.cfg.obras).length})</legend>
+        <ul class="obra-zerrenda">${obras || `<li class="lauso" style="display:block">Ninguna todavía.</li>`}</ul>
+        <div class="botoiak"><button type="button" class="nagusia" id="anadir-obra">+ Añadir obra</button></div>
+        <label class="lerro" for="min-publicar"><span class="lauso">La reseña sale a partir de</span><input type="number" id="min-publicar" min="1" max="999" value="${G.cfg.publicacion.min_respuestas_obra}"><span class="lauso">valoraciones</span></label>
+      </fieldset>
+      <fieldset><legend>Datos del Txalometroa</legend>
+        <div class="lauso">${d ? `${esc(d.nombre)} · ${d.filas.length} filas${d.incluido ? " (incluido)" : ""}` : "Sin export cargado"} · ${n} voto(s) de prueba</div>
+        <div class="botoiak"><button type="button" id="cargar">${d ? "Cargar otro export" : "Cargar export"}</button></div>
+        ${nuevas.length ? `<div class="abisua">El export trae ${nuevas.length} nombre(s) de obra sin configurar.<button type="button" id="configurar">Configurar obras</button></div>` : ""}
+      </fieldset>
+      <fieldset><legend>Cómo se actualiza la reseña</legend>
+        <label><input type="radio" name="modo" value="directo" ${G.modo === "directo" ? "checked" : ""}><span>En directo<br><span class="lauso">Lo que haría el plugin ampliado: cada voto se ve al momento.</span></span></label>
+        <label><input type="radio" name="modo" value="manual" ${G.modo === "manual" ? "checked" : ""}><span>Manual (bloque pegado)<br><span class="lauso">Como hoy: exportar, generar en la app y pegar en WordPress.</span></span></label>
+        ${G.modo === "manual" ? `<div class="lauso">${pend > 0 ? `<b style="color:#ffd34d">${pend} voto(s) sin publicar.</b>` : "Todo publicado."}</div>
+          <div class="botoiak"><button type="button" class="nagusia" id="pegar">Pegar bloque actualizado</button></div>` : ""}
+      </fieldset>
+      <label><input type="checkbox" id="marcar" ${estado.marcarBloque ? "checked" : ""}><span>Señalar el bloque del Txalometroa en la página</span></label>
+      <fieldset><legend>Probar desde cero</legend>
+        <div class="botoiak">
+          ${botonConfirmar("vaciar", "Vaciar datos", !d)}
+          ${botonConfirmar("cero", "Empezar de cero")}
+          ${botonConfirmar("votos", "Borrar votos", !n)}
+          ${botonConfirmar("serie", "Restaurar como al principio")}
+        </div>
+      </fieldset>
+      <div class="oharra-panel" aria-live="polite">${esc(estado.armado ? aviso(estado.armado.id) : estado.aviso)}</div>
+    </div>`;
+}
+
+// ---------------------------------------------------------------- Añadir obra
+
+function abrirNuevaObra() {
+  estado.foto = "";
+  const m = document.getElementById("modala");
+  m.innerHTML = `<div class="kutxa estua">
+    <h3 id="modala-izenburua">Añadir obra al Txalometroa</h3>
+    <p>Es lo que pasa al publicar una obra nueva en la web: aparece la primera de la lista con su botón TXALOTU.
+    Su reseña se publica cuando llegue a ${G.cfg.publicacion.min_respuestas_obra} valoraciones (lo puedes cambiar en el panel).</p>
+    <form id="form-obra" class="obra-berria" novalidate>
+      <label for="obra-eu">Izenburua euskaraz</label>
+      <input type="text" id="obra-eu" maxlength="80" required autocomplete="off" placeholder="Adibidez: Itsasoaren ahotsa">
+      <label for="obra-es">Título en castellano <span>(vacío si es el mismo)</span></label>
+      <input type="text" id="obra-es" maxlength="80" autocomplete="off" placeholder="Por ejemplo: La voz del mar">
+      <span class="etiketa">Foto de la obra</span>
+      <div class="argazkia">
+        <div class="aurrebista" id="aurrebista">Sin foto</div>
+        <div class="aukerak">
+          <label class="botoia bigarren txikia" for="obra-foto-fitxategia">Subir foto del ordenador</label>
+          <input type="file" id="obra-foto-fitxategia" accept="image/*" hidden>
+          <input type="url" id="obra-foto-url" placeholder="o pega la dirección de la imagen" aria-label="Dirección de la foto">
+        </div>
+      </div>
+      <p class="oharra errorea" id="obra-errorea" aria-live="polite"></p>
+      <div class="bidali"><button class="botoia" type="submit">Publicar obra</button><button type="button" class="botoia bigarren" id="cerrar-modala">Cancelar</button></div>
+    </form>
+  </div>`;
+  m.hidden = false;
+  document.getElementById("obra-eu").focus();
+}
+
+function pintarAurrebista(src) {
+  estado.foto = src;
+  document.getElementById("aurrebista").innerHTML = src ? `<img src="${esc(src)}" alt="Vista previa de la foto">` : "Sin foto";
+}
+
+// Reduce la foto a 960 px de lado como máximo para que quepa en el navegador.
+function leerFoto(file) {
+  return new Promise((ok, ko) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const k = Math.min(1, 960 / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg", 0.82));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); ko(new Error("Ese fichero no es una imagen que se pueda abrir.")); };
+    img.src = url;
+  });
+}
+
+function publicarObra() {
+  const eu = document.getElementById("obra-eu").value.trim(), es = document.getElementById("obra-es").value.trim() || eu;
+  const err = document.getElementById("obra-errorea");
+  if (!eu) { err.textContent = "Escribe al menos el título en euskera."; return; }
+  const existentes = new Set(Object.values(G.cfg.obras).flatMap(o => o.alias.map(a => a.toLowerCase())));
+  if (existentes.has(eu.toLowerCase()) || existentes.has(es.toLowerCase())) { err.textContent = "Ya hay una obra con ese título."; return; }
+  let id = slug(eu) || "obra", k = 2;
+  while (G.cfg.obras[id]) id = `${slug(eu) || "obra"}-${k++}`;
+  G.cfg.obras[id] = { eu, es, alias: [...new Set([eu, es])], imagen: estado.foto };
+  G.estrenos.push(id);
+  if (!guardar()) {
+    // Si la foto subida no cabe en el navegador, se guarda la obra sin ella.
+    G.cfg.obras[id].imagen = ""; guardar();
+    estado.aviso = `Publicada «${eu}», pero la foto es demasiado grande para guardarla en el navegador.`;
+  } else estado.aviso = `Publicada «${eu}». Ya se puede votar en el Txalometroa.`;
+  estado.destacar = id;
+  cerrarModala(); irA("zerrenda");
+  document.getElementById(`txartela-${id}`)?.scrollIntoView({ block: "center" });
+  setTimeout(() => { estado.destacar = null; }, 3500);
+}
+
+// ---------------------------------------------------------------- Export y obras sin configurar
+
+function abrirObrasNuevas() {
+  const nombres = sinConfigurar(), d = datosExport();
+  if (!nombres.length || !d) return;
+  const m = document.getElementById("modala");
+  m.innerHTML = `<div class="kutxa">
+    <h3 id="modala-izenburua">Obras nuevas en este export</h3>
+    <p>Indica si cada nombre es una obra nueva o la misma obra en el otro idioma. Las sugerencias salen de los nombres que reciben respuestas en las mismas fechas.
+    Si añades la foto, la tarjeta y la reseña de la obra la mostrarán.</p>
+    <div class="scroll">${htmlTablaObrasNuevas(nombres, G.cfg, d.filas)}</div>
+    <div class="bidali"><button type="button" class="botoia" id="guardar-obras">Guardar obras</button><button type="button" class="botoia bigarren" id="cerrar-modala">Más tarde</button></div>
+  </div>`;
+  m.dataset.nombres = JSON.stringify(nombres);
+  m.hidden = false;
+  m.querySelector("select")?.focus();
+}
+function cerrarModala() { const m = document.getElementById("modala"); m.hidden = true; m.innerHTML = ""; }
+
+async function abrirFichero(file) {
+  try {
+    const filas = await leerFichero(await file.arrayBuffer());
+    G.fichero = { nombre: file.name, filas };
+    estado.aviso = guardar() ? `Cargado «${file.name}».` : "Cargado, pero es demasiado grande para guardarlo en el navegador: se perderá al recargar.";
+    irA("zerrenda");
+    abrirObrasNuevas();
+  } catch (e) { estado.aviso = `No he podido leer «${file.name}»: ${e.message}`; estado.panelAbierto = true; pintarPanel(); }
+}
+
+// ---------------------------------------------------------------- Navegación
+
+let vistaActual = { nombre: "zerrenda" };
+function pintar(v = vistaActual) {
+  if ((v.nombre === "galdetegia" || v.nombre === "eskerrik") && !G.cfg.obras[v.obra]) v = { nombre: "zerrenda" };
+  vistaActual = v;
+  pintarCabecera();
+  const main = document.getElementById("edukia");
+  if (v.nombre === "galdetegia") main.innerHTML = vistaGaldetegia(v.obra);
+  else if (v.nombre === "eskerrik") main.innerHTML = vistaEskerrik(v.obra, v.antes);
+  else main.innerHTML = vistaZerrenda();
+  pintarPanel();
+}
+
+function irA(nombre, extra = {}) {
+  if (nombre === "emaitzak") {
+    pintar({ nombre: "zerrenda" });
+    document.getElementById("emaitzak").scrollIntoView({ block: "start" });
+    return;
+  }
+  pintar({ nombre, ...extra });
+  const azala = document.querySelector(".azala");
+  window.scrollTo({ top: azala.offsetTop + azala.offsetHeight - 40 });
+}
+
+// ---------------------------------------------------------------- Votar
+
+function ahora() {
+  const d = new Date();
+  return `${d.getFullYear()}-${dd(d.getMonth() + 1)}-${dd(d.getDate())} ${dd(d.getHours())}:${dd(d.getMinutes())}:${dd(d.getSeconds())}`;
+}
+
+function enviar(form) {
+  const t = T[estado.lang], id = form.dataset.obra;
+  const valores = Object.fromEntries(PREG.map(g => [g, +form.elements[g].value]));
+  const oharra = document.getElementById("oharra");
+  if (PREG.every(g => valores[g] === 0)) { oharra.textContent = t.gutxienez; oharra.className = "oharra errorea"; return; }
+  // Evita el doble envío: el botón se bloquea en cuanto se pulsa.
+  const boton = document.getElementById("bidali");
+  boton.disabled = true; boton.textContent = t.bidaltzen;
+  const antes = resultadoPublicado()?.obras.find(o => o.id === id) || null;
+  G.votos.push({ ID: `demo-${Date.now()}`, PRODUKZIOA: G.cfg.obras[id][estado.lang], NOIZ: ahora(), HIZKUNTZA: estado.lang, ...valores });
+  guardar();
+  setTimeout(() => { irA("eskerrik", { obra: id, antes }); konfetia(); }, 450);
+}
+
+// Pequeña celebración al aplaudir, con los colores de Hika.
+function konfetia() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const c = document.getElementById("konfetia"), ctx = c.getContext("2d");
+  c.hidden = false; c.width = innerWidth; c.height = innerHeight;
+  const col = ["#ff3c42", "#231f20", "#ffd34d", "#c8442c", "#ffffff"];
+  const ps = Array.from({ length: 140 }, () => ({ x: innerWidth / 2 + (Math.random() - .5) * 200, y: innerHeight * .35, vx: (Math.random() - .5) * 14, vy: -Math.random() * 13 - 4,
+    r: Math.random() * 6 + 4, c: col[Math.floor(Math.random() * col.length)], a: Math.random() * Math.PI, va: (Math.random() - .5) * .3 }));
+  let frames = 0;
+  (function paso() {
+    ctx.clearRect(0, 0, c.width, c.height);
+    for (const p of ps) {
+      p.vy += .35; p.x += p.vx; p.y += p.vy; p.a += p.va;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c; ctx.strokeStyle = "rgba(0,0,0,.15)";
+      ctx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); ctx.strokeRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); ctx.restore();
+    }
+    if (++frames < 110) requestAnimationFrame(paso); else { ctx.clearRect(0, 0, c.width, c.height); c.hidden = true; }
+  })();
+}
+
+// ---------------------------------------------------------------- Eventos
+
+document.addEventListener("click", e => {
+  const l = e.target.closest("[data-lang]");
+  if (l) { estado.lang = l.dataset.lang; pintar(); return; }
+  const tx = e.target.closest("[data-txalotu]");
+  if (tx) { e.preventDefault(); irA("galdetegia", { obra: tx.dataset.txalotu }); return; }
+  const j = e.target.closest("[data-joan]");
+  if (j) { e.preventDefault(); irA(j.dataset.joan); return; }
+  if (e.target.closest("#menu-botoia")) {
+    const m = document.getElementById("menua"), abierto = m.classList.toggle("itxita") === false;
+    e.target.closest("#menu-botoia").setAttribute("aria-expanded", abierto); return;
+  }
+  if (e.target.closest("#panel-toggle")) { estado.panelAbierto = !estado.panelAbierto; pintarPanel(); return; }
+
+  // Acciones que borran: el primer clic avisa y el segundo (en 4 s) ejecuta.
+  const acc = e.target.closest("[data-accion]");
+  if (acc) {
+    const clave = acc.dataset.accion;
+    clearTimeout(estado.armado?.timer);
+    if (estado.armado?.id === clave) {
+      const [id, arg] = clave.split(":");
+      estado.armado = null; estado.aviso = ACCIONES[id](arg); guardar(); cerrarModala(); irA("zerrenda");
+    } else {
+      estado.armado = { id: clave, timer: setTimeout(() => { estado.armado = null; pintarPanel(); }, 4000) };
+      pintarPanel();
+    }
+    return;
+  }
+  if (e.target.id === "anadir-obra") { abrirNuevaObra(); return; }
+  if (e.target.id === "cargar") { document.getElementById("input-fichero").click(); return; }
+  if (e.target.id === "configurar") { abrirObrasNuevas(); return; }
+  if (e.target.id === "guardar-obras") {
+    const m = document.getElementById("modala");
+    aplicarObrasNuevas(G.cfg, JSON.parse(m.dataset.nombres), datosExport().filas);
+    guardar(); cerrarModala(); estado.aviso = "Obras guardadas."; irA("zerrenda"); return;
+  }
+  if (e.target.id === "cerrar-modala" || e.target.id === "modala") { cerrarModala(); return; }
+  if (e.target.id === "pegar") {
+    G.pegado = { votos: G.votos.length, cuando: new Date().toISOString() }; guardar();
+    pintar(); if (vistaActual.nombre === "zerrenda") document.getElementById("emaitzak").scrollIntoView({ block: "start" }); return;
+  }
+});
+
+document.addEventListener("change", async e => {
+  if (e.target.name === "modo") { G.modo = e.target.value; guardar(); pintar(); }
+  if (e.target.id === "marcar") { estado.marcarBloque = e.target.checked; pintar(); if (estado.marcarBloque) document.getElementById("emaitzak")?.scrollIntoView({ block: "center" }); }
+  if (e.target.id === "min-publicar") { G.cfg.publicacion.min_respuestas_obra = Math.max(1, parseInt(e.target.value, 10) || 1); guardar(); pintar(); }
+  if (e.target.id === "input-fichero") { const f = e.target.files[0]; e.target.value = ""; if (f) abrirFichero(f); }
+  if (e.target.id === "obra-foto-fitxategia") {
+    const f = e.target.files[0]; if (!f) return;
+    try { pintarAurrebista(await leerFoto(f)); document.getElementById("obra-foto-url").value = ""; }
+    catch (err) { document.getElementById("obra-errorea").textContent = err.message; }
+  }
+});
+
+document.addEventListener("input", e => {
+  if (e.target.id === "obra-foto-url") { pintarAurrebista(e.target.value.trim()); return; }
+  if (e.target.type !== "range") return;
+  const v = +e.target.value, out = document.getElementById(`out-${e.target.id}`);
+  e.target.style.setProperty("--bete", `${v * 10}%`);
+  out.textContent = v; out.classList.toggle("jarrita", v > 0);
+  const oharra = document.getElementById("oharra");
+  if (oharra && oharra.classList.contains("errorea")) { oharra.textContent = ""; oharra.className = "oharra"; }
+});
+
+document.addEventListener("submit", e => {
+  e.preventDefault();
+  if (e.target.id === "form-obra") { publicarObra(); return; }
+  enviar(e.target);
+});
+
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !document.getElementById("modala").hidden) cerrarModala(); });
+
+// Arrastrar un export a la ventana lo carga (salvo con la ventana de añadir obra abierta).
+const capa = document.getElementById("soltar");
+let arrastres = 0;
+const soltarExport = () => document.getElementById("modala").hidden;
+window.addEventListener("dragenter", e => { if (soltarExport() && e.dataTransfer?.types.includes("Files")) { arrastres++; capa.hidden = false; } });
+window.addEventListener("dragleave", () => { if (--arrastres <= 0) { arrastres = 0; capa.hidden = true; } });
+window.addEventListener("dragover", e => e.preventDefault());
+window.addEventListener("drop", e => { e.preventDefault(); arrastres = 0; capa.hidden = true; const f = e.dataTransfer.files[0]; if (f && soltarExport()) abrirFichero(f); });
+
+// Un enlace o QR con #txalotu-<obra> abre directamente el formulario de esa obra.
+const directo = location.hash.match(/^#txalotu-(.+)$/);
+if (directo && G.cfg.obras[directo[1]]) pintar({ nombre: "galdetegia", obra: directo[1] });
+else pintar();
+</script>
+</body>
+</html>

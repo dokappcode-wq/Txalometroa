@@ -1,0 +1,39 @@
+{
+  "_nota": "Géneros provisionales, deducidos de las descripciones de hikateatroa.eus: que Hika los revise. «txalometroa» = id de la obra en config.json si está activa en el Txalometroa.",
+  "generos": {
+    "drama":       {"eu": "Drama",              "es": "Drama",             "color": "#ff4d4f"},
+    "tragikomedia":{"eu": "Tragikomedia",       "es": "Tragicomedia",      "color": "#ffb000"},
+    "komedia":     {"eu": "Komedia",            "es": "Comedia",           "color": "#fff3c4"},
+    "musikala":    {"eu": "Musika-antzerkia",   "es": "Teatro musical",    "color": "#ff7aa8"},
+    "dantza":      {"eu": "Dantza-antzerkia",   "es": "Danza-teatro",      "color": "#9b8cff"},
+    "kalea":       {"eu": "Kaleko antzerkia",   "es": "Teatro de calle",   "color": "#4fd1c5"}
+  },
+  "obras": [
+    {"id": "makilhotsak", "eu": "MAKILhotsak", "es": "MAKILhotsak", "urtea": 2026, "genero": "dantza", "txalometroa": "makilhotsak",
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2026/01/makil_tsak_irudia.jpg", "url": "https://hikateatroa.eus/produkzioa/makil-hotsak/"},
+    {"id": "zorretan", "eu": "Zorretan", "es": "Mi deuda", "urtea": 2024, "genero": "tragikomedia", "txalometroa": "zorretan",
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2025/09/mi-deuda_irudia-1.jpg", "url": "https://hikateatroa.eus/produkzioa/zorretan-2/"},
+    {"id": "atearen-bestaldean", "eu": "Atearen bestaldean", "es": "Al otro lado de la puerta", "urtea": 2024, "genero": "drama", "txalometroa": "atearen-bestaldean",
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2023/11/txalo_atearen_bestaldean.jpg", "url": "https://hikateatroa.eus/produkzioa/atearen-bestaldean-2/"},
+    {"id": "bidaia", "eu": "Bidaia", "es": "El viaje", "urtea": 2023, "genero": "musikala", "txalometroa": "bidaia",
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2023/03/EL-VIAJE10-e1715110447566.jpg", "url": "https://hikateatroa.eus/produkzioa/bidaia/"},
+    {"id": "toto", "eu": "Toto", "es": "Toto", "urtea": 2023, "genero": "komedia", "txalometroa": null,
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2022/06/toto-4-e1716804282140.jpg", "url": "https://hikateatroa.eus/produkzioa/toto/"},
+    {"id": "tarara", "eu": "Tarara", "es": "La Tarara", "urtea": 2022, "genero": "drama", "txalometroa": null,
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2021/02/txalo_tarara-e1717047597740.jpg", "url": "https://hikateatroa.eus/produkzioa/tarara/"},
+    {"id": "seda", "eu": "Seda", "es": "Seda", "urtea": 2021, "genero": "drama", "txalometroa": null,
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2021/02/sedamod-768x523.jpg", "url": "https://hikateatroa.eus/produkzioa/seda-2021/"},
+    {"id": "gazte", "eu": "Gazte", "es": "Gazte", "urtea": 2021, "genero": "dantza", "txalometroa": null,
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2021/07/gaztehond-1031-768x512.jpg", "url": "https://hikateatroa.eus/produkzioa/gazte/"},
+    {"id": "tonbola", "eu": "Tonbola", "es": "Tómbola", "urtea": 2020, "genero": "kalea", "txalometroa": null,
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2021/02/tonbola.jpg", "url": "https://hikateatroa.eus/produkzioa/tonbola/"},
+    {"id": "zaparrada", "eu": "Zaparrada", "es": "Zaparrada", "urtea": 2019, "genero": "kalea", "txalometroa": null,
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2021/02/Zaparrada-2.jpg", "url": "https://hikateatroa.eus/produkzioa/464-2/"},
+    {"id": "txarriboda", "eu": "Txarriboda", "es": "El bodorrio", "urtea": 2018, "genero": "komedia", "txalometroa": null,
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2021/02/el-bodorrio-1-300x175-1.jpg", "url": "https://hikateatroa.eus/produkzioa/txarriboda/"},
+    {"id": "sagartu", "eu": "Sagartu", "es": "Sagartu", "urtea": 2017, "genero": "kalea", "txalometroa": null,
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2021/02/HikaTeatroa-Sagartu.jpg", "url": "https://hikateatroa.eus/produkzioa/sagartu-2017/"},
+    {"id": "koadernoa-zuri", "eu": "Koadernoa zuri", "es": "Cuaderno en blanco", "urtea": 2016, "genero": "drama", "txalometroa": null,
+     "imagen": "https://hikateatroa.eus/wp-content/uploads/2021/02/CUADERNO-EN-BLANCO-768x384.jpg", "url": "https://hikateatroa.eus/produkzioa/koadernoa-zuri-2016/"}
+  ]
+}

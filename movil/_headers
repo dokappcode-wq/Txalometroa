@@ -1,0 +1,10 @@
+# Cabeceras para Netlify: tipo correcto del manifiesto y sin caché para la página y el
+# service worker, así el móvil recibe siempre la última versión de la app.
+/manifest.webmanifest
+  Content-Type: application/manifest+json
+/sw.js
+  Cache-Control: no-cache
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
