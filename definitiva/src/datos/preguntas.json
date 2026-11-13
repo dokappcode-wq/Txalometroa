@@ -1,0 +1,51 @@
+{
+  "GAL1": {
+    "bloque": "obra",
+    "eu": "Gogobetetzea",
+    "es": "Satisfacción",
+    "texto_eu": "Orokorrean, zein da zure gogobetetze-maila?",
+    "texto_es": "¿Cuál es el grado de satisfacción general?"
+  },
+  "GAL2": {
+    "bloque": "obra",
+    "eu": "Trama",
+    "es": "Trama",
+    "texto_eu": "Zer iruditu zaizu obra honen trama?",
+    "texto_es": "¿Qué te ha parecido la trama de esta obra?"
+  },
+  "GAL3": {
+    "bloque": "obra",
+    "eu": "Aktoreak",
+    "es": "Reparto",
+    "texto_eu": "Nola baloratuko zenituzke aktoreak?",
+    "texto_es": "¿Cómo valorarías el reparto?"
+  },
+  "GAL4": {
+    "bloque": "obra",
+    "eu": "Gomendatzea",
+    "es": "Recomendaría",
+    "texto_eu": "Zenbateraino da posible obra hau norbaiti gomendatzea?",
+    "texto_es": "¿Cuánto de probable es que recomiendes esta obra a alguien?"
+  },
+  "GAL5": {
+    "bloque": "publico",
+    "eu": "Antzerkira itzuli",
+    "es": "Volver al teatro",
+    "texto_eu": "Laster beste antzezlanen bat ikusiko duzula uste al duzu?",
+    "texto_es": "¿Cuánto de posible es que vuelvas al teatro dentro de poco?"
+  },
+  "GAL6": {
+    "bloque": "publico",
+    "eu": "Hikara itzuli",
+    "es": "Volver a Hika",
+    "texto_eu": "Zenbateraino da posible Hikaren beste antzezlan bat ikustera itzultzea?",
+    "texto_es": "¿Cuánto de posible es que vuelvas a ver una obra de Hika?"
+  },
+  "GAL7": {
+    "bloque": "localidad",
+    "eu": "Herriko programazioa",
+    "es": "Programación local",
+    "texto_eu": "Nola baloratuko zenuke herri honetako kultur programazioa?",
+    "texto_es": "¿Cómo valorarías la programación cultural de esta localidad?"
+  }
+}

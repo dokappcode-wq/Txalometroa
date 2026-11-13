@@ -1,0 +1,208 @@
+{
+  "fuente": "_Lab_Material_Hika-Teatroa_txalometroa_data_20261020.xls",
+  "hasta": "2026-10-19",
+  "validas": 546,
+  "minimo": 10,
+  "obras": [
+    {
+      "id": "atearen-bestaldean",
+      "n": 304,
+      "nota": 9.56,
+      "preguntas": {
+        "GAL1": {
+          "n": 302,
+          "media": 9.61,
+          "pct_10": 79,
+          "pct_bajo": 2
+        },
+        "GAL2": {
+          "n": 303,
+          "media": 9.32,
+          "pct_10": 70,
+          "pct_bajo": 5
+        },
+        "GAL3": {
+          "n": 302,
+          "media": 9.82,
+          "pct_10": 88,
+          "pct_bajo": 0
+        },
+        "GAL4": {
+          "n": 302,
+          "media": 9.52,
+          "pct_10": 77,
+          "pct_bajo": 3
+        },
+        "GAL5": {
+          "n": 300,
+          "media": 9.29,
+          "pct_10": 72,
+          "pct_bajo": 4
+        },
+        "GAL6": {
+          "n": 300,
+          "media": 9.28,
+          "pct_10": 69,
+          "pct_bajo": 6
+        },
+        "GAL7": {
+          "n": 299,
+          "media": 8.85,
+          "pct_10": 56,
+          "pct_bajo": 10
+        }
+      },
+      "recomendaria": 87
+    },
+    {
+      "id": "zorretan",
+      "n": 227,
+      "nota": 9.16,
+      "preguntas": {
+        "GAL1": {
+          "n": 226,
+          "media": 8.98,
+          "pct_10": 54,
+          "pct_bajo": 7
+        },
+        "GAL2": {
+          "n": 224,
+          "media": 9,
+          "pct_10": 56,
+          "pct_bajo": 7
+        },
+        "GAL3": {
+          "n": 224,
+          "media": 9.63,
+          "pct_10": 77,
+          "pct_bajo": 1
+        },
+        "GAL4": {
+          "n": 223,
+          "media": 9.1,
+          "pct_10": 62,
+          "pct_bajo": 7
+        },
+        "GAL5": {
+          "n": 222,
+          "media": 9.15,
+          "pct_10": 65,
+          "pct_bajo": 8
+        },
+        "GAL6": {
+          "n": 218,
+          "media": 8.99,
+          "pct_10": 59,
+          "pct_bajo": 10
+        },
+        "GAL7": {
+          "n": 219,
+          "media": 8.35,
+          "pct_10": 36,
+          "pct_bajo": 14
+        }
+      },
+      "recomendaria": 74
+    },
+    {
+      "id": "bidaia",
+      "n": 9,
+      "nota": 9.58,
+      "preguntas": {
+        "GAL1": {
+          "n": 9,
+          "media": 9.44,
+          "pct_10": 78,
+          "pct_bajo": 11
+        },
+        "GAL2": {
+          "n": 9,
+          "media": 9.56,
+          "pct_10": 89,
+          "pct_bajo": 11
+        },
+        "GAL3": {
+          "n": 9,
+          "media": 9.44,
+          "pct_10": 67,
+          "pct_bajo": 0
+        },
+        "GAL4": {
+          "n": 9,
+          "media": 9.89,
+          "pct_10": 89,
+          "pct_bajo": 0
+        },
+        "GAL5": {
+          "n": 9,
+          "media": 9.56,
+          "pct_10": 67,
+          "pct_bajo": 0
+        },
+        "GAL6": {
+          "n": 9,
+          "media": 8.44,
+          "pct_10": 56,
+          "pct_bajo": 11
+        },
+        "GAL7": {
+          "n": 9,
+          "media": 8.89,
+          "pct_10": 78,
+          "pct_bajo": 11
+        }
+      },
+      "recomendaria": 100
+    },
+    {
+      "id": "makilhotsak",
+      "n": 6,
+      "nota": 9.25,
+      "preguntas": {
+        "GAL1": {
+          "n": 6,
+          "media": 9.83,
+          "pct_10": 83,
+          "pct_bajo": 0
+        },
+        "GAL2": {
+          "n": 6,
+          "media": 8.67,
+          "pct_10": 50,
+          "pct_bajo": 0
+        },
+        "GAL3": {
+          "n": 6,
+          "media": 9.83,
+          "pct_10": 83,
+          "pct_bajo": 0
+        },
+        "GAL4": {
+          "n": 6,
+          "media": 8.67,
+          "pct_10": 50,
+          "pct_bajo": 0
+        },
+        "GAL5": {
+          "n": 6,
+          "media": 9.67,
+          "pct_10": 83,
+          "pct_bajo": 0
+        },
+        "GAL6": {
+          "n": 4,
+          "media": 9.75,
+          "pct_10": 75,
+          "pct_bajo": 0
+        },
+        "GAL7": {
+          "n": 5,
+          "media": 8.2,
+          "pct_10": 40,
+          "pct_bajo": 20
+        }
+      },
+      "recomendaria": 50
+    }
+  ]
+}
