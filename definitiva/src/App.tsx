@@ -6,6 +6,7 @@ import type { Idioma, Obra } from './lib/catalogo';
 import estadisticas from './datos/estadisticas.json';
 import preguntas from './datos/preguntas.json';
 import { Marca, Mascaras, Medidor } from './componentes/Marca';
+import Cuenta from './componentes/Cuenta';
 
 type Texto = (es: string, eu: string) => string;
 const fases = [
@@ -68,7 +69,7 @@ export default function App() {
           <Route path="/wrapped" element={<Pendiente tipo="wrapped" t={t} />} />
           <Route path="/constelacion" element={<Pendiente tipo="constelacion" t={t} />} />
           <Route path="/comunidad" element={<Pendiente tipo="comunidad" t={t} />} />
-          <Route path="/perfil" element={<Pendiente tipo="perfil" t={t} />} />
+          <Route path="/perfil" element={<Cuenta t={t} />} />
           <Route path="/butacas" element={<Pendiente tipo="butacas" t={t} />} />
           <Route path="*" element={<div className="no-encontrado"><span className="antetitulo">404</span><h1>{t('Aquí ha caído el telón.', 'Hemen oihala jaitsi da.')}</h1><p>{t('No encontramos esta página.', 'Ez dugu orri hau aurkitu.')}</p><Link className="boton principal" to="/">{t('Volver a las obras', 'Obretara itzuli')}<ArrowRight size={17} /></Link></div>} />
         </Routes>
