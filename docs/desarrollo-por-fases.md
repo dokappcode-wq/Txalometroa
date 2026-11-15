@@ -30,3 +30,7 @@ El paquete de revisión lleva solo agregados, no respuestas individuales ni dato
 ## Dependencias posteriores
 
 Cuentas de servicios y dominio bajo control de Hika, configuración segura de credenciales, acceso a WordPress, fotos y géneros confirmados, revisión lingüística y legal, responsable de moderación y función disponible para el piloto. Planos y pegatinas QR ya no son una dependencia de este alcance.
+
+## Estética elegida · 15/11/2026
+
+El usuario eligió la propuesta 02, Escenario: fondo negro, blanco pastel, rojo, titulares sans serif contundentes, tarjetas grandes con esquinas redondeadas y navegación clara. Conservar el logo existente y los colores originales de los carteles: no aplicar filtros monocromos ni duotonos a las fotografías. Las imágenes de las propuestas eran referencias visuales; no sustituyen los recursos reales del catálogo. El cambio estético se aplica a las pantallas ya desarrolladas y no adelanta funcionalidades de otras fases.
