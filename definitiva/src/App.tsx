@@ -1,7 +1,7 @@
 import Aplauso from './componentes/Aplauso';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleUserRound, Clock3, Globe2, LayoutGrid, Menu, Search, Sparkles, Star, Ticket, Users, WifiOff, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleUserRound, Clock3, Globe2, Home, LayoutGrid, Menu, Moon, Search, Sun, Theatre, Sparkles, Star, Ticket, Users, WifiOff, X } from 'lucide-react';
 import { catalogo, filtrarObras, anioMadrid, aniosWrapped } from './lib/catalogo';
 import type { Idioma, Obra } from './lib/catalogo';
 import estadisticas from './datos/estadisticas.json';
@@ -33,6 +33,12 @@ export default function App() {
   const [sinRed, setSinRed] = useState(!navigator.onLine);
   const dialogo = useRef<HTMLDialogElement>(null);
   const localizacion = useLocation();
+  const esFeed = localizacion.pathname === '/feed';
+  const comunidadAbierta = esFeed && (new URLSearchParams(localizacion.search).has('personas') || new URLSearchParams(localizacion.search).has('persona'));
+  const [temaFeed,setTemaFeed] = useState<'oscuro'|'claro'>(() => {
+    try { return localStorage.getItem('txalo-feed-tema') === 'claro' ? 'claro' : 'oscuro'; } catch { return 'oscuro'; }
+  });
+  useEffect(() => { try { localStorage.setItem('txalo-feed-tema',temaFeed); } catch { /* Preferencia solo para esta sesión. */ } },[temaFeed]);
   const t: Texto = (es, eu) => idioma === 'es' ? es : eu;
   useEffect(() => {
     document.documentElement.lang = idioma;
@@ -53,7 +59,7 @@ export default function App() {
     { ruta: '/constelacion', es: 'Mi constelación', eu: 'Nire konstelazioa', icono: Sparkles },
     { ruta: '/wrapped', es: 'Wrapped', eu: 'Wrapped', icono: Star },
   ];
-  return <>
+  return <div className={`txalo-shell ${esFeed?'es-feed':''}`} data-feed-tema={temaFeed}>
     <a className="saltar" href="#contenido">{t('Saltar al contenido', 'Edukira joan')}</a>
     <aside className="lateral">
       <Link to="/" className="marca" aria-label="Txalometroa · Hika Teatroa"><Marca /><span>hika<span>TEATROA</span></span></Link>
@@ -63,8 +69,21 @@ export default function App() {
     </aside>
     <div className="app">
       <div className="revision"><span><i />{t('Versión en desarrollo', 'Garapen bertsioa')} <b>· {t('Cuentas y feed · en revisión', 'Kontuak eta feed-a · berrikusten')}</b></span><button onClick={() => dialogo.current?.showModal()}>{t('Ver las fases', 'Faseak ikusi')}<ArrowUpRight size={13} /></button></div>
-      <header className="cabecera"><Link to="/" className="cabecera-marca"><Marca /><span>Txalometroa<small>HIKA TEATROA</small></span></Link><span className="cabecera-frase">{t('El teatro continúa después del aplauso.', 'Antzerkiak txaloen ondoren jarraitzen du.')}</span><div className="cabecera-acciones"><div className="idiomas" role="group" aria-label={t('Idioma', 'Hizkuntza')}><Globe2 size={15} />{(['eu', 'es'] as Idioma[]).map(i => <button key={i} lang={i} aria-pressed={idioma === i} onClick={() => setIdioma(i)}>{i.toUpperCase()}</button>)}</div><button className="menu-boton" aria-label={t('Abrir menú', 'Menua ireki')} onClick={() => setMenu(!menu)} aria-expanded={menu}>{menu ? <X /> : <Menu />}</button><Link to="/perfil" className="usuario-boton" aria-label={t('Tu espacio', 'Zure gunea')}><CircleUserRound size={23} /></Link></div></header>
-      {menu && <nav className="menu-movil" aria-label={t('Más secciones', 'Atal gehiago')}><Link to="/feed">Feed<Users size={18} /></Link><Link to="/butacas">{t('Butacas · Próximamente', 'Butakak · Laster')}<Ticket size={18} /></Link></nav>}
+      {esFeed ? <header className="cabecera feed-cabecera">
+        <Link to="/feed" className="feed-marca" aria-label="Hika Teatroa · Txalometroa"><span className="feed-marca-linea">hika<Marca/></span><span className="feed-marca-sub">Txalometroa</span></Link>
+        <div className="feed-cabecera-acciones">
+          <Link to="/feed?personas=1" className="feed-icono" aria-label={t('Buscar personas','Pertsonak bilatu')}><Search size={22}/></Link>
+          <button className="feed-icono" aria-label={temaFeed==='oscuro'?t('Activar tema claro','Gai argia aktibatu'):t('Activar tema oscuro','Gai iluna aktibatu')} onClick={()=>setTemaFeed(temaFeed==='oscuro'?'claro':'oscuro')}>{temaFeed==='oscuro'?<Sun size={20}/>:<Moon size={20}/>}</button>
+          <Link to="/perfil" className="feed-icono feed-cuenta-icono" aria-label={t('Mi perfil','Nire profila')}><CircleUserRound size={27}/></Link>
+          <button className="feed-icono" aria-label={t('Abrir menú','Menua ireki')} aria-expanded={menu} aria-controls="feed-menu-principal" onClick={()=>setMenu(!menu)}>{menu?<X size={20}/>:<Menu size={20}/>}</button>
+        </div>
+      </header> : <header className="cabecera"><Link to="/" className="cabecera-marca"><Marca /><span>Txalometroa<small>HIKA TEATROA</small></span></Link><span className="cabecera-frase">{t('El teatro continúa después del aplauso.', 'Antzerkiak txaloen ondoren jarraitzen du.')}</span><div className="cabecera-acciones"><div className="idiomas" role="group" aria-label={t('Idioma', 'Hizkuntza')}><Globe2 size={15} />{(['eu', 'es'] as Idioma[]).map(i => <button key={i} lang={i} aria-pressed={idioma === i} onClick={() => setIdioma(i)}>{i.toUpperCase()}</button>)}</div><button className="menu-boton" aria-label={t('Abrir menú', 'Menua ireki')} onClick={() => setMenu(!menu)} aria-expanded={menu}>{menu ? <X /> : <Menu />}</button><Link to="/perfil" className="usuario-boton" aria-label={t('Tu espacio', 'Zure gunea')}><CircleUserRound size={23} /></Link></div></header>}
+
+      {menu && esFeed && <nav id="feed-menu-principal" className="feed-menu-principal" aria-label={t('Más secciones','Atal gehiago')}>
+        <div className="idiomas" role="group" aria-label={t('Idioma','Hizkuntza')}><Globe2 size={16}/>{(['eu','es'] as Idioma[]).map(i=><button key={i} lang={i} aria-pressed={idioma===i} onClick={()=>setIdioma(i)}>{i.toUpperCase()}</button>)}</div>
+        <Link to="/constelacion"><Sparkles size={18}/>{t('Mi constelación','Nire konstelazioa')}</Link><Link to="/wrapped"><Star size={18}/>Wrapped</Link><Link to="/butacas"><Ticket size={18}/>{t('Butacas · Próximamente','Butakak · Laster')}</Link>
+      </nav>}
+      {menu && !esFeed && <nav className="menu-movil" aria-label={t('Más secciones', 'Atal gehiago')}><Link to="/feed">Feed<Users size={18} /></Link><Link to="/butacas">{t('Butacas · Próximamente', 'Butakak · Laster')}<Ticket size={18} /></Link></nav>}
       {sinRed && <div className="sin-red" role="status"><WifiOff size={16} />{t('Sin conexión. Algunas imágenes y enlaces pueden no estar disponibles.', 'Konexiorik gabe. Baliteke irudi eta esteka batzuk erabilgarri ez egotea.')}</div>}
       <main id="contenido" tabIndex={-1}>
         <Routes>
@@ -81,9 +100,14 @@ export default function App() {
       </main>
       <footer className="pie"><span>HIKA TEATROA <span className="estrella">✳</span> TXALOMETROA</span><span>{t('Hecho de teatro. Hecho de ti.', 'Antzerkiz egina. Zurekin egina.')}</span><a href="https://hikateatroa.eus" target="_blank" rel="noreferrer">hikateatroa.eus<ArrowUpRight size={14} /></a></footer>
     </div>
-    <nav className="inferior" aria-label={t('Navegación móvil', 'Mugikorreko nabigazioa')}>{[navegacion[0], navegacion[1], {...navegacion[2],es:"Constelación",eu:"Konstelazioa"}, navegacion[3], { ruta: '/perfil', es: 'Mi espacio', eu: 'Nire gunea', icono: CircleUserRound }].map(({ruta,es,eu,icono: Icono}) => <NavLink key={ruta} to={ruta} end={ruta==='/'}><Icono size={21} /><span>{t(es, eu)}</span></NavLink>)}</nav>
+    {esFeed ? <nav className="inferior feed-navegacion" aria-label={t('Navegación móvil','Mugikorreko nabigazioa')}>
+      <Link to="/feed" className={!comunidadAbierta?'active':''} aria-current={!comunidadAbierta?'page':undefined}><Home size={23}/><span>Feed</span></Link>
+      <Link to="/"><Theatre size={23}/><span>{t('Obras','Obrak')}</span></Link>
+      <Link to="/feed?personas=1" className={comunidadAbierta?'active':''} aria-current={comunidadAbierta?'page':undefined}><Users size={23}/><span>{t('Comunidad','Komunitatea')}</span></Link>
+      <Link to="/perfil"><CircleUserRound size={23}/><span>{t('Perfil','Profila')}</span></Link>
+    </nav> : <nav className="inferior" aria-label={t('Navegación móvil', 'Mugikorreko nabigazioa')}>{[navegacion[0], navegacion[1], {...navegacion[2],es:"Constelación",eu:"Konstelazioa"}, navegacion[3], { ruta: '/perfil', es: 'Mi espacio', eu: 'Nire gunea', icono: CircleUserRound }].map(({ruta,es,eu,icono: Icono}) => <NavLink key={ruta} to={ruta} end={ruta==='/'}><Icono size={21} /><span>{t(es, eu)}</span></NavLink>)}</nav>}
     <dialog ref={dialogo} className="dialogo" aria-labelledby="fases-titulo" onClick={e => { if (e.target === e.currentTarget) dialogo.current?.close(); }}><div className="dialogo-cabecera"><div><span className="antetitulo">TXALOMETROA</span><h2 id="fases-titulo">{t('La app, paso a paso.', 'Appa, pausoz pauso.')}</h2></div><button className="icono-boton" aria-label={t('Cerrar', 'Itxi')} onClick={() => dialogo.current?.close()}><X /></button></div><p>{t('Revisamos cada fase contigo antes de avanzar a la siguiente.', 'Fase bakoitza zurekin berrikusiko dugu hurrengora igaro aurretik.')}</p><ol className="fases">{fases.map((f,i)=><li key={f[0]} className={i===1?'fase-actual':''}><span className="numero-fase">{i===0?<Check size={17}/>:i+1}</span><div><strong>{t(f[0],f[1])}</strong><p>{t(f[2],f[3])}</p>{i===1&&<small>{t('Disponible para revisión', 'Berrikusteko erabilgarri')}</small>}</div></li>)}</ol><p className="nota-dialogo"><Ticket size={17}/>{t('Butacas queda aplazado, fuera de estas fases.', 'Butakak gerorako utziko da, fase hauetatik kanpo.')}</p></dialog>
-  </>;
+  </div>;
 }
 
 function Foto({ obra, clase = '' }: { obra: Obra; clase?: string }) {

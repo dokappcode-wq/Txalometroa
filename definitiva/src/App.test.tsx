@@ -54,3 +54,24 @@ describe('Recorridos de la fase 1',()=>{
     expect(screen.getByRole('link',{name:'Volver a las obras'}).getAttribute('href')).toBe('/');
   });
 });
+
+describe('Feed con diseño Hika',()=>{
+  it('recuerda el tema y conserva el acceso a las otras secciones',async()=>{
+    const u=userEvent.setup();abrir('/feed');
+    await u.click(screen.getByRole('button',{name:'Activar tema claro'}));
+    expect(document.querySelector('.es-feed')?.getAttribute('data-feed-tema')).toBe('claro');
+    expect(localStorage.getItem('txalo-feed-tema')).toBe('claro');
+    await u.click(screen.getByRole('button',{name:'Abrir menú'}));
+    const menu=screen.getByRole('navigation',{name:'Más secciones'});
+    expect(within(menu).getByRole('link',{name:'Wrapped'}).getAttribute('href')).toBe('/wrapped');
+    await u.click(within(menu).getByRole('link',{name:'Mi constelación'}));
+    expect(document.querySelector('.es-feed')).toBeNull();
+  });
+  it('ofrece las cuatro entradas móviles y abre comunidad desde su enlace',()=>{
+    abrir('/feed?personas=1');
+    const nav=within(screen.getByRole('navigation',{name:'Navegación móvil'}));
+    expect(nav.getAllByRole('link').map(a=>a.textContent)).toEqual(['Feed','Obras','Comunidad','Perfil']);
+    expect(nav.getByRole('link',{name:'Comunidad'}).getAttribute('aria-current')).toBe('page');
+    expect(nav.getByRole('link',{name:'Feed'}).getAttribute('aria-current')).toBeNull();
+  });
+});

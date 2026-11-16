@@ -1,0 +1,33 @@
+name: Validar app definitiva
+on:
+  push:
+    branches: [codex/fase-1-base-visual]
+    paths: ['definitiva/**', '.github/workflows/validar-definitiva.yml']
+  pull_request:
+    paths: ['definitiva/**', '.github/workflows/validar-definitiva.yml']
+permissions:
+  contents: read
+concurrency:
+  group: definitiva-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  comprobar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: definitiva
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: definitiva/package-lock.json
+      - run: npm ci
+      - name: Compilar TypeScript y Vite
+        run: npm run build
+      - name: Pruebas de la aplicación
+        run: npm test -- --maxWorkers=2
