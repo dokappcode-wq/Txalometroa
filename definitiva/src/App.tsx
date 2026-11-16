@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import { Link, NavLink, Route, Routes, useLocation, useSearchParams } from 'react-router-dom';
+import { Link, NavLink, Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleUserRound, Clock3, Globe2, Heart, LayoutGrid, Menu, Search, Sparkles, Star, Ticket, Users, WifiOff, X } from 'lucide-react';
 import { catalogo, filtrarObras, anioMadrid, aniosWrapped } from './lib/catalogo';
 import type { Idioma, Obra } from './lib/catalogo';
@@ -8,6 +8,8 @@ import preguntas from './datos/preguntas.json';
 import { Marca, Mascaras, Medidor } from './componentes/Marca';
 import Privacidad from './componentes/Privacidad';
 const Cuenta = lazy(() => import('./componentes/Cuenta'));
+const Feed = lazy(() => import('./componentes/Feed'));
+const Dashboard = lazy(() => import('./componentes/Dashboard'));
 
 type Texto = (es: string, eu: string) => string;
 const fases = [
@@ -46,7 +48,7 @@ export default function App() {
   }, []);
   const navegacion = [
     { ruta: '/', es: 'Obras', eu: 'Obrak', icono: LayoutGrid },
-    { ruta: '/comunidad', es: 'Comunidad', eu: 'Komunitatea', icono: Users },
+    { ruta: '/feed', es: 'Feed', eu: 'Feed', icono: Users },
     { ruta: '/constelacion', es: 'Mi constelación', eu: 'Nire konstelazioa', icono: Sparkles },
     { ruta: '/wrapped', es: 'Wrapped', eu: 'Wrapped', icono: Star },
   ];
@@ -59,9 +61,9 @@ export default function App() {
       <div className="lateral-inferior"><Link to="/butacas" className="butacas-link"><Ticket size={19} />{t('Butacas', 'Butakak')}<span>{t('Pronto', 'Laster')}</span></Link><Link to="/perfil" className="perfil-link"><CircleUserRound size={30} /><span>{t('Tu espacio', 'Zure gunea')}<small>{t('Una historia muy tuya', 'Zure istorio propioa')}</small></span><ArrowUpRight size={17} /></Link><span className="sello">HIKA TEATROA · DONOSTIA</span></div>
     </aside>
     <div className="app">
-      <div className="revision"><span><i />{t('Versión en desarrollo', 'Garapen bertsioa')} <b>· {t('Fase 2 · en revisión', '2. fasea · berrikusten')}</b></span><button onClick={() => dialogo.current?.showModal()}>{t('Ver las fases', 'Faseak ikusi')}<ArrowUpRight size={13} /></button></div>
+      <div className="revision"><span><i />{t('Versión en desarrollo', 'Garapen bertsioa')} <b>· {t('Cuentas y feed · en revisión', 'Kontuak eta feed-a · berrikusten')}</b></span><button onClick={() => dialogo.current?.showModal()}>{t('Ver las fases', 'Faseak ikusi')}<ArrowUpRight size={13} /></button></div>
       <header className="cabecera"><Link to="/" className="cabecera-marca"><Marca /><span>Txalometroa<small>HIKA TEATROA</small></span></Link><span className="cabecera-frase">{t('El teatro continúa después del aplauso.', 'Antzerkiak txaloen ondoren jarraitzen du.')}</span><div className="cabecera-acciones"><div className="idiomas" role="group" aria-label={t('Idioma', 'Hizkuntza')}><Globe2 size={15} />{(['eu', 'es'] as Idioma[]).map(i => <button key={i} lang={i} aria-pressed={idioma === i} onClick={() => setIdioma(i)}>{i.toUpperCase()}</button>)}</div><button className="menu-boton" aria-label={t('Abrir menú', 'Menua ireki')} onClick={() => setMenu(!menu)} aria-expanded={menu}>{menu ? <X /> : <Menu />}</button><Link to="/perfil" className="usuario-boton" aria-label={t('Tu espacio', 'Zure gunea')}><CircleUserRound size={23} /></Link></div></header>
-      {menu && <nav className="menu-movil" aria-label={t('Más secciones', 'Atal gehiago')}><Link to="/comunidad">{t('Comunidad', 'Komunitatea')}<Users size={18} /></Link><Link to="/butacas">{t('Butacas · Próximamente', 'Butakak · Laster')}<Ticket size={18} /></Link></nav>}
+      {menu && <nav className="menu-movil" aria-label={t('Más secciones', 'Atal gehiago')}><Link to="/feed">Feed<Users size={18} /></Link><Link to="/butacas">{t('Butacas · Próximamente', 'Butakak · Laster')}<Ticket size={18} /></Link></nav>}
       {sinRed && <div className="sin-red" role="status"><WifiOff size={16} />{t('Sin conexión. Algunas imágenes y enlaces pueden no estar disponibles.', 'Konexiorik gabe. Baliteke irudi eta esteka batzuk erabilgarri ez egotea.')}</div>}
       <main id="contenido" tabIndex={-1}>
         <Routes>
@@ -69,16 +71,16 @@ export default function App() {
           <Route path="/obra/:slug" element={<Ficha idioma={idioma} t={t} />} />
           <Route path="/wrapped" element={<Pendiente tipo="wrapped" t={t} />} />
           <Route path="/constelacion" element={<Pendiente tipo="constelacion" t={t} />} />
-          <Route path="/comunidad" element={<Pendiente tipo="comunidad" t={t} />} />
+          <Route path="/feed" element={<Suspense fallback={<p role="status">{t('Cargando…','Kargatzen…')}</p>}><Feed idioma={idioma} t={t}/></Suspense>}/><Route path="/comunidad" element={<Navigate to="/feed" replace/>}/>
           <Route path="/perfil" element={<Suspense fallback={<p role="status">{t('Cargando…','Kargatzen…')}</p>}><Cuenta t={t} /></Suspense>} />
-          <Route path="/privacidad" element={<Privacidad t={t}/>} />
+          <Route path="/admin" element={<Suspense fallback={<p>Cargando…</p>}><Dashboard idioma={idioma} t={t}/></Suspense>}/><Route path="/privacidad" element={<Privacidad t={t}/>} />
           <Route path="/butacas" element={<Pendiente tipo="butacas" t={t} />} />
           <Route path="*" element={<div className="no-encontrado"><span className="antetitulo">404</span><h1>{t('Aquí ha caído el telón.', 'Hemen oihala jaitsi da.')}</h1><p>{t('No encontramos esta página.', 'Ez dugu orri hau aurkitu.')}</p><Link className="boton principal" to="/">{t('Volver a las obras', 'Obretara itzuli')}<ArrowRight size={17} /></Link></div>} />
         </Routes>
       </main>
       <footer className="pie"><span>HIKA TEATROA <span className="estrella">✳</span> TXALOMETROA</span><span>{t('Hecho de teatro. Hecho de ti.', 'Antzerkiz egina. Zurekin egina.')}</span><a href="https://hikateatroa.eus" target="_blank" rel="noreferrer">hikateatroa.eus<ArrowUpRight size={14} /></a></footer>
     </div>
-    <nav className="inferior" aria-label={t('Navegación móvil', 'Mugikorreko nabigazioa')}>{[navegacion[0], navegacion[2], navegacion[3], { ruta: '/perfil', es: 'Mi espacio', eu: 'Nire gunea', icono: CircleUserRound }].map(({ruta,es,eu,icono: Icono}) => <NavLink key={ruta} to={ruta} end={ruta==='/'}><Icono size={21} /><span>{t(es, eu)}</span></NavLink>)}</nav>
+    <nav className="inferior" aria-label={t('Navegación móvil', 'Mugikorreko nabigazioa')}>{[navegacion[0], navegacion[1], {...navegacion[2],es:"Constelación",eu:"Konstelazioa"}, navegacion[3], { ruta: '/perfil', es: 'Mi espacio', eu: 'Nire gunea', icono: CircleUserRound }].map(({ruta,es,eu,icono: Icono}) => <NavLink key={ruta} to={ruta} end={ruta==='/'}><Icono size={21} /><span>{t(es, eu)}</span></NavLink>)}</nav>
     <dialog ref={dialogo} className="dialogo" aria-labelledby="fases-titulo" onClick={e => { if (e.target === e.currentTarget) dialogo.current?.close(); }}><div className="dialogo-cabecera"><div><span className="antetitulo">TXALOMETROA</span><h2 id="fases-titulo">{t('La app, paso a paso.', 'Appa, pausoz pauso.')}</h2></div><button className="icono-boton" aria-label={t('Cerrar', 'Itxi')} onClick={() => dialogo.current?.close()}><X /></button></div><p>{t('Revisamos cada fase contigo antes de avanzar a la siguiente.', 'Fase bakoitza zurekin berrikusiko dugu hurrengora igaro aurretik.')}</p><ol className="fases">{fases.map((f,i)=><li key={f[0]} className={i===1?'fase-actual':''}><span className="numero-fase">{i===0?<Check size={17}/>:i+1}</span><div><strong>{t(f[0],f[1])}</strong><p>{t(f[2],f[3])}</p>{i===1&&<small>{t('Disponible para revisión', 'Berrikusteko erabilgarri')}</small>}</div></li>)}</ol><p className="nota-dialogo"><Ticket size={17}/>{t('Butacas queda aplazado, fuera de estas fases.', 'Butakak gerorako utziko da, fase hauetatik kanpo.')}</p></dialog>
   </>;
 }

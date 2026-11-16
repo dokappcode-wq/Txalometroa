@@ -7,7 +7,7 @@ const mocks=vi.hoisted(()=>({
  auth:{getSession:vi.fn(),onAuthStateChange:vi.fn(),signUp:vi.fn(),signInWithPassword:vi.fn(),resetPasswordForEmail:vi.fn(),resend:vi.fn(),signOut:vi.fn()},
  invoke:vi.fn(),single:vi.fn(),update:vi.fn(),eq:vi.fn(),exportar:vi.fn(),descargar:vi.fn(),
 }));
-vi.mock('../lib/supabase',()=>({supabase:{auth:mocks.auth,functions:{invoke:mocks.invoke},from:()=>({select:()=>({eq:mocks.eq}),update:mocks.update})},googleHabilitado:false}));
+vi.mock('../lib/supabase',()=>({supabase:{auth:mocks.auth,rpc:()=>Promise.resolve({data:false,error:null}),functions:{invoke:mocks.invoke},from:()=>({select:()=>({eq:mocks.eq}),update:mocks.update})},googleHabilitado:false}));
 vi.mock('../lib/datosCuenta',()=>({exportarCuenta:mocks.exportar,descargarDatos:mocks.descargar}));
 import Cuenta from './Cuenta';
 const auth=mocks.auth;

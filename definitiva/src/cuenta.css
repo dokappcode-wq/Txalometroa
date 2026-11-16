@@ -11,3 +11,5 @@
 .cuenta-promesa>svg{color:var(--crema)}
 .cuenta-intro h1{line-height:1.07}
 .cuenta-reenviar{display:block;padding-top:0}.cuenta-borrado .cuenta-campos{gap:16px}.cuenta-borrado .cuenta-campos .boton{margin-top:0}
+
+.cuenta-dashboard{display:flex;margin-top:18px;align-items:center;justify-content:space-between;gap:15px;font-size:13px;border:1px solid var(--crema);border-radius:14px;padding:17px}

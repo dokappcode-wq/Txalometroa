@@ -40,3 +40,11 @@ El usuario eligió la propuesta 02, Escenario: fondo negro, blanco pastel, rojo,
 Descarga JSON del perfil y foto con RLS, reenvío de confirmación con espera entre solicitudes, limpieza de estado al cambiar de cuenta y validación de nombre no vacío. El borrado se implementa en una función Supabase autocontenida que verifica la sesión y la contraseña, limpia fotos y elimina la identidad; la app detecta si está desplegada antes de habilitar el botón. No requiere nuevas tablas. Queda pendiente activarla en el proyecto y validar el recorrido real con cuentas independientes.
 
 El usuario solicita un proyecto nuevo de Netlify. Se añade configuración de compilación, rutas SPA y cabeceras, manteniendo el proyecto anterior. Al obtener la URL nueva hay que autorizarla en Supabase; el código sigue siendo una revisión de fase 2, no el cierre de la fase ni un producto final.
+
+## Feed y Hikateat · solicitud explícita del 16/11/2026
+
+El usuario solicita adelantar el feed social y un dashboard administrador. Se añaden publicaciones de texto vinculables a obras, spoilers, solicitudes de seguimiento, comentarios, aplausos, bloqueo y denuncias, con permisos verificados en PostgreSQL. Son opiniones sociales separadas de las valoraciones GAL y no cambian las medias históricas. El menú incorpora Feed en escritorio y móvil.
+
+Hikateat recibe acceso mediante una reserva de correo en el esquema privado; se activa únicamente con el correo confirmado. No se guarda el correo autorizado en el repositorio. El dashboard muestra métricas reales, series diarias y obras con más conversación, además del histórico identificado por fecha y la cola de moderación. Incluye tablas alternativas a los gráficos y descarga de agregados.
+
+Activación del servicio: ejecutar `definitiva/supabase/instalar-feed-dashboard.sql` y reservar el correo mediante `txalo_privado.invitar_hikateat`. La interfaz no representa datos ficticios si la migración está pendiente. Las pruebas locales de PostgreSQL cubren permisos, bloqueo, reintentos, paginación, rol administrador y borrado en cascada; faltan recorridos reales con distintas cuentas y revisión visual en navegador.

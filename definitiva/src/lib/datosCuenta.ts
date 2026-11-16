@@ -5,6 +5,7 @@ export type ExportacionCuenta = {
   formato: 'txalometroa-cuenta'; version: 1; exportado_en: string;
   cuenta: { id: string; email: string | null; creada: string; correo_confirmado: string | null };
   perfil: Perfil;
+  comunidad?: unknown;
   foto: { nombre: string; tipo: string; contenido_base64: string } | null;
 };
 
@@ -31,6 +32,8 @@ export async function exportarCuenta(cliente: SupabaseClient): Promise<Exportaci
     for (let i = 0; i < bytes.length; i += 8192) binario += String.fromCharCode(...bytes.subarray(i, i + 8192));
     foto = { nombre: perfil.avatar_path.split('/').pop()!, tipo: archivo.type, contenido_base64: btoa(binario) };
   }
+  const social = await cliente.rpc('feed_exportar');
+  if (social.error && !['PGRST202','42883'].includes(social.error.code)) throw social.error;
   // Una descarga iniciada antes de cambiar de cuenta nunca cruza identidades.
   const { data: actual, error: errorActual } = await cliente.auth.getUser();
   if (errorActual) throw errorActual;
@@ -38,7 +41,7 @@ export async function exportarCuenta(cliente: SupabaseClient): Promise<Exportaci
   return {
     formato: 'txalometroa-cuenta', version: 1, exportado_en: new Date().toISOString(),
     cuenta: { id: usuario.id, email: usuario.email ?? null, creada: usuario.created_at, correo_confirmado: usuario.email_confirmed_at ?? null },
-    perfil, foto,
+    perfil, foto, ...(social.error ? {} : { comunidad: social.data }),
   };
 }
 

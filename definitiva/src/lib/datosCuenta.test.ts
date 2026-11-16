@@ -10,7 +10,7 @@ function cliente(foto = false) {
   const eq = vi.fn().mockReturnValue({ single });
   const from = vi.fn().mockReturnValue({ select: vi.fn().mockReturnValue({ eq }) });
   const download = vi.fn().mockResolvedValue({ data: new Blob(['foto real'], { type: 'image/png' }), error: null });
-  return { api: { auth: { getUser }, from, storage: { from: vi.fn().mockReturnValue({ download }) } } as unknown as SupabaseClient, getUser, single, eq, download };
+  return { api: { auth: { getUser }, rpc: vi.fn().mockResolvedValue({data:{publicaciones:[]},error:null}), from, storage: { from: vi.fn().mockReturnValue({ download }) } } as unknown as SupabaseClient, getUser, single, eq, download };
 }
 it('descarga solo los datos de la identidad verificada y omite los tokens', async () => {
   const c = cliente();

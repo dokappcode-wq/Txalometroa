@@ -16,7 +16,7 @@ Copiar `.env.example` a `.env.local` y configurar la URL y la clave pública de 
 - Descarga del perfil y foto. Función de borrado permanente implementada y probada, pendiente de activación en Supabase; el botón depende de la disponibilidad real del servicio.
 - Euskera/castellano, navegación adaptable, estados de error, foco visible y movimiento reducido.
 
-Valoraciones nuevas, comunidad, constelación, Wrapped anual, administración y PWA pertenecen a fases posteriores. Butacas permanece como «Próximamente». Las cifras históricas no son datos en directo. Los nuevos textos en euskera y la información legal necesitan revisión antes del lanzamiento público.
+Feed social y dashboard Hikateat implementados; requieren activar `supabase/instalar-feed-dashboard.sql` y reservar el correo autorizado según `supabase/FEED-DASHBOARD.md`. Las valoraciones GAL nuevas, constelación, Wrapped anual, gestión editorial y PWA siguen pendientes. Butacas permanece como «Próximamente». Las cifras históricas no son datos en directo. Los nuevos textos en euskera y la información legal necesitan revisión antes del lanzamiento público.
 
 ## Netlify
 
