@@ -97,3 +97,13 @@ it('descarta una exportación pendiente cuando cambia de cuenta en otra pestaña
  await waitFor(()=>expect(screen.getByRole('button',{name:'Descargar mis datos'})).toHaveProperty('disabled',false));
  expect(mocks.descargar).not.toHaveBeenCalled();expect(screen.queryByDisplayValue('Ana')).toBeNull();
 });
+it('explica cuando el servicio rechaza el destinatario sin afirmar que se envió un correo',async()=>{
+ auth.resend.mockResolvedValue({error:{code:'email_address_not_authorized',message:'Email not authorized'}});const u=await abrir();await u.click(screen.getByText('No he recibido la confirmación'));await u.type(screen.getByLabelText('Correo electrónico'),'prueba@example.com');await u.click(screen.getByRole('button',{name:'Reenviar enlace'}));
+ expect(await screen.findByRole('alert')).toHaveProperty('textContent',expect.stringContaining('La administración debe configurar el envío de correos'));
+ expect(screen.queryByRole('status')).toBeNull();
+});
+it('explica el límite de correos sin prometer un envío ni un plazo incorrecto',async()=>{
+ auth.resend.mockResolvedValue({error:{code:'over_email_send_rate_limit'}});const u=await abrir();await u.click(screen.getByText('No he recibido la confirmación'));await u.type(screen.getByLabelText('Correo electrónico'),'prueba@example.com');await u.click(screen.getByRole('button',{name:'Reenviar enlace'}));
+ expect(await screen.findByRole('alert')).toHaveProperty('textContent',expect.stringContaining('Se ha alcanzado el límite de correos'));
+ expect(screen.queryByRole('status')).toBeNull();
+});

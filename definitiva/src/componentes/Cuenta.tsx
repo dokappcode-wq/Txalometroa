@@ -85,7 +85,7 @@ export default function Cuenta({t}:{t:Texto}) {
    setMensaje(t('Si esa cuenta necesita confirmación, recibirás un nuevo enlace. Revisa también la carpeta de spam.','Kontu horrek baieztapena behar badu, esteka berri bat jasoko duzu. Begiratu spam karpeta ere.'));return;
   }
   if(modo==='recuperar'){
-   const {error}=await supabase!.auth.resetPasswordForEmail(email,{redirectTo:redireccion+'?recuperar=1'});if(error)throw error;
+   const {error}=await supabase!.auth.resetPasswordForEmail(email.trim(),{redirectTo:redireccion+'?recuperar=1'});if(error)throw error;
    setMensaje(t('Si existe una cuenta con ese correo, recibirás un enlace para recuperar el acceso.','Posta horrekin konturik badago, sarbidea berreskuratzeko esteka jasoko duzu.'));return;
   }
   if(modo==='clave'){
@@ -95,10 +95,10 @@ export default function Cuenta({t}:{t:Texto}) {
    setMensaje(t('Contraseña actualizada.','Pasahitza eguneratuta.'));return;
   }
   if(modo==='registro'){
-   const {error}=await supabase!.auth.signUp({email,password:clave,options:{emailRedirectTo:redireccion}});if(error)throw error;
+   const {error}=await supabase!.auth.signUp({email:email.trim(),password:clave,options:{emailRedirectTo:redireccion}});if(error)throw error;
    setClave('');setModo('entrar');setMensaje(t('Revisa tu correo para confirmar la cuenta. Si ya la tienes, puedes entrar o recuperar el acceso.','Begiratu posta kontua baieztatzeko. Kontua baduzu, sartu edo berreskuratu sarbidea.'));return;
   }
-  const {data,error}=await supabase!.auth.signInWithPassword({email,password:clave});if(error)throw error;
+  const {data,error}=await supabase!.auth.signInWithPassword({email:email.trim(),password:clave});if(error)throw error;
   recibirSesion(data.session);setClave('');
  });}
  async function guardar(e:React.FormEvent){e.preventDefault();if(!supabase||!perfil)return;await ejecutar(async()=>{

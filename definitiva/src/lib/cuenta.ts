@@ -16,7 +16,10 @@ export function mensajeError(error:unknown,t:(es:string,eu:string)=>string):stri
  if(e?.code==='acceso_por_correo_requerido')return t('Esta opción requiere una cuenta con contraseña.','Aukera honek pasahitza duen kontua behar du.');
  if(e?.code==='invalid_credentials')return t('El correo o la contraseña no son correctos.','Posta edo pasahitza ez dira zuzenak.');
  if(e?.code==='email_not_confirmed')return t('Confirma tu correo antes de entrar.','Baieztatu posta sartu aurretik.');
- if(e?.code==='over_email_send_rate_limit'||e?.code==='over_request_rate_limit'||e?.code==='demasiados_intentos')return t('Demasiados intentos. Espera unos minutos y vuelve a probar.','Saiakera gehiegi. Itxaron minutu batzuk eta saiatu berriro.');
+ if(e?.code==='email_address_not_authorized')return t('El servicio de correo todavía no permite enviar a esta dirección. La administración debe configurar el envío de correos antes de poder confirmar tu cuenta.','Posta-zerbitzuak oraindik ez du helbide honetara bidaltzen uzten. Administrazioak posta-bidalketa konfiguratu behar du kontua baieztatu ahal izateko.');
+ if(e?.code==='email_address_invalid')return t('Revisa que la dirección de correo esté bien escrita.','Egiaztatu helbide elektronikoa zuzen idatzita dagoela.');
+ if(e?.code==='over_email_send_rate_limit')return t('Se ha alcanzado el límite de correos del servicio. Inténtalo más tarde; pedir más enlaces ahora no enviará nuevos correos.','Zerbitzuaren posta-mugara iritsi da. Saiatu geroago; orain esteka gehiago eskatzeak ez du mezu berririk bidaliko.');
+ if(e?.code==='over_request_rate_limit'||e?.code==='demasiados_intentos')return t('Demasiados intentos. Espera unos minutos y vuelve a probar.','Saiakera gehiegi. Itxaron minutu batzuk eta saiatu berriro.');
  if(e?.code==='weak_password')return t('Elige una contraseña más segura, de al menos 10 caracteres.','Aukeratu gutxienez 10 karaktereko pasahitz seguruagoa.');
  if(e?.code==='PGRST205'||e?.code==='42P01'||e?.code==='PGRST202')return t('El servicio de perfiles todavía está en preparación. Inténtalo más tarde.','Profilen zerbitzua prestatzen ari da. Saiatu geroago.');
  if(e?.message?.includes('fetch')||e?.message?.includes('network'))return t('No hay conexión con el servicio. Tus cambios aún no se han guardado.','Ez dago zerbitzuarekiko konexiorik. Aldaketak ez dira gorde oraindik.');
