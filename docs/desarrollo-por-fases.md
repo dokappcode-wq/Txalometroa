@@ -34,3 +34,9 @@ Cuentas de servicios y dominio bajo control de Hika, configuración segura de cr
 ## Estética elegida · 15/11/2026
 
 El usuario eligió la propuesta 02, Escenario: fondo negro, blanco pastel, rojo, titulares sans serif contundentes, tarjetas grandes con esquinas redondeadas y navegación clara. Conservar el logo existente y los colores originales de los carteles: no aplicar filtros monocromos ni duotonos a las fotografías. Las imágenes de las propuestas eran referencias visuales; no sustituyen los recursos reales del catálogo. El cambio estético se aplica a las pantallas ya desarrolladas y no adelanta funcionalidades de otras fases.
+
+## Continuación de cuentas · 16/11/2026
+
+Descarga JSON del perfil y foto con RLS, reenvío de confirmación con espera entre solicitudes, limpieza de estado al cambiar de cuenta y validación de nombre no vacío. El borrado se implementa en una función Supabase autocontenida que verifica la sesión y la contraseña, limpia fotos y elimina la identidad; la app detecta si está desplegada antes de habilitar el botón. No requiere nuevas tablas. Queda pendiente activarla en el proyecto y validar el recorrido real con cuentas independientes.
+
+El usuario solicita un proyecto nuevo de Netlify. Se añade configuración de compilación, rutas SPA y cabeceras, manteniendo el proyecto anterior. Al obtener la URL nueva hay que autorizarla en Supabase; el código sigue siendo una revisión de fase 2, no el cierre de la fase ni un producto final.

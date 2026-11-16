@@ -1,22 +1,31 @@
-# Fase 2 · integración en preparación
+# Fase 2 · cuentas y perfiles
 
-Proyecto Supabase conectado. El usuario confirmó la instalación del SQL y las redirecciones. Se verificó que la API responde y rechaza la lectura anónima de perfiles. Falta validar el recorrido con correo real y dos cuentas independientes.
+El proyecto Supabase de Hika está en Irlanda. El usuario ya instaló `instalar-fase-2.sql` y configuró las redirecciones de Sites. No repetir esa instalación: sus dos migraciones ya están aplicadas.
 
-## Preparación del servicio
+## Implementado
 
-1. Crear un proyecto desde https://supabase.com/dashboard en una organización de Hika, región UE. Conservar la contraseña de base de datos en un gestor privado.
-2. Configurar autenticación por email con verificación obligatoria, URL de la aplicación y redirecciones autorizadas a `/perfil`. Configurar correo transaccional para producción.
-3. Aplicar `migrations/202611130001_perfiles.sql` en un entorno de pruebas antes de producción.
-4. Configurar `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` (clave pública del cliente) en las variables de compilación. Nunca usar `service_role` ni una clave secreta en variables `VITE_*`.
+Registro y confirmación por correo, reenvío de confirmación con espera entre intentos, acceso, recuperación/cambio de contraseña, perfil privado inicial, idioma, aceptación de condiciones de prueba y foto privada. La descarga JSON consulta Auth y las tablas con la sesión del propietario, incluye la foto actual en base64 y excluye credenciales y tokens. No necesita una función administrativa.
 
-La primera migración crea perfiles privados por defecto, vinculados a Auth, con lectura y edición restringidas al propietario. No incorpora aún lectura social ni roles administrativos; se añadirán con pruebas de permisos específicas. Evita una columna de rol editable por el cliente.
+El código del borrado permanente está en `functions/cuenta/index.ts`. La interfaz comprueba su disponibilidad automáticamente; hasta que esté desplegado, no muestra un botón de borrado operativo. Se comprueba la contraseña actual, se limpian los archivos de la carpeta del usuario mediante la API de Storage y se borra la identidad en Auth. La clave foránea instalada elimina el perfil. Si falla la limpieza de fotos no se ejecuta el borrado de Auth. Si una operación queda a medias, se puede reintentar: no se saltan archivos al paginar.
 
-## Estado
+## Activar el borrado desde el panel
 
-Preparados: cliente Supabase opcional, registro por email, acceso, sesión, edición de nombre/privacidad, cierre de sesión y migración inicial.
+1. Abrir el proyecto de Hika en Supabase → **Edge Functions** → **Deploy a new function** → editor.
+2. Crear una función llamada exactamente **`cuenta`** y reemplazar su código por el contenido íntegro de `functions/cuenta/index.ts`.
+3. En los ajustes de esa función, desactivar **Verify JWT / Enforce JWT verification** del gateway. La propia función valida el token remotamente con Auth en cada petición; no acepta peticiones anónimas. Esto evita incompatibilidades del gateway con las nuevas claves publicables.
+4. En **Edge Functions → Secrets**, configurar `APP_ORIGINS` con los orígenes exactos autorizados, separados por comas y sin barra final. Mantener el de Sites y añadir la URL nueva de Netlify. Las variables `SUPABASE_URL`, `SUPABASE_ANON_KEY` y `SUPABASE_SERVICE_ROLE_KEY` las proporciona Supabase automáticamente dentro de la función. No copiar esa clave administrativa al frontend ni al chat.
+5. Desplegar y volver a abrir el perfil. La app consultará `accion: estado` y habilitará el borrado cuando la función responda correctamente.
 
-Pendientes para completar la fase: recuperación/cambio de contraseña, Google, avatar, condiciones y consentimiento revisados, descarga/borrado de cuenta con servidor, pruebas de aislamiento con dos cuentas, configuración real y despliegue de revisión. No considerar esta fase terminada hasta validar estos recorridos contra el servicio real.
+Alternativa con CLI autenticada: ejecutar `supabase functions deploy cuenta --project-ref fhunczummuieezrvzoqh` desde `definitiva/`; `config.toml` declara la verificación interna de tokens.
 
-## Actualización 15/11/2026
+## Nuevo alojamiento Netlify
 
-Pantalla de registro, acceso, recuperación/cambio de contraseña, perfil, idioma, privacidad y foto implementada. Información de prueba y aceptación registradas en servidor. Google sigue desactivado en Supabase. La descarga/borrado requieren implementar y desplegar la función `cuenta`; sus controles se mantienen desactivados. Esta entrega es una revisión parcial de fase 2, no su cierre.
+En **Authentication → URL Configuration**, añadir las dos redirecciones exactas del nuevo proyecto: `https://DOMINIO-NETLIFY/perfil` y `https://DOMINIO-NETLIFY/perfil?recuperar=1`. Establecer Site URL al nuevo origen si es el alojamiento principal. Conservar las redirecciones de Sites mientras siga usándose para revisión. Sin este ajuste, los correos pueden regresar al alojamiento anterior y romper el intercambio PKCE iniciado en Netlify.
+
+La configuración de compilación solo usa `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`, ambas públicas. Google permanece desactivado hasta configurar el proveedor y sus credenciales. No hacen falta nuevas migraciones para esta entrega.
+
+## Validación
+
+`npm test` incluye pruebas del frontend, exportación y función administrativa: sesión obligatoria, reautenticación, identidad no elegible por el cliente, separación entre cuentas, rutas de archivos, paginación, fallos de Storage/Auth y respuestas sin secretos. `npm run build` comprueba TypeScript también en el código de la función.
+
+Pendiente para cerrar la fase: desplegar la función, configurar las URL de Netlify, probar registro/recuperación reales y aislamiento con dos cuentas independientes, y configurar el correo transaccional. Las pruebas simuladas no prueban permisos reales en el proyecto. La revisión lingüística y legal y la activación de Google también siguen pendientes. No presentar esta fase como completada ni como lanzamiento público final.

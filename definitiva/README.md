@@ -1,34 +1,35 @@
-# Txalometroa definitiva · Fase 1
+# Txalometroa definitiva · Fase 2 en revisión
 
-Nueva aplicación React + TypeScript + Vite, independiente del prototipo original. Desarrollo por fases: cada entrega requiere revisión del usuario antes de empezar la siguiente.
+Aplicación React, TypeScript y Vite de Hika Teatroa. Se revisa cada fase antes de empezar la siguiente.
 
-## Ejecutar
+## Desarrollo
 
-Node 22.12+ o 24. `npm ci`, `npm run dev`. Producción: `npm run build`. Comprobaciones: `npm test`.
+Node 22.12+ o 24. Instalar con `npm ci`, ejecutar con `npm run dev`, comprobar con `npm test` y compilar con `npm run build`.
 
-`npm run datos` regenera los agregados y el catálogo desde el núcleo del prototipo y el export histórico del repositorio. Debe ejecutarse dentro del repositorio original; una copia aislada de revisión usa los JSON ya generados.
+Copiar `.env.example` a `.env.local` y configurar la URL y la clave pública de Supabase. No utilizar claves administrativas en variables `VITE_*`. Las variables de compilación no son secretos: forman parte del JavaScript del navegador.
 
 ## Incluido
 
-- Catálogo real: cuatro obras del Txalometroa y nueve del repertorio; búsqueda por ambos títulos sin distinguir acentos, filtros combinables y estado en URL.
-- Fichas enlazables, notas históricas, mínimo de diez respuestas, máscaras y logo líquido.
-- Euskera/castellano y preferencia de idioma local. Fuentes e imágenes servidas desde el propio sitio.
-- Navegación adaptable, estados vacíos, página 404, foco visible, enlace para saltar al contenido y movimiento reducido.
-- Pantallas explícitamente pendientes para cuentas, comunidad, constelación y Wrapped. Este último permite seleccionar años naturales en Europe/Madrid; todavía no calcula resúmenes.
-- Butacas aplazado. No contiene simulación ni ocupaciones.
+- Estilo Escenario, negro/blanco pastel/rojo, logo e imágenes originales.
+- Catálogo real de trece obras, búsqueda bilingüe, filtros y fichas enlazables. Histórico agregado hasta el 19/10/2026, mínimo público de diez respuestas.
+- Registro y confirmación por correo, reenvío, acceso, recuperación/cambio de contraseña, edición del perfil y foto privada.
+- Descarga del perfil y foto. Función de borrado permanente implementada y probada, pendiente de activación en Supabase; el botón depende de la disponibilidad real del servicio.
+- Euskera/castellano, navegación adaptable, estados de error, foco visible y movimiento reducido.
 
-## Límites de esta fase
+Valoraciones nuevas, comunidad, constelación, Wrapped anual, administración y PWA pertenecen a fases posteriores. Butacas permanece como «Próximamente». Las cifras históricas no son datos en directo. Los nuevos textos en euskera y la información legal necesitan revisión antes del lanzamiento público.
 
-No hay registro, servidor de valoraciones, red social ni administración todavía. No se recogen datos personales; únicamente se guarda la preferencia de idioma en este navegador. Las cifras proceden del export hasta el 19/10/2026, no se presentan como datos en directo. La PWA y la sincronización de borradores se completan al desarrollar la persistencia; no se instala un service worker prematuramente.
+## Netlify
 
-Los textos nuevos en euskera deben revisarse por un hablante nativo. Los géneros proceden del catálogo provisional y requieren confirmación de Hika.
+El archivo `../netlify.toml` fija `definitiva` como carpeta base, `npm run build` como comando y `dist` como publicación. `_redirects` permite recargar rutas como `/perfil` y `/obra/bidaia`. `_headers` configura el tipo de contenido y la caché de los archivos con hash.
 
-## Despliegue
+Para despliegues automáticos desde GitHub, importar el repositorio y seleccionar la rama `codex/fase-1-base-visual`; establecer las variables públicas de Supabase en el proyecto Netlify. Para subir una compilación ya preparada, publicar exclusivamente `dist/`, sin el repositorio ni `.env.local`.
 
-Compilar y servir `dist/` con fallback de navegación a `index.html` (incluido `_redirects` para Netlify). El enlace privado de revisión usa Sites. La aplicación no depende de servicios específicos de ese alojamiento y puede desplegarse en el Netlify definitivo.
+Después de crear el nuevo proyecto, registrar su URL en Supabase para la confirmación y recuperación de cuentas. Consultar `supabase/README.md` para esas redirecciones y la activación del borrado.
 
 ## Verificación
 
-La suite cubre filtros, búsqueda bilingüe, navegación, idioma, umbral de publicación, cifras históricas y límites anuales. Las pruebas de interacción usan DOM simulado y no sustituyen la comprobación visual en dispositivos. El entorno de esta entrega no ofrece la herramienta de navegador de Sites: validación visual pendiente.
+La suite prueba catálogo, navegación, idiomas, métricas y límites anuales; también formularios, exportación y autorización/borrado del backend. Las pruebas de interacción usan DOM simulado, y las del backend respuestas controladas: no sustituyen las pruebas reales con dos cuentas ni la revisión visual en dispositivos.
 
-Ver `../docs/desarrollo-por-fases.md` para el alcance aceptado y próximos hitos.
+`npm run datos` regenera catálogo e histórico a partir del repositorio original; no es necesario al desplegar una copia de la app.
+
+Ver `../docs/desarrollo-por-fases.md` para el alcance aceptado.

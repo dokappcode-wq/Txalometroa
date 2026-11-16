@@ -10,3 +10,4 @@
 .cuenta-intro .antetitulo,.legal-pagina>.antetitulo{color:var(--secundario)}
 .cuenta-promesa>svg{color:var(--crema)}
 .cuenta-intro h1{line-height:1.07}
+.cuenta-reenviar{display:block;padding-top:0}.cuenta-borrado .cuenta-campos{gap:16px}.cuenta-borrado .cuenta-campos .boton{margin-top:0}

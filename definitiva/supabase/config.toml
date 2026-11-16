@@ -1,0 +1,4 @@
+[functions.cuenta]
+# La función verifica cada token en Auth antes de consultar o borrar nada.
+# Compatible con las nuevas claves publicables de Supabase.
+verify_jwt = false
