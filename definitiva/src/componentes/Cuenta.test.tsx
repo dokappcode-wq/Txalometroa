@@ -107,3 +107,7 @@ it('explica el límite de correos sin prometer un envío ni un plazo incorrecto'
  expect(await screen.findByRole('alert')).toHaveProperty('textContent',expect.stringContaining('Se ha alcanzado el límite de correos'));
  expect(screen.queryByRole('status')).toBeNull();
 });
+
+it('entra directamente tras registrarse cuando Supabase devuelve sesión sin confirmación',async()=>{
+ auth.signUp.mockResolvedValue({data:{session:sesion},error:null});const u=await abrir();await u.click(screen.getByText('¿Es tu primera vez? Crea una cuenta'));await u.type(screen.getByLabelText('Correo electrónico'),'prueba@example.com');await u.type(screen.getByLabelText(/^Contraseña/),'Clave-prueba-123');await u.click(screen.getByRole('button',{name:'Crear cuenta'}));expect(await screen.findByLabelText('Nombre visible')).toHaveProperty('value','Ana');expect(screen.queryByText(/Revisa tu correo/)).toBeNull();
+});

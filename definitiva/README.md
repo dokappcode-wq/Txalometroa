@@ -35,3 +35,11 @@ La suite prueba catálogo, navegación, idiomas, métricas y límites anuales; t
 `npm run datos` regenera catálogo e histórico a partir del repositorio original; no es necesario al desplegar una copia de la app.
 
 Ver `../docs/desarrollo-por-fases.md` para el alcance aceptado.
+
+## Análisis por obra y búsqueda de personas
+
+El dashboard abre por defecto «Analizar una obra»: filtros por obra/año/idioma, siete preguntas con distribuciones y cobertura, media individual ponderada por respuesta, mediana, cuartiles y dispersión, evolución mensual, agrupaciones estimadas por función, comparación entre obras y exportación CSV/JSON. Paleta ampliada solo en administración; el logo, los carteles y la estética pública se mantienen. «Visión general» conserva actividad comunitaria y moderación.
+
+El histórico contiene 546 respuestas válidas hasta el 19/10/2026. `node scripts/preparar-analitica.mjs` regenera agregados con el mismo motor de limpieza de la fuente original, sin filas individuales ni identificadores de encuestados. Los filtros con menos de cinco respuestas no muestran desglose; las notas mensuales y por grupo se ocultan con n<5. Son agregados estáticos incluidos en la compilación, no una fuente confidencial de servidor. El histórico es independiente del feed actual y no se actualiza al publicar opiniones.
+
+El feed busca nombres mediante una función del servidor, respeta bloqueos y solicita acceso a perfiles privados. Las reacciones usan aplausos. Instalar `supabase/actualizar-busqueda-registro.sql` en proyectos existentes. Para registro sin confirmación y redirecciones a Netlify, seguir [REGISTRO-Y-BUSQUEDA.md](supabase/REGISTRO-Y-BUSQUEDA.md). No se requiere ChatGPT.
