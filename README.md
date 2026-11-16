@@ -1,5 +1,7 @@
 # Txalometroa · Hika Teatroa
 
+**Nueva versión en desarrollo:** [`definitiva/`](definitiva/README.md). La fase 1 incorpora catálogo, fichas y navegación bilingüe. El [plan actualizado por fases](docs/desarrollo-por-fases.md) recoge las decisiones más recientes: revisión tras cada fase, Wrapped anual y butacas aplazadas.
+
 Prototipo del Txalometroa de Hika Teatroa: analiza el feedback del público, lo publica en la web y lo convierte en una app móvil.
 
 | Parte | Dónde |
