@@ -1,7 +1,7 @@
 import Aplauso from './componentes/Aplauso';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { Link, NavLink, Navigate, Route, Routes, useLocation, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleUserRound, Clock3, Globe2, Home, LayoutGrid, Menu, Moon, Search, Sun, Theatre, Sparkles, Star, Ticket, Users, WifiOff, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Check, ChevronDown, CircleUserRound, Clock3, Globe2, Home, LayoutGrid, Menu, Moon, Search, Sun, Theater, Sparkles, Star, Ticket, Users, WifiOff, X } from 'lucide-react';
 import { catalogo, filtrarObras, anioMadrid, aniosWrapped } from './lib/catalogo';
 import type { Idioma, Obra } from './lib/catalogo';
 import estadisticas from './datos/estadisticas.json';
@@ -102,7 +102,7 @@ export default function App() {
     </div>
     {esFeed ? <nav className="inferior feed-navegacion" aria-label={t('Navegación móvil','Mugikorreko nabigazioa')}>
       <Link to="/feed" className={!comunidadAbierta?'active':''} aria-current={!comunidadAbierta?'page':undefined}><Home size={23}/><span>Feed</span></Link>
-      <Link to="/"><Theatre size={23}/><span>{t('Obras','Obrak')}</span></Link>
+      <Link to="/"><Theater size={23}/><span>{t('Obras','Obrak')}</span></Link>
       <Link to="/feed?personas=1" className={comunidadAbierta?'active':''} aria-current={comunidadAbierta?'page':undefined}><Users size={23}/><span>{t('Comunidad','Komunitatea')}</span></Link>
       <Link to="/perfil"><CircleUserRound size={23}/><span>{t('Perfil','Profila')}</span></Link>
     </nav> : <nav className="inferior" aria-label={t('Navegación móvil', 'Mugikorreko nabigazioa')}>{[navegacion[0], navegacion[1], {...navegacion[2],es:"Constelación",eu:"Konstelazioa"}, navegacion[3], { ruta: '/perfil', es: 'Mi espacio', eu: 'Nire gunea', icono: CircleUserRound }].map(({ruta,es,eu,icono: Icono}) => <NavLink key={ruta} to={ruta} end={ruta==='/'}><Icono size={21} /><span>{t(es, eu)}</span></NavLink>)}</nav>}
