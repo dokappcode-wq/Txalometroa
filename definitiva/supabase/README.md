@@ -20,7 +20,7 @@ Alternativa con CLI autenticada: ejecutar `supabase functions deploy cuenta --pr
 
 ## Nuevo alojamiento Netlify
 
-En **Authentication → URL Configuration**, añadir las dos redirecciones exactas del nuevo proyecto: `https://DOMINIO-NETLIFY/perfil` y `https://DOMINIO-NETLIFY/perfil?recuperar=1`. Establecer Site URL al nuevo origen si es el alojamiento principal. Conservar las redirecciones de Sites mientras siga usándose para revisión. Sin este ajuste, los correos pueden regresar al alojamiento anterior y romper el intercambio PKCE iniciado en Netlify.
+En **Authentication → URL Configuration**, añadir las dos redirecciones exactas del nuevo proyecto: `https://txalometroa-escenario.netlify.app/perfil` y `https://txalometroa-escenario.netlify.app/perfil?recuperar=1`. Establecer Site URL a `https://txalometroa-escenario.netlify.app` si es el alojamiento principal. Conservar las redirecciones de Sites mientras siga usándose para revisión. Sin este ajuste, los correos pueden regresar al alojamiento anterior y romper el intercambio PKCE iniciado en Netlify.
 
 La configuración de compilación solo usa `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`, ambas públicas. Google permanece desactivado hasta configurar el proveedor y sus credenciales. No hacen falta nuevas migraciones para esta entrega.
 

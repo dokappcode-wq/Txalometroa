@@ -20,6 +20,8 @@ Valoraciones nuevas, comunidad, constelación, Wrapped anual, administración y 
 
 ## Netlify
 
+Proyecto nuevo: [txalometroa-escenario](https://txalometroa-escenario.netlify.app), en el equipo Doka. ID `7ecddd8d-1d8b-45ed-b220-90e9fabd81ad`; panel https://app.netlify.com/projects/txalometroa-escenario. Este proyecto es independiente del Netlify anterior. Al desplegar con CLI, usar este ID explícitamente con `--site` para no publicar en el proyecto antiguo que puede estar enlazado a la raíz del repositorio.
+
 El archivo `../netlify.toml` fija `definitiva` como carpeta base, `npm run build` como comando y `dist` como publicación. `_redirects` permite recargar rutas como `/perfil` y `/obra/bidaia`. `_headers` configura el tipo de contenido y la caché de los archivos con hash.
 
 Para despliegues automáticos desde GitHub, importar el repositorio y seleccionar la rama `codex/fase-1-base-visual`; establecer las variables públicas de Supabase en el proyecto Netlify. Para subir una compilación ya preparada, publicar exclusivamente `dist/`, sin el repositorio ni `.env.local`.

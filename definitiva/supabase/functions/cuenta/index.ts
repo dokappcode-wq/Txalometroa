@@ -123,6 +123,6 @@ if (typeof Deno !== 'undefined') {
     url: Deno.env.get('SUPABASE_URL') ?? '',
     publica: Deno.env.get('SUPABASE_ANON_KEY') ?? '',
     servicio: Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
-    origenes: (Deno.env.get('APP_ORIGINS') ?? 'https://txalometroa-revision-hika.acousticthistle2.chatgpt.site').split(',').map(s => s.trim()),
+    origenes: (Deno.env.get('APP_ORIGINS') ?? 'https://txalometroa-revision-hika.acousticthistle2.chatgpt.site,https://txalometroa-escenario.netlify.app').split(',').map(s => s.trim()),
   }));
 }
