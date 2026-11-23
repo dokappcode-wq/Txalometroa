@@ -1507,7 +1507,9 @@ function sareErrorea(e) {
   if (c === "23505") return tx.hartuta;
   if (c === "23514") return tx.okerra;
   if (e?.message === "sarea" || /fetch|network/i.test(m)) return t().sareKonexioa;
-  return tx.orokorra;
+  // Error no previsto: se enseña el mensaje de Supabase para poder saber qué pasa.
+  console.error("Supabase:", e);
+  return m ? `${tx.orokorra} (${[e?.status, c, m].filter(Boolean).join(" · ")})` : tx.orokorra;
 }
 const kargatzenHtml = () => `<p class="sare-kargatzen" role="status">${t().kargatzen}</p>`;
 const htmlSareErrorea = e => `<div class="hutsik"><p>${esc(sareErrorea(e))}</p><button type="button" class="botoia marino" data-sare="berriz">${t().berriroSaiatu}</button></div>`;
