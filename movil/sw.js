@@ -1,7 +1,7 @@
 // Service worker del Txalometroa: la app funciona sin conexión una vez abierta.
 // construir.py sustituye la versión en cada compilación para que el móvil coja los cambios.
-const VERSION = "txalometroa-e1443bbcd5";
-const APP = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png"];
+const VERSION = "txalometroa-39d087da95";
+const APP = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png", "./animaciones/carga.html", "./animaciones/apertura.html", "./animaciones/sin-conexion.html"];
 const IMAGENES = "txalometroa-imagenes";
 
 self.addEventListener("install", e => {
@@ -20,8 +20,18 @@ self.addEventListener("fetch", e => {
   const url = new URL(req.url);
   if (url.origin === location.origin) {
     // La página: primero la red (para coger cambios) y, sin conexión, la copia guardada.
+    if (url.pathname.includes("/animaciones/")) {
+      e.respondWith(caches.match(req).then(r => r || fetch(req)));
+      return;
+    }
     if (req.mode === "navigate") {
-      e.respondWith(fetch(req.url, { cache: "no-cache", credentials: "same-origin" }).then(r => { const copia = r.clone(); caches.open(VERSION).then(c => c.put("./index.html", copia)); return r; })
+      e.respondWith(fetch(req.url, { cache: "no-cache", credentials: "same-origin" }).then(r => {
+        if (r.ok && (url.pathname.endsWith("/") || url.pathname.endsWith("/index.html"))) {
+          const copia = r.clone();
+          e.waitUntil(caches.open(VERSION).then(c => c.put("./index.html", copia)));
+        }
+        return r;
+      })
         .catch(() => caches.match("./index.html")));
       return;
     }

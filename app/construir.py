@@ -60,7 +60,10 @@ for plantilla, salida in [("app/txalometroa.src.html", "app/txalometroa.html"),
     print(f"{salida} ({len(html) // 1024} KB)")
 
 # La versión del service worker cambia con el contenido, así el móvil descarga la app nueva.
-version = hashlib.sha1((raiz / "movil" / "index.html").read_bytes()).hexdigest()[:10]
+version = hashlib.sha1((raiz / "movil" / "index.html").read_bytes())
+for escena in sorted((raiz / "movil" / "animaciones").glob("*.html")):
+    version.update(escena.read_bytes())
+version = version.hexdigest()[:10]
 sw = (raiz / "movil" / "sw.src.js").read_text(encoding="utf-8").replace("__VERSION__", version)
 (raiz / "movil" / "sw.js").write_text(sw, encoding="utf-8")
 print(f"movil/sw.js (versión {version})")

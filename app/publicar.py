@@ -23,6 +23,7 @@ with tempfile.TemporaryDirectory() as tmp:
     for nombre in FICHEROS:
         shutil.copy2(raiz / "movil" / nombre, destino / nombre)
     shutil.copytree(raiz / "movil" / "icons", destino / "icons")
+    shutil.copytree(raiz / "movil" / "animaciones", destino / "animaciones")
     npx = "npx.cmd" if sys.platform == "win32" else "npx"
     r = subprocess.run([npx, "-y", "netlify-cli@17", "deploy", "--prod", "--dir", str(destino), "--site", sitio], cwd=raiz)
     if r.returncode:
