@@ -105,14 +105,21 @@ Parámetros: `lang=eu|es`, `obra=<id de config.json>` para mostrar una sola obra
 App instalable (PWA) para el público, con la identidad de las referencias: gris, rojo, crema y letra pixelada (Jersey 10).
 
 - **Obras**: las obras del Txalometroa con su foto y el **logo de Hika que se llena de líquido** hasta la nota media. Debajo, el repertorio de Hika (para añadir a tu constelación lo que ya viste). La ficha de cada obra muestra cada aspecto con **5 máscaras, de drama a comedia**.
-- **Valorar** (3 pasos): notas con máscaras (media máscara = 1 punto, entera = 2, escala 1–10 compatible con el export); emociones (¿reír o llorar?, ¿qué te emocionó?); y las preguntas abiertas nuevas (de qué trató, personaje favorito, conflicto, resolución). Al terminar, el logo se llena con tu nota y la compara con la del público.
+- **Cuenta**: registro e inicio de sesión con correo y contraseña. Al crear la cuenta se inicia sesión de inmediato.
+- **Opinar**: abre una obra, escribe en el campo «Tu opinión» y pulsa «Publicar en mi feed». «Mi feed» reúne tus opiniones por fecha y solo puede verlo tu cuenta.
 - **Butacas**: mapa de la sala en directo que se va llenando, contador de personas y tu butaca. Es una **simulación**: en la versión real cada butaca tendría un QR.
 - **Constelación**: cada obra vista es una estrella. Ángulo = género, distancia al centro = tu nota, tamaño = emoción. Líneas = orden en que las viste y obras del mismo género.
 - **Wrapped**: historias a pantalla completa. El *mundial* sale de los datos reales del Txalometroa; el *personal*, de tus valoraciones.
 - **Ajustes → Admin · Obras de prueba**: crea obras falsas (etiqueta PRUEBA, cartel generado y valoraciones inventadas) y bórralas una a una o todas.
-- Lo personal (valoraciones, butaca, obras de prueba) se guarda solo en el móvil.
+- Las opiniones nuevas se guardan en la cuenta. Las valoraciones antiguas con notas, la butaca y las obras de prueba siguen guardadas en ese navegador.
 
 Ficheros: `index.src.html` (plantilla) → `index.html`, `sw.src.js` → `sw.js`, `manifest.webmanifest`, `icons/`. Se compila con `python app/construir.py`. Los géneros de las obras están en `app/catalogo.json` y son **provisionales** (deducidos de las descripciones de la web): que Hika los revise. Los textos en euskera conviene que los revise un hablante nativo.
+
+### Activar cuentas y feed
+
+1. En el proyecto de Supabase, habilita el registro por correo y desactiva **Confirm email** en **Authentication → Sign In / Providers → Email**. Configura un mínimo de 8 caracteres para la contraseña.
+2. Aplica `supabase/migrations/202611230001_opiniones.sql` desde el SQL Editor del proyecto. Cada cuenta puede publicar y leer sus propias opiniones.
+3. Define `SUPABASE_URL` y `SUPABASE_PUBLISHABLE_KEY` en el entorno desde el que ejecutas `python app/construir.py` o `python app/publicar.py`. Usa la clave `sb_publishable_…` del proyecto. La URL y esa clave pública se incluyen en el HTML generado. Sin estos valores, el prototipo sigue abriendo y muestra que las cuentas y el feed están desactivados.
 
 ### Dirección publicada
 
