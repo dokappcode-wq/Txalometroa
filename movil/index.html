@@ -405,6 +405,7 @@ body.pantaila-modua > header.goiburua, body.pantaila-modua > main, body.pantaila
 .pantaila-kodea { display: flex; gap: 10px; margin: 8px 0; }
 .pantaila-kodea span { width: 84px; height: 110px; display: grid; place-items: center; background: var(--crema); color: var(--negro); border-radius: 12px; font: 400 88px/1 var(--pixel); box-shadow: 0 10px 0 rgba(0, 0, 0, .35); }
 .itxaroten { display: inline-flex; align-items: center; gap: 10px; color: var(--tinta-2); font-size: 18px; }
+.pantaila-egoera { margin: 0; font-size: 14px; color: var(--tinta-3); }
 .itxaroten i { width: 10px; height: 10px; border-radius: 50%; background: var(--crema-logo); animation: taupada 1.2s infinite; }
 .pantaila-hizkuntza { display: inline-flex; border: 1px solid rgba(255, 255, 255, .25); border-radius: 8px; overflow: hidden; }
 .pantaila-hizkuntza button { border: 0; background: none; padding: 6px 14px; font: 400 20px var(--pixel); }
@@ -1905,7 +1906,7 @@ const T = {
     kodea: "Kodea", konektatu: "Konektatu", transmititzen: k => `Pantailan erakusten (${k}).`, gelditu: "Gelditu", pantailan: "PANTAILAN",
     kodeOkerra: "Kodeak 6 karaktere ditu.", pantailaErrorea: "Ezin izan da pantailarekin konektatu. Egiaztatu kodea.",
     pantailaTitulua: "Txalometroa pantailan", pantailaPausoak: ["Ireki Txalometroa mugikorrean.", "Joan Ezarpenak → «Ordenagailuan erakutsi» atalera.", "Idatzi kode hau:"],
-    itxaroten: "Mugikorraren zain…", pantailaSareGabe: "Pantaila modua erabiltzeko, sare soziala (Supabase) konektatu behar da.", appraItzuli: "Aplikaziora itzuli",
+    itxaroten: "Mugikorraren zain…", pantailaKonektatuta: "Zerbitzarira konektatuta", pantailaSareGabe: "Pantaila modua erabiltzeko, sare soziala (Supabase) konektatu behar da.", appraItzuli: "Aplikaziora itzuli",
   },
   es: {
     obrak: "Obras", butakak: "Butacas", konst: "Constelación", wrapped: "Wrapped",
@@ -1977,7 +1978,7 @@ const T = {
     kodea: "Código", konektatu: "Conectar", transmititzen: k => `Transmitiendo a la pantalla ${k}.`, gelditu: "Dejar de transmitir", pantailan: "EN PANTALLA",
     kodeOkerra: "El código tiene 6 caracteres.", pantailaErrorea: "No se ha podido conectar con la pantalla. Revisa el código.",
     pantailaTitulua: "Txalometroa en pantalla", pantailaPausoak: ["Abre el Txalometro en el móvil.", "Ve a Ajustes → «Transmitir a un ordenador».", "Escribe este código:"],
-    itxaroten: "Esperando al móvil…", pantailaSareGabe: "Para usar el modo pantalla hay que conectar la red social (Supabase).", appraItzuli: "Volver a la app",
+    itxaroten: "Esperando al móvil…", pantailaKonektatuta: "Conectado al servidor", pantailaSareGabe: "Para usar el modo pantalla hay que conectar la red social (Supabase).", appraItzuli: "Volver a la app",
   },
 };
 const t = () => T[G.lang];
@@ -3025,7 +3026,11 @@ function ispiluZatia(el, oihalak) {
     const img = document.createElement("img");
     img.className = c.className; img.dataset.oihala = oihalak.length;
     img.style.cssText = `${c.style.cssText};width:${c.clientWidth}px;height:${c.clientHeight}px;display:block`;
-    try { oihalak.push(c.width && c.height ? c.toDataURL("image/jpeg", .6) : ""); } catch (e) { oihalak.push(""); }
+    try {
+      if (!c.width || !c.height) oihalak.push("");
+      else { const k = Math.min(1, 480 / c.width), t = document.createElement("canvas"); t.width = Math.round(c.width * k); t.height = Math.round(c.height * k);
+        t.getContext("2d").drawImage(c, 0, 0, t.width, t.height); oihalak.push(t.toDataURL("image/jpeg", .55)); }
+    } catch (e) { oihalak.push(""); }
     kopiak[i].replaceWith(img);
   });
   // Lo escrito en los campos (las contraseñas, solo como puntos).
@@ -3052,8 +3057,8 @@ async function ispiluaBidali(osoa = false) {
   const datuak = { zatiak, y: scrollY, bal: document.getElementById("baloratu").scrollTop, arb: document.getElementById("arbela").scrollTop,
     w: innerWidth, h: innerHeight, lang: G.lang, ...(oihalBerriak ? { oihalak } : {}) };
   PANTAILA.bidaltzen = true;
-  try { await PANTAILA.kanala.send({ type: "broadcast", event: "irudia", payload: await trinkotu(datuak) }); }
-  catch (e) { /* se reintenta con el siguiente cambio */ }
+  try { const r = await PANTAILA.kanala.send({ type: "broadcast", event: "irudia", payload: await trinkotu(datuak) }); if (r !== "ok") { console.warn("Pantalla: envío", r); PANTAILA.azkenak = {}; } }
+  catch (e) { console.warn("Pantalla:", e); PANTAILA.azkenak = {}; }
   finally { PANTAILA.bidaltzen = false; }
 }
 function ispiluaProgramatu(osoa = false) {
@@ -3071,7 +3076,7 @@ async function pantailaKonektatu(kodea) {
     const kanala = sb.channel(`pantaila-${kodea}`, { config: { broadcast: { self: false } } });
     kanala.on("broadcast", { event: "eskatu" }, () => ispiluaProgramatu(true));
     await new Promise((ok, ko) => { const tenp = setTimeout(() => ko(new Error("denbora")), 10000);
-      kanala.subscribe(s => { if (s === "SUBSCRIBED") { clearTimeout(tenp); ok(); } else if (s === "CHANNEL_ERROR" || s === "TIMED_OUT") { clearTimeout(tenp); ko(new Error(s)); } }); });
+      kanala.subscribe((s, err) => { if (s === "SUBSCRIBED") { clearTimeout(tenp); ok(); } else if (s === "CHANNEL_ERROR" || s === "TIMED_OUT" || s === "CLOSED") { clearTimeout(tenp); ko(new Error(err?.message ? `${s}: ${err.message}` : s)); } }); });
     Object.assign(PANTAILA, { kanala, kodea });
     PANTAILA.behatzailea = new MutationObserver(() => ispiluaProgramatu());
     PANTAILA.behatzailea.observe(document.body, { subtree: true, childList: true, attributes: true, characterData: true });
@@ -3082,7 +3087,7 @@ async function pantailaKonektatu(kodea) {
     PANTAILA.oihalTenp = setInterval(() => { if (document.querySelector("#edukia canvas, #istorioa canvas")) ispiluaProgramatu(); }, 1000);
     pintarTransmisioa(); abrirAjustes();
     ispiluaProgramatu(true);
-  } catch (e) { if (oharra) oharra.textContent = tx.pantailaErrorea; }
+  } catch (e) { console.error("Pantalla:", e); if (oharra) oharra.textContent = `${tx.pantailaErrorea} (${e?.message || e})`; }
 }
 function ispiluKorritu() { ispiluaProgramatu(); }
 async function pantailaGelditu(abisatu = true) {
@@ -3132,7 +3137,7 @@ function itxaronMarraztu() {
     <h1>${tx.pantailaTitulua}</h1>
     ${sareaPrest() ? `<ol>${tx.pantailaPausoak.map(p => `<li>${p}</li>`).join("")}</ol>
       <div class="pantaila-kodea" aria-label="${tx.kodea}">${kodea.split("").map(c => `<span>${c}</span>`).join("")}</div>
-      <p class="itxaroten"><i></i>${tx.itxaroten}</p>` : `<p>${tx.pantailaSareGabe}</p>`}
+      <p class="itxaroten"><i></i>${tx.itxaroten}</p><p class="pantaila-egoera" id="pantaila-egoera">${ORDENAGAILUA.egoera || "…"}</p>` : `<p>${tx.pantailaSareGabe}</p>`}
     <div class="pantaila-hizkuntza"><button type="button" data-pantaila-lang="eu" aria-pressed="${G.lang === "eu"}">EUS</button><button type="button" data-pantaila-lang="es" aria-pressed="${G.lang === "es"}">ES</button></div>
     <a class="esteka" href="${location.pathname}" data-pantaila="app">${tx.appraItzuli}</a></div>`;
 }
@@ -3169,7 +3174,12 @@ async function pantailaHasi() {
   const eskatu = () => kanala.send({ type: "broadcast", event: "eskatu", payload: {} }).catch(() => {});
   kanala.on("broadcast", { event: "irudia" }, async ({ payload }) => { try { await ispiluaMarraztu(await zabaldu(payload)); } catch (e) { eskatu(); } });
   kanala.on("broadcast", { event: "amaiera" }, () => itxaronMarraztu());
-  kanala.subscribe(s => { if (s === "SUBSCRIBED") eskatu(); });
+  kanala.subscribe((s, err) => {
+    ORDENAGAILUA.egoera = s === "SUBSCRIBED" ? `✓ ${t().pantailaKonektatuta}` : `✗ ${s}${err?.message ? `: ${err.message}` : ""}`;
+    const el = document.getElementById("pantaila-egoera"); if (el) el.textContent = ORDENAGAILUA.egoera;
+    if (s !== "SUBSCRIBED") console.error("Pantalla:", s, err);
+    if (s === "SUBSCRIBED") eskatu();
+  });
   // Si el móvil ya estaba conectado (el ordenador se recargó), se le pide la pantalla entera.
   setInterval(() => { if (!ORDENAGAILUA.konektatuta) eskatu(); }, 5000);
   addEventListener("resize", () => { if (ORDENAGAILUA.datuak) ispiluaMarraztu({ ...ORDENAGAILUA.datuak, zatiak: {} }); });

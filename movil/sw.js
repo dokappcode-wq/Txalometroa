@@ -1,6 +1,6 @@
 // Service worker del Txalometroa: la app funciona sin conexión una vez abierta.
 // construir.py sustituye la versión en cada compilación para que el móvil coja los cambios.
-const VERSION = "txalometroa-6f4c6efed2";
+const VERSION = "txalometroa-6369bb0e0d";
 const APP = ["./", "./index.html", "./404.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png"];
 const IMAGENES = "txalometroa-imagenes";
 
