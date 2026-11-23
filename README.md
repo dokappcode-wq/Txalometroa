@@ -4,7 +4,7 @@ Prototipo del Txalometroa de Hika Teatroa: analiza el feedback del público, lo 
 
 | Parte | Dónde |
 | --- | --- |
-| App móvil (prototipo publicado) | https://txalometroa-hika.netlify.app · código en `movil/` |
+| App móvil (prototipo publicado) | https://txalometroa-escenario.netlify.app · código en `movil/` |
 | App de análisis y publicación | `app/txalometroa.html` |
 | Réplica de la web para pruebas | `replica/index.html` |
 | Script de análisis por línea de comandos | `analizar.py` |

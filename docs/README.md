@@ -13,6 +13,6 @@ Para empezar a programar con Claude, el fichero [`CLAUDE.md`](../CLAUDE.md) de l
 
 ## Enlaces
 
-- App móvil publicada: https://txalometroa-hika.netlify.app
+- App móvil publicada: https://txalometroa-escenario.netlify.app
 - Web de Hika: https://hikateatroa.eus/txalometroa/
 - Presupuesto con gráficos: https://claude.ai/artifact/JFK2c2sXrYsUDEz7Zh7JdD

@@ -10,7 +10,7 @@ El prototipo son cuatro piezas que comparten la misma lógica. Todo es HTML y Ja
 | Réplica de la web | `replica/index.html` | `replica/replica.src.html` | Pruebas: la página del Txalometroa con el bloque y el formulario |
 | Script de análisis | `analizar.py` | — | Lo mismo que la app de análisis, por línea de comandos |
 
-Publicado: https://txalometroa-hika.netlify.app (app móvil).
+Publicado: https://txalometroa-escenario.netlify.app (app móvil).
 
 ## Cómo se compila
 

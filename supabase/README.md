@@ -9,7 +9,7 @@ La app móvil usa Supabase para las cuentas, los perfiles, el feed, los seguimie
 3. **Authentication → Sign In / Providers → Email**: déjalo activado.
    - Con **Confirm email** activado, cada cuenta nueva recibe un correo para confirmar. El servidor de correo que trae Supabase solo envía unos pocos correos por hora: para el público, configura un SMTP propio en **Authentication → Emails → SMTP Settings**.
    - Para las pruebas, puedes desactivar **Confirm email**: así la cuenta funciona al momento.
-4. **Authentication → URL Configuration**: en **Site URL** pon `https://txalometroa-hika.netlify.app`. Es adonde lleva el enlace del correo de confirmación.
+4. **Authentication → URL Configuration**: en **Site URL** pon `https://txalometroa-escenario.netlify.app`. Es adonde lleva el enlace del correo de confirmación.
 5. **Project Settings → API Keys**: copia la URL del proyecto y la clave pública (**anon**, o la **publishable** en los proyectos nuevos) en `config.json`:
 
    ```json
@@ -52,7 +52,7 @@ Todo se puede leer (perfiles y opiniones son públicos). Funciones que llama la 
 
 ## Transmitir el móvil a un ordenador
 
-1. En el ordenador, abre `https://txalometroa-hika.netlify.app/#pantalla`: sale un código de 6 letras.
+1. En el ordenador, abre `https://txalometroa-escenario.netlify.app/#pantalla`: sale un código de 6 letras.
 2. En el móvil: **Ajustes → Transmitir a un ordenador**, escribe el código y pulsa «Conectar».
 3. El ordenador muestra en un marco de móvil lo mismo que ves en el móvil, en directo: cada pantalla, el desplazamiento, lo que escribes, la pizarra y la constelación (como imagen, una vez por segundo). El icono rojo de la cabecera indica que se está transmitiendo; tócalo para parar.
 
