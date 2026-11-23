@@ -174,6 +174,15 @@ textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(
 .zuzenean { display: inline-flex; align-items: center; gap: 8px; font: 400 20px var(--pixel); letter-spacing: .08em; color: var(--rojo-vivo); }
 .zuzenean i { width: 10px; height: 10px; border-radius: 50%; background: var(--rojo-vivo); animation: taupada 1.2s infinite; }
 @keyframes taupada { 50% { opacity: .25; transform: scale(.7); } }
+.aretoa { margin: 18px 0 8px; padding: 14px 10px 16px; background: var(--negro); border-radius: 18px; overflow-x: auto; }
+.eszenatokia { margin: 0 auto 18px; width: 82%; text-align: center; background: var(--crema-logo); color: var(--negro); font: 400 22px/1 var(--pixel); letter-spacing: .3em; padding: 8px 0 6px; border-radius: 3px 3px 40% 40% / 3px 3px 14px 14px; }
+.ilarak { display: grid; gap: 5px; min-width: 330px; }
+.ilara { display: grid; grid-template-columns: 14px repeat(9, 1fr) 10px repeat(9, 1fr) 14px; gap: 4px; align-items: center; }
+.ilara > span { font: 400 13px var(--pixel); color: var(--tinta-3); text-align: center; }
+.butaka { display: block; aspect-ratio: 1 / .9; border-radius: 4px 4px 2px 2px; background: #333; }
+.butaka.hartuta { background: var(--rojo); }
+.legenda { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--tinta-2); margin: 8px 0; }
+.legenda i { display: inline-block; width: 12px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
 .hutsik.laster .ikur { width: 74px; color: var(--crema-logo); }
 .laster-txip { font: 400 24px/1 var(--pixel); letter-spacing: .12em; text-transform: uppercase; background: var(--crema); color: var(--negro); padding: 6px 12px 4px; border-radius: 4px; }
 
@@ -1865,7 +1874,7 @@ const T = {
     iritziAzal: "Nahi baduzu, kontatu zer iruditu zaizun obra (aukerakoa).", iritzia: "Zure iritzia", iritziaIdatzi: "Idatzi hemen zure iritzia…",
     eskerrik: "Eskerrik asko!", izarBerria: "Izar berri bat piztu da zure konstelazioan", ikusiKonst: "Ikusi konstelazioa", itzuli: "Obretara itzuli",
     // Butacas (próximamente). EU: pendiente de revisión.
-    zuzenean: "Zuzenean", laster: "Laster", butakakLaster: "Laster: eseri zure butakan QR kodea eskaneatuta eta ikusi aretoa nola betetzen den zuzenean.",
+    zuzenean: "Zuzenean", eszena: "ESZENATOKIA", libre: "Libre", hartuta: "Hartuta", laster: "Laster", butakakLaster: "Laster: eseri zure butakan QR kodea eskaneatuta eta ikusi aretoa nola betetzen den zuzenean.",
     // Constelación
     nireKonst: "Nire konstelazioa", izar: "izar", genero: "genero", nota: "batez beste",
     konstAzal: "Ikusi duzun obra bakoitza izar bat da. Kolorea: generoa. Erdirago, nota altuagoa. Handiagoa, emozio gehiago. Lerroek ikusi dituzun ordena eta genero bereko obrak lotzen dituzte.",
@@ -1943,7 +1952,7 @@ const T = {
     emozioak: { barre: "Reír", negar: "Llorar", biak: "Las dos", ez: "Ninguna" },
     iritziAzal: "Si quieres, cuéntanos qué te ha parecido la obra (opcional).", iritzia: "Tu opinión", iritziaIdatzi: "Escribe aquí tu opinión…",
     eskerrik: "¡Gracias!", izarBerria: "Se ha encendido una estrella nueva en tu constelación", ikusiKonst: "Ver constelación", itzuli: "Volver a las obras",
-    zuzenean: "En directo", laster: "Próximamente", butakakLaster: "Próximamente: siéntate en tu butaca escaneando su código QR y mira cómo se llena la sala en directo.",
+    zuzenean: "En directo", eszena: "ESCENARIO", libre: "Libre", hartuta: "Ocupada", laster: "Próximamente", butakakLaster: "Próximamente: siéntate en tu butaca escaneando su código QR y mira cómo se llena la sala en directo.",
     nireKonst: "Mi constelación", izar: "estrellas", genero: "géneros", nota: "nota media",
     konstAzal: "Cada obra que ves es una estrella. Color: género. Más al centro, mejor nota. Más grande, más emoción. Las líneas unen el orden en que las viste y las obras del mismo género.",
     konstIzena: "Tu constelación se llama", hutsikKonst: "Todavía no tienes estrellas. Valora una obra que hayas visto para encender la primera.",
@@ -2316,10 +2325,18 @@ function pintarResultado() {
 // ================================================================ Butacas (próximamente)
 // La simulación del mapa de butacas se ha retirado: la pestaña anuncia que llegará con los QR de cada butaca.
 
+// Solo visual: sala de ejemplo con butacas ocupadas (siempre las mismas). No se puede tocar.
+const ILARAK = "ABCDEFGHIJKL".split(""), ZUTABEAK = 18;
 function vistaButakak() {
-  const tx = t();
+  const tx = t(), r = azarra(2026);
+  const fila = (l, i) => `<div class="ilara"><span>${l}</span>${Array.from({ length: ZUTABEAK }, (_, z) => {
+    const gogoko = 1 - Math.abs(z - (ZUTABEAK - 1) / 2) / ZUTABEAK - i / ILARAK.length * .6;
+    return `${z === 9 ? "<span></span>" : ""}<i class="butaka${gogoko + r() * .8 > .95 ? " hartuta" : ""}"></i>`;
+  }).join("")}<span>${l}</span></div>`;
   return `<h1 class="titulua">${tx.butakak}</h1>
-    <div class="hutsik laster"><div class="ikur">${ICONOS.butakak}</div><span class="laster-txip">${tx.laster}</span><p>${tx.butakakLaster}</p></div>`;
+    <p class="azalpena"><span class="laster-txip">${tx.laster}</span></p><p class="azalpena">${tx.butakakLaster}</p>
+    <div class="aretoa" aria-hidden="true"><div class="eszenatokia">${tx.eszena}</div><div class="ilarak">${ILARAK.map(fila).join("")}</div></div>
+    <div class="legenda"><span><i style="background:#333"></i>${tx.libre}</span><span><i style="background:var(--rojo)"></i>${tx.hartuta}</span></div>`;
 }
 
 // ================================================================ Mi constelación
