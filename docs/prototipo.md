@@ -63,7 +63,7 @@ También genera `movil/sw.js` a partir de `movil/sw.src.js`, con una versión ca
 Cuatro pestañas y un menú de ajustes:
 
 - **Obras:** obras activas con su foto, el logo líquido con la nota del público y el botón TXALOTU. Debajo, el repertorio para añadir obras ya vistas. La ficha de cada obra muestra cada aspecto con 5 máscaras.
-- **Valorar** (3 pasos): notas con máscaras (media máscara = 1 punto, entera = 2, escala 1–10); emociones (¿reír o llorar?, ¿qué te emocionó?); y preguntas abiertas. Exige al menos una nota de GAL1–GAL4 y bloquea el botón al enviar.
+- **Valorar** (2 pasos): notas con máscaras (media máscara = 1 punto, entera = 2, escala 1–10) y un solo cuadro de texto, opcional, para dejar la opinión. Exige al menos una nota de GAL1–GAL4 y bloquea el botón al enviar.
 - **Butacas:** mapa de 12 filas × 18 butacas que se llena solo. **Es una simulación**; el usuario puede marcar su butaca.
 - **Constelación:** dibujada en un canvas. Ángulo = género, distancia al centro = nota (más cerca, mejor), tamaño = emoción y textos. Las líneas unen el orden cronológico y las obras del mismo género.
 - **Wrapped:** historias a pantalla completa. El mundial sale del export real; el personal, de las valoraciones del usuario. Toca para avanzar y mantén pulsado para pausar.

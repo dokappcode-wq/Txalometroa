@@ -136,7 +136,7 @@ h2.azpititulua { font: 400 30px/1 var(--pixel); margin: 30px 0 10px; letter-spac
 /* ---------- Valorar */
 .baloratu { position: fixed; inset: 0; z-index: 50; background: var(--gris-3); overflow-y: auto; padding: calc(var(--arriba) + 12px) var(--lado-d) calc(var(--abajo) + 110px) var(--lado-i); }
 .baloratu .goia { display: flex; align-items: center; gap: 12px; max-width: 620px; margin: 0 auto; }
-.baloratu .urratsak { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.baloratu .urratsak { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
 .baloratu .urratsak i { height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .2); }
 .baloratu .urratsak i.eginda { background: var(--rojo-vivo); }
 .baloratu .edukia { max-width: 620px; margin: 0 auto; }
@@ -149,13 +149,7 @@ h2.azpititulua { font: 400 30px/1 var(--pixel); margin: 30px 0 10px; letter-spac
 .maskarak output { font: 400 30px/1 var(--pixel); text-align: right; color: var(--tinta-3); }
 .maskarak output.jarrita { color: var(--crema); }
 details.gehiago summary { cursor: pointer; padding: 14px 0; color: var(--tinta-2); font-weight: 600; }
-.aukerak { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0 18px; }
-.aukera { border: 2px solid rgba(255, 255, 255, .14); border-radius: 14px; background: rgba(13, 13, 13, .3); padding: 12px 10px; display: grid; justify-items: center; gap: 6px; font-weight: 600; }
-.aukera .irud { display: flex; gap: 4px; height: 52px; }
-.aukera .irud svg { width: 46px; height: 52px; }
-.aukera[aria-pressed="true"] { border-color: var(--rojo-vivo); background: rgba(200, 0, 0, .22); }
-label.idatzi { display: grid; gap: 6px; margin: 16px 0; font-weight: 600; }
-label.idatzi span { font-weight: 400; color: var(--tinta-3); font-size: 13px; }
+textarea.iritzia { display: block; min-height: 200px; margin-top: 16px; }
 textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(--texto); color: var(--negro); background: var(--crema); border: 0; border-radius: 10px; padding: 10px 12px; }
 .baloratu .beheko { position: fixed; left: 0; right: 0; bottom: 0; z-index: 51; display: flex; gap: 10px; padding: 12px var(--lado-d) calc(var(--abajo) + 12px) var(--lado-i); background: linear-gradient(180deg, transparent, var(--gris-3) 30%); }
 .baloratu .beheko > * { max-width: 620px; }
@@ -489,16 +483,13 @@ const T = {
     ikusiDut: "Ikusi dut · Baloratu", berriroBaloratu: "Berriro baloratu", zureTxaloa: "Zure txaloa",
     noiz: d => `Baloratua: ${d}`, mediaKalk: "Nota: satisfazioa, trama, aktoreak eta gomendioa.",
     // Valorar
-    urratsa: ["Notak", "Emozioak", "Hitzak"],
+    urratsa: ["Notak", "Iritzia"],
     notakAzal: "Ukitu maskarak: maskara erdia puntu bat da, osoa bi. Dramatik (1) komediara (10).",
     gehiago: "Galdera gehiago", hurrengoa: "Hurrengoa", atzera: "Atzera", bidali: "Txalotu!", bidaltzen: "Bidaltzen…",
     gutxienez: "Baloratu gutxienez lehen lau galderetako bat maskarekin.",
-    emozioGald: "Barre edo negar egin duzu?", emozioak: { barre: "Barre", negar: "Negar", biak: "Biak", ez: "Ez bata ez bestea" },
-    uneHori: "Zein izan zen une hori?", hunkitu: "Zerk hunkitu zaitu gehien?",
-    hitzakAzal: "Nahi baduzu, kontatu gehiago. Erantzun guztiak aukerakoak dira.",
-    zertaz: "Zertaz zihoan antzezlana?", pertsonaia: "Zein izan da zure pertsonaia gogokoena, eta zergatik?",
-    gatazka: "Zein da obraren arazo edo gatazka nagusia?", konpondu: "Nola konpondu zela uste duzu gatazka?",
-    aukerakoa: "aukerakoa",
+    emozioak: { barre: "Barre", negar: "Negar", biak: "Biak", ez: "Ez bata ez bestea" },
+    // EU: textos nuevos, pendientes de revisión por un hablante nativo.
+    iritziAzal: "Nahi baduzu, kontatu zer iruditu zaizun obra (aukerakoa).", iritzia: "Zure iritzia", iritziaIdatzi: "Idatzi hemen zure iritzia…",
     eskerrik: "Eskerrik asko!", izarBerria: "Izar berri bat piztu da zure konstelazioan", ikusiKonst: "Ikusi konstelazioa", itzuli: "Obretara itzuli",
     // Butacas
     butakaMapa: "Butaken mapa", zuzenean: "Zuzenean", eszena: "ESZENATOKIA", ikusle: "ikusle orain", libre: "Libre", hartuta: "Hartuta", nirea: "Zurea",
@@ -532,16 +523,12 @@ const T = {
     datuGabe: "Esta obra no tiene datos en el Txalometro: si la has visto, valórala y aparecerá en tu constelación.",
     ikusiDut: "La he visto · Valorar", berriroBaloratu: "Volver a valorar", zureTxaloa: "Tu aplauso",
     noiz: d => `Valorada el ${d}`, mediaKalk: "Nota: satisfacción, trama, reparto y recomendación.",
-    urratsa: ["Notas", "Emociones", "Palabras"],
+    urratsa: ["Notas", "Tu opinión"],
     notakAzal: "Toca las máscaras: media máscara es un punto y una entera, dos. Del drama (1) a la comedia (10).",
     gehiago: "Más preguntas", hurrengoa: "Siguiente", atzera: "Atrás", bidali: "¡Txalotu!", bidaltzen: "Enviando…",
     gutxienez: "Valora con las máscaras al menos una de las cuatro primeras preguntas.",
-    emozioGald: "¿Hubo algún momento que te hizo reír o llorar?", emozioak: { barre: "Reír", negar: "Llorar", biak: "Las dos", ez: "Ninguna" },
-    uneHori: "¿Cuál fue ese momento?", hunkitu: "¿Qué parte de la obra te hizo sentir más emocionado/a?",
-    hitzakAzal: "Si quieres, cuéntanos más. Todas las respuestas son opcionales.",
-    zertaz: "¿De qué trató la obra?", pertsonaia: "¿Quién fue tu personaje favorito y por qué?",
-    gatazka: "¿Qué problema o conflicto central presenta la obra?", konpondu: "¿Cómo crees que se resolvió el conflicto?",
-    aukerakoa: "opcional",
+    emozioak: { barre: "Reír", negar: "Llorar", biak: "Las dos", ez: "Ninguna" },
+    iritziAzal: "Si quieres, cuéntanos qué te ha parecido la obra (opcional).", iritzia: "Tu opinión", iritziaIdatzi: "Escribe aquí tu opinión…",
     eskerrik: "¡Gracias!", izarBerria: "Se ha encendido una estrella nueva en tu constelación", ikusiKonst: "Ver constelación", itzuli: "Volver a las obras",
     butakaMapa: "Mapa de butacas", zuzenean: "En directo", eszena: "ESCENARIO", ikusle: "personas viendo ahora", libre: "Libre", hartuta: "Ocupada", nirea: "La tuya",
     eseri: b => `Alguien se ha sentado en ${b}`, zuEseri: b => `Te has sentado en la ${b}`, altxatu: "Te has levantado de tu butaca",
@@ -722,7 +709,7 @@ function vistaFitxa(id) {
     : `<p class="azalpena">${tx.datuGabe}</p>`;
   const miaHtml = mia ? `<div class="zurea"><h3>${tx.zureTxaloa}: ${fmt(notaPropia(mia))}</h3>${htmlMaskaraNeurria(notaPropia(mia))}
       <p>${tx.noiz(fecha(new Date(mia.fecha)))}${mia.emozioa && mia.emozioa !== "ez" ? ` · ${tx.emozioak[mia.emozioa]}` : ""}</p>
-      ${mia.testuak?.pertsonaia ? `<p>«${esc(mia.testuak.pertsonaia)}»</p>` : ""}</div>` : "";
+      ${iritziaDe(mia) ? `<p>«${esc(iritziaDe(mia))}»</p>` : ""}</div>` : "";
   return `<div class="fitxa-azala"><img src="${esc(o.imagen)}" alt=""><button type="button" class="atzera" data-vista="obrak" aria-label="${tx.atzera}">${ICONOS.atzera}</button><h1>${esc(izena(o))}</h1></div>
     <div class="meta">${o.proba ? `<span class="txip proba">${tx.probaEtiketa}</span>` : ""}<span class="txip"><i style="--c:${genKolorea(o.genero)}"></i>${esc(genIzena(o.genero))}</span><span>${o.urtea}</span>${o[G.lang === "eu" ? "es" : "eu"] !== izena(o) ? `<span>· ${esc(o[G.lang === "eu" ? "es" : "eu"])}</span>` : ""}</div>
     ${publicoHtml}${miaHtml}
@@ -751,10 +738,12 @@ function irA(nombre, extra = {}) {
 
 // ================================================================ Valorar
 
-let baloraketa = null;   // { obra, urratsa, notas, emozioa, testuak }
+let baloraketa = null;   // { obra, urratsa, notas, testuak }
+// La opinión libre; las valoraciones antiguas guardaban varias respuestas (personaje favorito…).
+const iritziaDe = v => v.testuak?.iritzia || v.testuak?.pertsonaia || "";
 
 function abrirValorar(id) {
-  baloraketa = { obra: id, urratsa: 0, notas: Object.fromEntries(PREG.map(g => [g, 0])), emozioa: null, testuak: {} };
+  baloraketa = { obra: id, urratsa: 0, notas: Object.fromEntries(PREG.map(g => [g, 0])), testuak: {} };
   const el = document.getElementById("baloratu"); el.hidden = false; document.body.style.overflow = "hidden";
   pintarValorar();
 }
@@ -764,8 +753,8 @@ function cerrarValorar() {
 
 function pintarValorar() {
   const tx = t(), b = baloraketa, o = obraCat(b.obra), el = document.getElementById("baloratu");
-  if (b.urratsa === 3) return pintarResultado();
-  const pasos = `<div class="urratsak">${[0, 1, 2].map(i => `<i class="${i <= b.urratsa ? "eginda" : ""}"></i>`).join("")}</div>`;
+  if (b.urratsa === 2) return pintarResultado();
+  const pasos = `<div class="urratsak">${[0, 1].map(i => `<i class="${i <= b.urratsa ? "eginda" : ""}"></i>`).join("")}</div>`;
   let cuerpo = "";
   if (b.urratsa === 0) {
     const principales = CFG.nota_obra, resto = PREG.filter(g => !principales.includes(g) && (o.txalometroa || CFG.preguntas[g].bloque !== "localidad"));
@@ -773,23 +762,15 @@ function pintarValorar() {
     cuerpo = `<h2>${esc(izena(o))}</h2><p class="azalpena">${tx.notakAzal}</p>${principales.map(fila).join("")}
       <details class="gehiago"><summary>${tx.gehiago} (${resto.length})</summary>${resto.map(fila).join("")}</details>
       <p class="oharra" id="oharra" aria-live="polite"></p>`;
-  } else if (b.urratsa === 1) {
-    const iconos = { barre: [1], negar: [-1], biak: [-1, 1], ez: [0] };
-    cuerpo = `<h2>${tx.urratsa[1]}</h2><p class="testua" style="font-weight:600;margin:16px 0 0">${tx.emozioGald}</p>
-      <div class="aukerak" role="group">${Object.entries(tx.emozioak).map(([k, l]) => `<button type="button" class="aukera" data-emozioa="${k}" aria-pressed="${b.emozioa === k}"><span class="irud">${iconos[k].map(m => svgMascara(m, k === "ez" ? 0 : 1)).join("")}</span>${l}</button>`).join("")}</div>
-      ${testuArea("unea", tx.uneHori)}${testuArea("hunkitu", tx.hunkitu)}`;
   } else {
-    cuerpo = `<h2>${tx.urratsa[2]}</h2><p class="azalpena">${tx.hitzakAzal}</p>
-      ${testuArea("zertaz", tx.zertaz)}${testuArea("pertsonaia", tx.pertsonaia)}${testuArea("gatazka", tx.gatazka)}${testuArea("konpondu", tx.konpondu)}`;
+    cuerpo = `<h2>${tx.urratsa[1]}</h2><p class="azalpena">${tx.iritziAzal}</p>
+      <textarea class="iritzia" data-testua="iritzia" maxlength="1500" aria-label="${tx.iritzia}" placeholder="${tx.iritziaIdatzi}">${esc(b.testuak.iritzia || "")}</textarea>`;
   }
   el.innerHTML = `<div class="goia"><button type="button" class="atzera" data-bal="itxi" aria-label="${tx.atzera}">${ICONOS.itxi}</button>${pasos}</div>
     <div class="edukia">${cuerpo}</div>
     <div class="beheko">${b.urratsa > 0 ? `<button type="button" class="botoia marino" data-bal="atzera">${tx.atzera}</button>` : ""}
-      <button type="button" class="botoia" data-bal="${b.urratsa === 2 ? "bidali" : "hurrengoa"}" id="bal-aurrera">${b.urratsa === 2 ? tx.bidali : tx.hurrengoa}</button></div>`;
+      <button type="button" class="botoia" data-bal="${b.urratsa === 1 ? "bidali" : "hurrengoa"}" id="bal-aurrera">${b.urratsa === 1 ? tx.bidali : tx.hurrengoa}</button></div>`;
   el.scrollTop = 0;
-}
-function testuArea(k, etiketa) {
-  return `<label class="idatzi">${etiketa} <span>(${t().aukerakoa})</span><textarea data-testua="${k}" maxlength="600">${esc(baloraketa.testuak[k] || "")}</textarea></label>`;
 }
 function ponerNota(g, v, teclado = false) {
   baloraketa.notas[g] = Math.max(0, Math.min(10, v));
@@ -806,9 +787,9 @@ function enviarValoracion() {
   const notas = Object.fromEntries(PREG.map(g => [g, b.notas[g] || 0]));
   G.valoraciones = G.valoraciones.filter(v => !(v.demo && v.obra === b.obra));
   G.valoraciones.push({ id: `m-${Date.now()}`, obra: b.obra, fecha: new Date().toISOString(), lang: G.lang, notas,
-    emozioa: b.emozioa || "ez", testuak: Object.fromEntries(Object.entries(b.testuak).filter(([, x]) => x.trim())) });
+    emozioa: "ez", testuak: Object.fromEntries(Object.entries(b.testuak).filter(([, x]) => x.trim())) });
   guardar(); cacheRes = null;
-  b.antes = antes; b.urratsa = 3;
+  b.antes = antes; b.urratsa = 2;
   setTimeout(() => { pintarValorar(); konfetia(); }, 350);
 }
 
@@ -1105,7 +1086,7 @@ function diapositivasPersonal() {
   const mayores = Math.round(medias.filter(m => m > media).length / medias.length * 100), menores = Math.round(medias.filter(m => m < media).length / medias.length * 100);
   const exigente = mayores >= menores;
   const barre = mias.filter(v => v.emozioa === "barre" || v.emozioa === "biak").length, negar = mias.filter(v => v.emozioa === "negar" || v.emozioa === "biak").length;
-  const cita = mias.map(v => ({ v, txt: v.testuak?.pertsonaia })).find(x => x.txt);
+  const cita = mias.map(v => ({ v, txt: iritziaDe(v), iritzia: !!v.testuak?.iritzia })).find(x => x.txt);
   const tipo = negar >= 2 ? (es ? ["Corazón sensible", "Las obras te llegan dentro: has llorado más que nadie."] : ["Bihotz samurra", "Obrak barrura iristen zaizkizu: inork baino negar gehiago egin duzu."])
     : barre >= 2 ? (es ? ["Risa fácil", "Si hay una carcajada en la sala, es tuya."] : ["Barre erraza", "Aretoan algararik badago, zurea da."])
     : media >= 9 ? (es ? ["Aplaudidor/a nato/a", "Tus manos no paran: casi todo te parece de diez."] : ["Txalogile jaioa", "Zure eskuak ez dira gelditzen: ia dena iruditzen zaizu hamarrekoa."])
@@ -1124,10 +1105,10 @@ function diapositivasPersonal() {
         <p class="agertu c">${exigente ? (es ? `Eres más exigente que el ${mayores}% del público.` : `Publikoaren %${mayores} baino zorrotzagoa zara.`) : (es ? `Eres más generoso/a que el ${menores}% del público.` : `Publikoaren %${menores} baino eskuzabalagoa zara.`)}</p>` },
     { bg: genKolorea(genFav), c: "#0d0d0d", html: `<div class="goiburu">${es ? "Tu género" : "Zure generoa"}</div><div class="handia agertu">${esc(genIzena(genFav))}</div>
         <div class="erraldoia agertu b" data-kontatu="${cuenta[genFav]}">0</div><p class="agertu c">${es ? "obras de este género en tu constelación." : "genero honetako obra zure konstelazioan."}</p>` },
-    { bg: "#0d0d0d", c: "#fffdf0", html: `<div class="goiburu">${es ? "Tus emociones" : "Zure emozioak"}</div>
+    ...(barre + negar ? [{ bg: "#0d0d0d", c: "#fffdf0", html: `<div class="goiburu">${es ? "Tus emociones" : "Zure emozioak"}</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px" class="agertu"><div><div style="width:70%">${svgMascara(1, 1)}</div><div class="erraldoia" style="font-size:min(26vw,140px)" data-kontatu="${barre}">0</div><p>${es ? "obras con risas" : "obra barrez"}</p></div>
-        <div><div style="width:70%">${svgMascara(-1, 1)}</div><div class="erraldoia" style="font-size:min(26vw,140px)" data-kontatu="${negar}">0</div><p>${es ? "obras con lágrimas" : "obra negarrez"}</p></div></div>` },
-    ...(cita ? [{ bg: "#fffdf0", c: "#0d0d0d", html: `<div class="goiburu">${es ? "Tu personaje favorito" : "Zure pertsonaia gogokoena"}</div><div class="aipua agertu">«${esc(cita.txt)}»</div>
+        <div><div style="width:70%">${svgMascara(-1, 1)}</div><div class="erraldoia" style="font-size:min(26vw,140px)" data-kontatu="${negar}">0</div><p>${es ? "obras con lágrimas" : "obra negarrez"}</p></div></div>` }] : []),
+    ...(cita ? [{ bg: "#fffdf0", c: "#0d0d0d", html: `<div class="goiburu">${cita.iritzia ? (es ? "Tu opinión" : "Zure iritzia") : (es ? "Tu personaje favorito" : "Zure pertsonaia gogokoena")}</div><div class="aipua agertu">«${esc(cita.txt)}»</div>
         <p class="agertu b">— ${esc(izena(obraCat(cita.v.obra)))}</p>` }] : []),
     { bg: "#c80000", c: "#fffdf0", html: `${formaA("#0d0d0d", "width:90%;right:-35%;top:-12%;transform:rotate(12deg)")}
         <div class="goiburu">${es ? "Tu tipo de espectador" : "Zer ikusle mota zara"}</div><div class="handia agertu">${tipo[0]}</div><p class="agertu b">${tipo[1]}</p>` },
@@ -1282,10 +1263,9 @@ document.addEventListener("click", e => {
     const v = mitad ? i * 2 - 1 : i * 2;
     return ponerNota(cont.dataset.preg, baloraketa.notas[cont.dataset.preg] === v ? 0 : v);
   }
-  if ((el = q("[data-emozioa]"))) { baloraketa.emozioa = el.dataset.emozioa; document.querySelectorAll("[data-emozioa]").forEach(b => b.setAttribute("aria-pressed", b === el)); return; }
   if ((el = q("[data-bal]"))) {
     const a = el.dataset.bal;
-    if (a === "itxi") { const volver = baloraketa?.urratsa === 3; cerrarValorar(); return volver ? irA(vista.nombre, vista) : null; }
+    if (a === "itxi") { const volver = baloraketa?.urratsa === 2; cerrarValorar(); return volver ? irA(vista.nombre, vista) : null; }
     if (a === "konst") { cerrarValorar(); return irA("konst"); }
     if (a === "atzera") { baloraketa.urratsa--; return pintarValorar(); }
     if (a === "hurrengoa") {
