@@ -1,6 +1,6 @@
 // Service worker del Txalometroa: la app funciona sin conexión una vez abierta.
 // construir.py sustituye la versión en cada compilación para que el móvil coja los cambios.
-const VERSION = "txalometroa-7f6fc40dbb";
+const VERSION = "txalometroa-f12ff63138";
 const APP = ["./", "./index.html", "./404.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png"];
 const IMAGENES = "txalometroa-imagenes";
 
@@ -30,8 +30,9 @@ self.addEventListener("fetch", e => {
     e.respondWith(caches.match(req).then(r => r || fetch(req)));
     return;
   }
-  // Fotos de las obras y tipografías: se sirven de la copia y se actualizan por detrás.
-  if (/hikateatroa\.eus$|fonts\.googleapis\.com$|fonts\.gstatic\.com$/.test(url.hostname)) {
+  // Fotos de las obras, tipografías y el cliente de Supabase: se sirven de la copia y se actualizan por detrás.
+  // Las llamadas a Supabase (datos y sesión) no pasan por aquí: siempre van a la red.
+  if (/hikateatroa\.eus$|fonts\.googleapis\.com$|fonts\.gstatic\.com$/.test(url.hostname) || (url.hostname === "cdn.jsdelivr.net" && url.pathname.startsWith("/npm/@supabase/"))) {
     e.respondWith(caches.open(IMAGENES).then(async c => {
       const guardada = await c.match(req);
       const red = fetch(req).then(r => { if (r.ok || r.type === "opaque") c.put(req, r.clone()); return r; }).catch(() => guardada);

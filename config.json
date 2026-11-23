@@ -127,5 +127,9 @@
   "web": {
     "eu": "https://hikateatroa.eus/txalometroa/",
     "es": "https://hikateatroa.eus/es/txalometroa/"
+  },
+  "supabase": {
+    "url": "",
+    "anon": ""
   }
 }

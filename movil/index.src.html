@@ -54,10 +54,10 @@ header.goiburua { position: sticky; top: 0; z-index: 20; display: flex; align-it
 .goiburua .ikono svg { width: 22px; height: 22px; }
 .goiburua .instalatu { border: 1px solid var(--crema); background: var(--marino); padding: 7px 12px; font: 400 18px var(--pixel); text-decoration: underline; letter-spacing: .04em; }
 main { padding: 8px var(--lado-d) calc(var(--abajo) + 96px) var(--lado-i); max-width: 620px; margin: 0 auto; }
-nav.oina { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: repeat(4, 1fr);
+nav.oina { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
   padding: 6px max(8px, env(safe-area-inset-left, 0px)) calc(var(--abajo) + 6px) max(8px, env(safe-area-inset-right, 0px));
   background: rgba(13, 13, 13, .92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid rgba(255, 255, 255, .08); }
-nav.oina button { border: 0; background: none; display: grid; justify-items: center; gap: 2px; padding: 6px 2px; color: var(--tinta-3); font: 400 15px var(--pixel); letter-spacing: .05em; }
+nav.oina button { border: 0; background: none; display: grid; justify-items: center; gap: 2px; padding: 6px 0; color: var(--tinta-3); font: 400 14px var(--pixel); letter-spacing: .03em; min-width: 0; overflow-wrap: anywhere; }
 nav.oina button svg { width: 26px; height: 26px; }
 nav.oina button[aria-current="page"] { color: var(--tinta); }
 nav.oina button[aria-current="page"] svg { color: var(--rojo-vivo); }
@@ -276,6 +276,68 @@ textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(
 .proba-zerrenda button { border: 1px solid rgba(255, 255, 255, .3); background: none; border-radius: 8px; padding: 6px 10px; font-weight: 600; font-size: 13px; }
 .demo-banda { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: var(--marino); border: 1px solid rgba(255, 253, 240, .4); padding: 8px 12px; border-radius: 10px; font-size: 13px; margin-top: 12px; }
 .demo-banda button { border: 0; background: none; text-decoration: underline; font-weight: 600; }
+
+/* ---------- Red social: cuenta, perfil y feed */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.esteka { border: 0; background: none; padding: 8px 0; color: var(--tinta-2); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; font-size: 14px; }
+.sare-kargatzen { color: var(--tinta-3); text-align: center; padding: 30px 0; }
+.sare-txartela { background: rgba(13, 13, 13, .3); border-radius: 18px; padding: 6px 16px 16px; margin-top: 14px; display: grid; gap: 4px; }
+.sare-txartela h2 { font: 400 36px/1 var(--pixel); margin: 14px 0 2px; }
+.eremua { display: grid; gap: 6px; margin: 8px 0; font-weight: 600; font-size: 15px; }
+.eremua small { font-weight: 400; color: var(--tinta-3); font-size: 13px; }
+.eremua input, .bilatu input { width: 100%; font: 16px/1.3 var(--texto); color: var(--negro); background: var(--crema); border: 0; border-radius: 10px; padding: 11px 12px; }
+.eremua .arroba { display: flex; align-items: center; background: var(--crema); border-radius: 10px; color: var(--negro); padding-left: 12px; }
+.eremua .arroba b { font-weight: 600; opacity: .6; }
+.eremua .arroba input { padding-left: 2px; }
+.eremua textarea { min-height: 64px; }
+.oharra.ondo { color: #b9f3b0; }
+.koloreak { border: 0; padding: 0; margin: 8px 0; display: flex; flex-wrap: wrap; gap: 10px; }
+.koloreak legend { font-weight: 600; font-size: 15px; margin-bottom: 6px; padding: 0; }
+.koloreak label { cursor: pointer; }
+.koloreak input { position: absolute; opacity: 0; }
+.koloreak span { display: block; width: 38px; height: 38px; border-radius: 50%; background: var(--k); border: 3px solid transparent; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .25); }
+.koloreak input:checked + span { border-color: var(--crema); }
+.koloreak input:focus-visible + span { outline: 3px solid var(--crema-logo); outline-offset: 2px; }
+.botoiak { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.avatarra { flex: none; display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--k, var(--rojo)); color: var(--crema); font: 400 24px/1 var(--pixel); box-shadow: inset 0 0 0 2px rgba(255, 253, 240, .35); }
+.avatarra.handia { width: 84px; height: 84px; font-size: 52px; }
+.goiburua .profila-botoia { padding: 0; overflow: hidden; }
+.goiburua .ikono, .goiburua .instalatu { flex: none; }
+.goiburua .marka { min-width: 0; }
+@media (max-width: 420px) { .goiburua .marka b { font-size: 24px; } }
+.goiburua .profila-botoia .avatarra { width: 40px; height: 40px; border-radius: 10px; }
+.nor { display: flex; align-items: center; gap: 10px; border: 0; background: none; padding: 0; text-align: left; min-width: 0; }
+.nor b { display: block; font-weight: 700; }
+.nor small { display: block; color: var(--tinta-3); font-size: 13px; }
+.jario-goiburua { display: grid; gap: 10px; margin: 6px 0 14px; }
+.bilatu input { background: rgba(255, 253, 240, .92); }
+.pertsonak { list-style: none; margin: 0; padding: 8px 12px; display: grid; gap: 10px; background: rgba(13, 13, 13, .35); border-radius: 14px; }
+.fitxak { display: flex; align-items: center; gap: 6px; }
+.fitxak [role="tab"] { border: 1px solid rgba(255, 255, 255, .25); background: none; border-radius: 999px; padding: 6px 14px; font: 400 20px var(--pixel); letter-spacing: .04em; }
+.fitxak [role="tab"][aria-selected="true"] { background: var(--crema); color: var(--negro); border-color: var(--crema); }
+.fitxak .eguneratu { margin-left: auto; }
+#iritziak { display: grid; gap: 14px; }
+.iritzia { background: var(--gris-3); border-radius: 18px; padding: 14px; display: grid; gap: 10px; box-shadow: 0 8px 22px rgba(0, 0, 0, .25); }
+.iritzia .obra-lerroa { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 10px; align-items: center; border: 0; border-radius: 12px; background: rgba(255, 255, 255, .06); padding: 6px; text-align: left; }
+.iritzia .obra-lerroa:disabled { cursor: default; grid-template-columns: minmax(0, 1fr) auto; }
+.iritzia .obra-lerroa img { width: 64px; height: 48px; object-fit: cover; border-radius: 8px; }
+.iritzia .obra-lerroa b { display: block; font: 400 24px/1 var(--pixel); }
+.iritzia .obra-lerroa small { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--tinta-2); text-transform: uppercase; letter-spacing: .06em; }
+.iritzia .obra-lerroa small i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.iritzia .obra-lerroa .zbk { font: 400 36px/1 var(--pixel); padding-right: 6px; }
+.iritzia .maskara-neurria { max-width: 220px; gap: 4px; }
+.iritzia .testua { margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
+.iritzia footer { display: flex; justify-content: space-between; align-items: center; }
+.txalo { display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(255, 255, 255, .2); background: none; border-radius: 999px; padding: 5px 12px; font: 400 20px var(--pixel); }
+.txalo svg { width: 20px; height: 20px; }
+.txalo[aria-pressed="true"] { background: var(--rojo); border-color: var(--rojo); }
+.atzera-txiki { display: inline-flex; align-items: center; gap: 4px; border: 0; background: none; padding: 10px 0 0; color: var(--tinta-2); font: 400 20px var(--pixel); }
+.atzera-txiki svg { width: 18px; height: 18px; }
+.profila-buru { display: flex; align-items: center; gap: 14px; margin: 14px 0 6px; }
+.profila-buru h1 { font: 400 42px/.95 var(--pixel); margin: 0; overflow-wrap: anywhere; }
+.profila-buru .erabiltzailea { margin: 2px 0 0; color: var(--tinta-2); }
+.bio { margin: 6px 0; white-space: pre-line; overflow-wrap: anywhere; }
+.emaitza .partekatu { color: var(--tinta-2); font-size: 14px; margin: 0 0 14px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
@@ -433,6 +495,7 @@ __TELON_JS__
 <header class="goiburua">
   <div class="marka"><span class="tile" id="marka-logoa"></span><b>TXALOMETROA</b></div>
   <button class="instalatu" id="instalatu" type="button" hidden></button>
+  <button class="ikono profila-botoia" id="profila-botoia" type="button" hidden></button>
   <button class="ikono" id="ezarpenak" type="button" aria-label="Ezarpenak / Ajustes">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
   </button>
@@ -512,7 +575,33 @@ const T = {
     admin: "Admin · Proba-obrak", adminAzal: "Obra faltsuak, asmatutako balorazioekin, aplikazioa probatzeko. PROBA etiketa daramate eta nahi duzunean ezaba ditzakezu.",
     sortuProbak: "+ Sortu 4 proba-obra", ezabatuProba: "Ezabatu", ezabatuDenak: "Proba-obra guztiak ezabatu", probaEtiketa: "PROBA", probaGabe: "Ez dago proba-obrarik.",
     balLabur: n => `${n} bal.`,
-    datuak: "Zure datuak", datuakAzal: "Zure balorazioak mugikor honetan bakarrik gordetzen dira.", ezabatu: "Nire datuak ezabatu", ziur: "Sakatu berriro ezabatzeko",
+    datuak: "Zure datuak", datuakAzal: "Zure balorazioak mugikor honetan gordetzen dira; kontua baduzu, jarioan ere argitaratzen dira.", ezabatu: "Nire datuak ezabatu", ziur: "Sakatu berriro ezabatzeko",
+    // Red social. EU: textos nuevos, pendientes de revisión por un hablante nativo.
+    jarioa: "Jarioa", profila: "Profila", kargatzen: "Kargatzen…", berriroSaiatu: "Saiatu berriro",
+    sareGabe: "Sare soziala oraindik ez dago konektatuta. Laster hemen ikusiko dituzu besteen iritziak.",
+    sareKonexioa: "Ezin izan da konektatu. Egiaztatu konexioa.",
+    sarreraIzen: "Sartu", sarreraAzal: "Sortu kontu bat zure iritziak partekatzeko, jendea jarraitzeko eta besteen iritziak txalotzeko.",
+    sartu: "Sartu", erregistratu: "Kontua sortu", emaila: "Posta elektronikoa", pasahitza: "Pasahitza", pasahitzaLaburra: "Gutxienez 6 karaktere.",
+    emailOkerra: "Idatzi posta elektroniko zuzen bat.", baduzuKontua: "Baduzu kontua? Sartu", ezDuzuKontua: "Ez duzu konturik? Sortu bat",
+    egiaztatuEmaila: e => `Mezu bat bidali dizugu ${e} helbidera. Ireki esteka eta itzuli hona sartzeko.`,
+    sareErroreak: { kredentzialak: "Posta edo pasahitza ez dira zuzenak.", badago: "Posta horrekin badago kontu bat: sartu.", ahula: "Pasahitza laburregia da: gutxienez 6 karaktere.",
+      egiaztatugabe: "Lehenik egiaztatu zure posta: begiratu sarrera-ontzia.", gehiegi: "Saiakera gehiegi. Itxaron pixka bat.",
+      hartuta: "Erabiltzaile-izen hori hartuta dago.", okerra: "3–20 karaktere: letra xeheak, zenbakiak eta _.", orokorra: "Zerbait gaizki joan da. Saiatu berriro." },
+    perfilaSortu: "Sortu zure profila", perfilaSortuAzal: "Horrela agertuko zara jarioan. Gero alda dezakezu.", perfilaEditatu: "Profila editatu",
+    erabiltzailea: "Erabiltzaile-izena", izenaEtiketa: "Izena", izenaFalta: "Idatzi zure izena.", bio: "Zuri buruz", aukerakoa: "aukerakoa", kolorea: "Kolorea", gorde: "Gorde", utzi: "Utzi",
+    bilatu: "Bilatu jendea", bilatuIrud: "Bilatu: @erabiltzailea edo izena", ezDaAurkitu: "Ez da inor aurkitu.",
+    denak: "Denak", jarraitzen: "Jarraitzen", eguneratu: "Eguneratu", gehiagoKargatu: "Gehiago kargatu",
+    jarioHutsik: "Oraindik ez duzu inor jarraitzen, edo ez dute ezer idatzi. Begiratu «Denak» jendea aurkitzeko.",
+    jarioHutsikDenak: "Oraindik ez dago iritzirik. Izan zaitez lehena: baloratu obra bat!", profilHutsik: "Oraindik ez du obrarik baloratu.",
+    txaloEman: "Txalotu iritzi hau", ezabatuIritzia: "Ezabatu", ziurEzabatu: "Ziur? Sakatu berriro",
+    perfilaEzDago: "Profil hori ez dago.", iritziakIzen: "Iritziak", balorazioak: "balorazio", jarraitzaileak: "jarraitzaile", jarraituak: "jarraitzen",
+    jarraitu: "Jarraitu", jarraitzenDuzu: "Jarraitzen", irten: "Saioa itxi",
+    argitaratuGabe: n => `Mugikor honetan ${n} balorazio dituzu jarioan argitaratu gabe.`, argitaratuDenak: "Argitaratu",
+    kontua: "Kontua", kontuaAzal: u => `@${u} gisa sartuta zaude. Zure iritziak jarioan argitaratzen dira.`,
+    kontuaGabe: "Ez zaude sartuta. Sortu kontu bat zure iritziak jarioan partekatzeko.",
+    kontuaEzabatu: "Kontua ezabatu", kontuaEzabatuAzal: "Kontua ezabatzean, zure profila, iritziak eta jarraipenak betiko ezabatzen dira.",
+    partekatzen: "Jarioan partekatzen…", partekatuta: "Jarioan partekatuta.", partekatuEzin: "Ezin izan da partekatu; berriro saiatuko gara.",
+    partekatuSartu: "Sartu zure iritzia jarioan partekatzeko",
   },
   es: {
     obrak: "Obras", butakak: "Butacas", konst: "Constelación", wrapped: "Wrapped",
@@ -547,7 +636,32 @@ const T = {
     admin: "Admin · Obras de prueba", adminAzal: "Obras falsas con valoraciones inventadas para probar la app. Llevan la etiqueta PRUEBA y las puedes borrar cuando quieras.",
     sortuProbak: "+ Crear 4 obras de prueba", ezabatuProba: "Borrar", ezabatuDenak: "Borrar todas las de prueba", probaEtiketa: "PRUEBA", probaGabe: "No hay obras de prueba.",
     balLabur: n => `${n} val.`,
-    datuak: "Tus datos", datuakAzal: "Tus valoraciones se guardan solo en este móvil.", ezabatu: "Borrar mis datos", ziur: "Pulsa otra vez para borrar",
+    datuak: "Tus datos", datuakAzal: "Tus valoraciones se guardan en este móvil y, si tienes cuenta, también se publican en el feed.", ezabatu: "Borrar mis datos", ziur: "Pulsa otra vez para borrar",
+    jarioa: "Feed", profila: "Perfil", kargatzen: "Cargando…", berriroSaiatu: "Reintentar",
+    sareGabe: "La red social todavía no está conectada. Pronto verás aquí las opiniones de los demás.",
+    sareKonexioa: "No se ha podido conectar. Revisa la conexión.",
+    sarreraIzen: "Entra", sarreraAzal: "Crea una cuenta para compartir tus opiniones, seguir a otras personas y aplaudir lo que escriben.",
+    sartu: "Entrar", erregistratu: "Crear cuenta", emaila: "Correo electrónico", pasahitza: "Contraseña", pasahitzaLaburra: "Al menos 6 caracteres.",
+    emailOkerra: "Escribe un correo electrónico válido.", baduzuKontua: "¿Ya tienes cuenta? Entra", ezDuzuKontua: "¿No tienes cuenta? Créala",
+    egiaztatuEmaila: e => `Te hemos enviado un correo a ${e}. Abre el enlace y vuelve aquí para entrar.`,
+    sareErroreak: { kredentzialak: "El correo o la contraseña no son correctos.", badago: "Ya hay una cuenta con ese correo: entra.", ahula: "La contraseña es demasiado corta: al menos 6 caracteres.",
+      egiaztatugabe: "Primero confirma tu correo: mira tu bandeja de entrada.", gehiegi: "Demasiados intentos. Espera un poco.",
+      hartuta: "Ese nombre de usuario ya está cogido.", okerra: "De 3 a 20 caracteres: minúsculas, números y _.", orokorra: "Algo ha fallado. Inténtalo de nuevo." },
+    perfilaSortu: "Crea tu perfil", perfilaSortuAzal: "Así aparecerás en el feed. Luego puedes cambiarlo.", perfilaEditatu: "Editar perfil",
+    erabiltzailea: "Nombre de usuario", izenaEtiketa: "Nombre", izenaFalta: "Escribe tu nombre.", bio: "Sobre ti", aukerakoa: "opcional", kolorea: "Color", gorde: "Guardar", utzi: "Cancelar",
+    bilatu: "Buscar gente", bilatuIrud: "Buscar: @usuario o nombre", ezDaAurkitu: "No se ha encontrado a nadie.",
+    denak: "Todos", jarraitzen: "Siguiendo", eguneratu: "Actualizar", gehiagoKargatu: "Cargar más",
+    jarioHutsik: "Todavía no sigues a nadie, o no han escrito nada. Mira «Todos» para encontrar gente.",
+    jarioHutsikDenak: "Todavía no hay opiniones. ¡Sé la primera persona: valora una obra!", profilHutsik: "Todavía no ha valorado ninguna obra.",
+    txaloEman: "Aplaudir esta opinión", ezabatuIritzia: "Borrar", ziurEzabatu: "¿Seguro? Pulsa otra vez",
+    perfilaEzDago: "Ese perfil no existe.", iritziakIzen: "Opiniones", balorazioak: "valoraciones", jarraitzaileak: "seguidores", jarraituak: "siguiendo",
+    jarraitu: "Seguir", jarraitzenDuzu: "Siguiendo", irten: "Cerrar sesión",
+    argitaratuGabe: n => `Tienes ${n} ${n === 1 ? "valoración" : "valoraciones"} en este móvil sin publicar en el feed.`, argitaratuDenak: "Publicar",
+    kontua: "Cuenta", kontuaAzal: u => `Has entrado como @${u}. Tus opiniones se publican en el feed.`,
+    kontuaGabe: "No has entrado. Crea una cuenta para compartir tus opiniones en el feed.",
+    kontuaEzabatu: "Borrar cuenta", kontuaEzabatuAzal: "Al borrar la cuenta se borran para siempre tu perfil, tus opiniones y a quién sigues.",
+    partekatzen: "Compartiendo en el feed…", partekatuta: "Compartida en el feed.", partekatuEzin: "No se ha podido compartir; lo volveremos a intentar.",
+    partekatuSartu: "Entra para compartir tu opinión en el feed",
   },
 };
 const t = () => T[G.lang];
@@ -649,6 +763,9 @@ const ICONOS = {
   butakak: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h12a2 2 0 0 1 2 2v6H4V6a2 2 0 0 1 2-2Zm-3 9h18v4h-2v3h-2v-3H7v3H5v-3H3z"/></svg>`,
   konst: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 18 9 9l6 4 5-9"/><g fill="currentColor" stroke="none"><circle cx="4" cy="18" r="2.4"/><circle cx="9" cy="9" r="2"/><circle cx="15" cy="13" r="2.6"/><circle cx="20" cy="4" r="2"/></g></svg>`,
   wrapped: `<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M10 8v8l6-4z" fill="#0d0d0d"/></svg>`,
+  jarioa: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10l-5 4v-4H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm3 5v2h10V8Zm0 4v2h7v-2Z"/></svg>`,
+  profila: `<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M3.5 21c.8-4.4 4.3-7 8.5-7s7.7 2.6 8.5 7Z"/></svg>`,
+  txalo: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13.5 5.2 10.7a1.5 1.5 0 0 1 2.1-2.1l3.2 3.2"/><path d="m9.5 10.5-3-3a1.5 1.5 0 0 1 2.1-2.1l4.6 4.6"/><path d="m11 8-1.4-1.4a1.5 1.5 0 0 1 2.1-2.1l4.5 4.5c2.6 2.6 2.6 6.1.4 8.3s-5.7 2.2-8.3-.4l-3.5-3.5a1.5 1.5 0 0 1 2.1-2.1l1.6 1.6"/><path d="M17 3.5c1 .4 1.9 1 2.6 1.9M19.5 2c.8.5 1.5 1.1 2 1.9"/></svg>`,
   atzera: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>`,
   itxi: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>`,
 };
@@ -670,11 +787,11 @@ function htmlMaskarak(g, valor, etiqueta) {
 
 // ================================================================ Vistas
 
-const VISTAS = ["obrak", "butakak", "konst", "wrapped"];
+const VISTAS = ["obrak", "jarioa", "butakak", "konst", "wrapped"];
 let vista = { nombre: "obrak" };
 
 function pintarNav() {
-  document.getElementById("nabigazioa").innerHTML = VISTAS.map(v => `<button type="button" data-vista="${v}" ${(vista.nombre === v || (v === "obrak" && vista.nombre === "fitxa")) ? 'aria-current="page"' : ""}>${ICONOS[v]}${t()[v]}</button>`).join("");
+  document.getElementById("nabigazioa").innerHTML = VISTAS.map(v => `<button type="button" data-vista="${v}" ${(vista.nombre === v || (v === "obrak" && vista.nombre === "fitxa") || (v === "jarioa" && vista.nombre === "profila")) ? 'aria-current="page"' : ""}>${ICONOS[v]}${t()[v]}</button>`).join("");
   document.documentElement.lang = G.lang;
 }
 
@@ -723,8 +840,10 @@ function bandaDemo() {
 function pintar() {
   pintarNav();
   const main = document.getElementById("edukia");
-  pararButakak(); pararZerua();
+  pararButakak(); pararZerua(); SARE.txanda++;
   if (vista.nombre === "fitxa") main.innerHTML = vistaFitxa(vista.obra);
+  else if (vista.nombre === "jarioa") { main.innerHTML = vistaJarioa(); if (sareaPrest()) hasiJarioa(); }
+  else if (vista.nombre === "profila") { main.innerHTML = vistaProfila(); if (sareaPrest()) hasiProfila(); }
   else if (vista.nombre === "butakak") { main.innerHTML = vistaButakak(); hasiButakak(); }
   else if (vista.nombre === "konst") { main.innerHTML = vistaKonst(); hasiZerua(); }
   else if (vista.nombre === "wrapped") main.innerHTML = vistaWrapped();
@@ -732,7 +851,8 @@ function pintar() {
 }
 function irA(nombre, extra = {}) {
   vista = { nombre, ...extra };
-  try { history.replaceState(null, "", `#${nombre === "fitxa" ? `obra-${extra.obra}` : nombre}`); } catch (e) {}
+  const marca = nombre === "fitxa" ? `obra-${extra.obra}` : nombre === "profila" && extra.usuario ? `profila-${extra.usuario}` : nombre;
+  try { history.replaceState(null, "", `#${marca}`); } catch (e) {}
   pintar(); window.scrollTo(0, 0);
 }
 
@@ -788,6 +908,15 @@ function enviarValoracion() {
   G.valoraciones = G.valoraciones.filter(v => !(v.demo && v.obra === b.obra));
   G.valoraciones.push({ id: `m-${Date.now()}`, obra: b.obra, fecha: new Date().toISOString(), lang: G.lang, notas,
     emozioa: "ez", testuak: Object.fromEntries(Object.entries(b.testuak).filter(([, x]) => x.trim())) });
+  const nueva = G.valoraciones[G.valoraciones.length - 1];
+  b.partekatu = !sareaPrest() || !partekagarria(nueva) ? null : haySesion() ? "zain" : "sartu";
+  if (b.partekatu === "zain") {
+    nueva.sare = "zain";
+    argitaratu(nueva).then(() => "bai", () => "errorea").then(egoera => {
+      if (baloraketa !== b) return;
+      b.partekatu = egoera; const el = document.getElementById("partekatu-egoera"); if (el) el.textContent = egoera === "bai" ? t().partekatuta : t().partekatuEzin;
+    });
+  }
   guardar(); cacheRes = null;
   b.antes = antes; b.urratsa = 2;
   setTimeout(() => { pintarValorar(); konfetia(); }, 350);
@@ -801,6 +930,8 @@ function pintarResultado() {
       ${htmlNeurgailua(notaPropia(mia), tx.zureTxaloa, "handia")}
       ${p ? `<div class="alderaketa"><div><b>${fmt(notaPropia(mia))}</b><span>${tx.zureNota}</span></div><div><b>${fmt(p.nota)}</b><span>${tx.publikoa} · ${p.n}</span></div></div>` : ""}
       <div class="izar-berria"><svg viewBox="0 0 24 24" width="22" height="22" fill="${genKolorea(o.genero)}"><path d="M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.8L12 17l-5.6 3.5L8 13.7 3 9.3l6.4-.7z"/></svg>${tx.izarBerria}</div>
+      ${b.partekatu === "sartu" ? `<p class="partekatu"><button type="button" class="esteka" data-bal="jarioa">${tx.partekatuSartu}</button></p>`
+        : b.partekatu ? `<p class="partekatu" id="partekatu-egoera" aria-live="polite">${b.partekatu === "bai" ? tx.partekatuta : b.partekatu === "errorea" ? tx.partekatuEzin : tx.partekatzen}</p>` : ""}
       <div style="display:grid;gap:10px"><button type="button" class="botoia" data-bal="konst">${tx.ikusiKonst}</button><button type="button" class="botoia marino" data-bal="itxi">${tx.itzuli}</button></div>
     </div>`;
 }
@@ -1198,6 +1329,7 @@ function abrirAjustes() {
         <button type="button" data-proba-ezabatu="${esc(o.id)}">${tx.ezabatuProba}</button></li>`).join("") || `<li class="txikia" style="display:block">${tx.probaGabe}</li>`}</ul>
       <div style="display:flex;gap:10px;flex-wrap:wrap">${G.pruebak.length < NOMBRES_PRUEBA.length ? `<button type="button" class="botoia" data-proba="sortu">${tx.sortuProbak}</button>` : ""}
         ${G.pruebak.length ? `<button type="button" class="botoia marino" data-proba="denak">${probaArmado ? tx.ziur : tx.ezabatuDenak}</button>` : ""}</div></div>
+    ${htmlKontua()}
     <div class="lerroa" style="display:block"><b>${tx.datuak}</b><p class="txikia">${tx.datuakAzal}</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
         ${G.valoraciones.some(v => v.demo) ? `<button type="button" class="botoia marino" data-demo="kendu">${tx.kendu}: ${tx.adibidea.toLowerCase()}</button>` : `<button type="button" class="botoia marino" data-demo="jarri">${tx.adibidea}</button>`}
@@ -1205,6 +1337,371 @@ function abrirAjustes() {
   </div>`;
 }
 function cerrarAjustes() { const o = document.getElementById("orria"); o.hidden = true; o.innerHTML = ""; borrarArmado = false; probaArmado = false; }
+
+// ================================================================ Red social (Supabase): cuentas, perfiles y feed
+// Solo se activa si config.json trae «supabase» (url y clave anon). El cliente oficial se descarga
+// la primera vez que hace falta; sin cuenta y sin conexión, el resto de la app funciona igual.
+// Las tablas, la seguridad (RLS) y las funciones están en supabase/esquema.sql.
+
+const SB = CFG.supabase || {};
+const sareaPrest = () => !!(SB.url && SB.anon);
+const SB_CLIENTE = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js";
+const SB_SAIOA = "txalometroa-saioa";
+const KOLOREAK = ["#c80000", "#c8361b", "#0b0a3a", "#2f6b2a", "#6b3fa0", "#8a5a00"];
+// perfil: undefined = sin cargar, null = cuenta sin perfil. iritziak: tarjetas en pantalla, por id.
+const SARE = { sb: null, kargatzen: null, saioa: null, perfil: undefined, txanda: 0, iritziak: new Map(), azkena: null, ezabatuArmatua: null, kontuaArmatua: false };
+
+function sareaKargatu() {
+  if (SARE.sb) return Promise.resolve(SARE.sb);
+  return SARE.kargatzen ||= new Promise((ok, ko) => {
+    const s = document.createElement("script");
+    s.src = SB_CLIENTE; s.async = true;
+    s.onload = () => {
+      try {
+        SARE.sb = window.supabase.createClient(SB.url, SB.anon, { auth: { persistSession: true, autoRefreshToken: true, storageKey: SB_SAIOA } });
+        // Aquí solo se apunta el cambio: llamar a Supabase dentro de este aviso puede bloquear el cliente.
+        SARE.sb.auth.onAuthStateChange((ev, saioa) => {
+          SARE.saioa = saioa;
+          if (!saioa) { SARE.perfil = undefined; pintarProfilaBotoia(); }
+        });
+        ok(SARE.sb);
+      } catch (e) { ko(e); }
+    };
+    s.onerror = () => { SARE.kargatzen = null; s.remove(); ko(new Error("sarea")); };
+    document.head.appendChild(s);
+  });
+}
+// Cliente, sesión guardada y mi perfil.
+async function sareaHasi() {
+  const sb = await sareaKargatu();
+  const { data, error } = await sb.auth.getSession();
+  if (error) throw error;
+  SARE.saioa = data.session;
+  if (SARE.saioa && SARE.perfil === undefined) await nirePerfilaKargatu();
+  return sb;
+}
+async function nirePerfilaKargatu() {
+  const { data, error } = await SARE.sb.from("perfiles").select("id, usuario, nombre, bio, color").eq("id", SARE.saioa.user.id).maybeSingle();
+  if (error) throw error;
+  SARE.perfil = data;
+  pintarProfilaBotoia();
+  if (data) sinkronizatu();
+}
+const haySesion = () => !!(SARE.saioa && SARE.perfil);
+
+// ---------------------------------------------------------------- Publicar mis valoraciones
+
+const partekagarria = v => !v.demo && !String(v.obra).startsWith("proba-") && CFG.nota_obra.some(g => v.notas[g]);
+const filaSare = v => ({
+  usuario_id: SARE.perfil.id, obra: v.obra, lang: v.lang === "es" ? "es" : "eu", opinion: iritziaDe(v).slice(0, 1500),
+  ...Object.fromEntries(PREG.map(g => [g.toLowerCase(), Math.max(0, Math.min(10, Math.round(v.notas[g] || 0)))]))
+});
+async function argitaratu(v) {
+  const { error } = await SARE.sb.from("valoraciones").upsert(filaSare(v), { onConflict: "usuario_id,obra" });
+  if (error) throw error;
+  v.sare = "bai"; guardar();
+}
+// Lo que quedó pendiente (sin conexión, por ejemplo) se vuelve a intentar al entrar.
+async function sinkronizatu() {
+  if (!haySesion()) return;
+  for (const v of misObras().filter(v => v.sare === "zain" && partekagarria(v))) { try { await argitaratu(v); } catch (e) { return; } }
+}
+const sinPublicar = () => misObras().filter(v => !v.sare && partekagarria(v));
+
+// ---------------------------------------------------------------- Piezas
+
+const inicial = s => ([...String(s || "?").trim()][0] || "?").toUpperCase();
+const avatarra = (p, clase = "") => `<span class="avatarra ${clase}" style="--k:${KOLOREAK.includes(p.color) ? p.color : "#c80000"}" aria-hidden="true">${esc(inicial(p.nombre))}</span>`;
+function denboraLehen(iso) {
+  const s = (new Date(iso) - Date.now()) / 1000, rtf = new Intl.RelativeTimeFormat(G.lang, { numeric: "auto" });
+  for (const [u, seg] of [["year", 31536000], ["month", 2592000], ["week", 604800], ["day", 86400], ["hour", 3600], ["minute", 60]]) {
+    if (Math.abs(s) >= seg) return rtf.format(Math.round(s / seg), u);
+  }
+  return rtf.format(0, "second");
+}
+function sareErrorea(e) {
+  const tx = t().sareErroreak, c = e?.code || "", m = String(e?.message || "");
+  if (c === "invalid_credentials" || /invalid login/i.test(m)) return tx.kredentzialak;
+  if (c === "user_already_exists" || /already registered/i.test(m)) return tx.badago;
+  if (c === "weak_password" || /password/i.test(m) && /least|weak|short/i.test(m)) return tx.ahula;
+  if (c === "email_not_confirmed" || /not confirmed/i.test(m)) return tx.egiaztatugabe;
+  if (/rate limit|too many/i.test(m) || c.startsWith("over_")) return tx.gehiegi;
+  if (c === "23505") return tx.hartuta;
+  if (c === "23514") return tx.okerra;
+  if (e?.message === "sarea" || /fetch|network/i.test(m)) return t().sareKonexioa;
+  return tx.orokorra;
+}
+const kargatzenHtml = () => `<p class="sare-kargatzen" role="status">${t().kargatzen}</p>`;
+const htmlSareErrorea = e => `<div class="hutsik"><p>${esc(sareErrorea(e))}</p><button type="button" class="botoia marino" data-sare="berriz">${t().berriroSaiatu}</button></div>`;
+
+function htmlSarrera(modua = "sartu", mezua = "", ondo = false) {
+  const tx = t(), berria = modua === "erregistratu";
+  return `<form class="sare-txartela" id="sarrera-form" data-modua="${modua}" novalidate>
+    <h2>${berria ? tx.erregistratu : tx.sarreraIzen}</h2><p class="azalpena">${tx.sarreraAzal}</p>
+    <label class="eremua">${tx.emaila}<input type="email" name="email" autocomplete="email" required maxlength="120"></label>
+    <label class="eremua">${tx.pasahitza}<input type="password" name="pasahitza" autocomplete="${berria ? "new-password" : "current-password"}" required minlength="6" maxlength="72">
+      ${berria ? `<small>${tx.pasahitzaLaburra}</small>` : ""}</label>
+    <p class="oharra${ondo ? " ondo" : ""}" id="sare-oharra" aria-live="polite">${esc(mezua)}</p>
+    <button type="submit" class="botoia zabala">${berria ? tx.erregistratu : tx.sartu}</button>
+    <button type="button" class="esteka" data-sarrera="${berria ? "sartu" : "erregistratu"}">${berria ? tx.baduzuKontua : tx.ezDuzuKontua}</button>
+  </form>`;
+}
+function htmlPerfilForm(p = null) {
+  const tx = t(), kolorea = p?.color || KOLOREAK[hash(SARE.saioa?.user?.id || "") % KOLOREAK.length];
+  const iradokia = p?.usuario || String(SARE.saioa?.user?.email || "").split("@")[0].toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, 20);
+  return `<form class="sare-txartela" id="perfil-form" data-modua="${p ? "editatu" : "sortu"}" novalidate>
+    <h2>${p ? tx.perfilaEditatu : tx.perfilaSortu}</h2>${p ? "" : `<p class="azalpena">${tx.perfilaSortuAzal}</p>`}
+    <label class="eremua">${tx.erabiltzailea}<span class="arroba"><b>@</b><input name="usuario" value="${esc(iradokia)}" required pattern="[a-z0-9_]{3,20}" maxlength="20" autocapitalize="none" autocomplete="username" spellcheck="false"></span>
+      <small>${tx.sareErroreak.okerra}</small></label>
+    <label class="eremua">${tx.izenaEtiketa}<input name="nombre" value="${esc(p?.nombre || "")}" required maxlength="40" autocomplete="name"></label>
+    <label class="eremua">${tx.bio} <small>(${tx.aukerakoa})</small><textarea name="bio" maxlength="160" rows="2">${esc(p?.bio || "")}</textarea></label>
+    <fieldset class="koloreak"><legend>${tx.kolorea}</legend>${KOLOREAK.map(k => `<label><input type="radio" name="color" value="${k}" ${k === kolorea ? "checked" : ""}><span style="--k:${k}"></span></label>`).join("")}</fieldset>
+    <p class="oharra" id="sare-oharra" aria-live="polite"></p>
+    <div class="botoiak"><button type="submit" class="botoia">${tx.gorde}</button>${p ? `<button type="button" class="botoia marino" data-sare="editatu-utzi">${tx.utzi}</button>` : ""}</div>
+  </form>`;
+}
+function htmlIritzia(v) {
+  const tx = t(), o = obraCat(v.obra), nota = v.nota === null ? null : Number(v.nota);
+  return `<article class="iritzia" data-iritzia="${v.id}">
+    <header><button type="button" class="nor" data-profila="${esc(v.usuario)}">${avatarra(v)}<span><b>${esc(v.nombre)}</b><small>@${esc(v.usuario)} · ${denboraLehen(v.editada)}</small></span></button></header>
+    <button type="button" class="obra-lerroa" ${o ? `data-fitxa="${esc(o.id)}"` : "disabled"}>${o ? `<img src="${esc(o.imagen)}" alt="" loading="lazy">` : ""}
+      <span><b>${esc(o ? izena(o) : v.obra)}</b>${o ? `<small><i style="--c:${genKolorea(o.genero)}"></i>${esc(genIzena(o.genero))}</small>` : ""}</span><span class="zbk">${fmt(nota)}</span></button>
+    ${htmlMaskaraNeurria(nota)}
+    ${v.opinion ? `<p class="testua">${esc(v.opinion)}</p>` : ""}
+    <footer><button type="button" class="txalo" data-txalo="${v.id}" aria-pressed="${!!v.txalo_mio}" aria-label="${tx.txaloEman}">${ICONOS.txalo}<span>${v.txaloak}</span></button>
+      ${v.mia ? `<button type="button" class="esteka" data-iritzia-ezabatu="${v.id}">${SARE.ezabatuArmatua === v.id ? tx.ziurEzabatu : tx.ezabatuIritzia}</button>` : ""}</footer>
+  </article>`;
+}
+
+// ---------------------------------------------------------------- Vistas
+
+function vistaJarioa() {
+  const tx = t();
+  if (!sareaPrest()) return `<h1 class="titulua">${tx.jarioa}</h1><div class="hutsik"><div class="ikur">${svgMascara(0, 0)}</div><p>${tx.sareGabe}</p></div>`;
+  return `<h1 class="titulua">${tx.jarioa}</h1><div id="sare-edukia">${kargatzenHtml()}</div>`;
+}
+function vistaProfila() {
+  if (!sareaPrest()) return vistaJarioa();
+  return `<button type="button" class="atzera-txiki" data-vista="jarioa">${ICONOS.atzera}${t().jarioa}</button><div id="sare-edukia">${kargatzenHtml()}</div>`;
+}
+// Pasos comunes: cliente, sesión y perfil. Devuelve el contenedor si la vista sigue en pantalla y hay perfil.
+async function sareaPrestatu(txanda) {
+  const kont = () => SARE.txanda === txanda ? document.getElementById("sare-edukia") : null;
+  try { await sareaHasi(); } catch (e) { if (kont()) kont().innerHTML = htmlSareErrorea(e); return null; }
+  if (!kont()) return null;
+  if (!SARE.saioa) { kont().innerHTML = htmlSarrera(); return null; }
+  if (!SARE.perfil) { kont().innerHTML = htmlPerfilForm(); return null; }
+  return kont();
+}
+async function hasiJarioa() {
+  const txanda = SARE.txanda, kont = await sareaPrestatu(txanda);
+  if (!kont) return;
+  const tx = t(), modua = vista.modua || "denak";
+  kont.innerHTML = `<div class="jario-goiburua">
+      <label class="bilatu"><span class="sr">${tx.bilatu}</span><input type="search" id="bilatu" placeholder="${tx.bilatuIrud}" autocomplete="off" autocapitalize="none" spellcheck="false"></label>
+      <div id="bilaketa"></div>
+      <div class="fitxak" role="tablist">${["denak", "jarraitzen"].map(m => `<button type="button" role="tab" data-jario-modua="${m}" aria-selected="${m === modua}">${tx[m]}</button>`).join("")}
+        <button type="button" class="esteka eguneratu" data-sare="eguneratu">${tx.eguneratu}</button></div></div>
+    <div id="iritziak">${kargatzenHtml()}</div>`;
+  await iritziakKargatu({ modo: modua }, true, txanda);
+}
+async function hasiProfila() {
+  const txanda = SARE.txanda, kont = await sareaPrestatu(txanda);
+  if (!kont) return;
+  const tx = t(), usuario = vista.usuario || SARE.perfil.usuario;
+  const { data, error } = await SARE.sb.rpc("perfil_de", { p_usuario: usuario });
+  if (SARE.txanda !== txanda) return;
+  if (error) { kont.innerHTML = htmlSareErrorea(error); return; }
+  const p = data?.[0];
+  if (!p) { kont.innerHTML = `<div class="hutsik"><p>${tx.perfilaEzDago}</p></div>`; return; }
+  SARE.profila = p;
+  const zain = p.es_yo ? sinPublicar() : [];
+  kont.innerHTML = `<div class="profila-buru">${avatarra(p, "handia")}<div><h1>${esc(p.nombre)}</h1><p class="erabiltzailea">@${esc(p.usuario)}</p></div></div>
+    ${p.bio ? `<p class="bio">${esc(p.bio)}</p>` : ""}
+    <div class="estatistikak"><div><b>${p.valoraciones}</b><span>${tx.balorazioak}</span></div><div><b id="jarraitzaileak">${p.seguidores}</b><span>${tx.jarraitzaileak}</span></div><div><b>${p.siguiendo}</b><span>${tx.jarraituak}</span></div></div>
+    <div class="botoiak">${p.es_yo ? `<button type="button" class="botoia marino" data-sare="editatu">${tx.perfilaEditatu}</button><button type="button" class="botoia marino" data-sare="irten">${tx.irten}</button>`
+      : `<button type="button" class="botoia${p.lo_sigo ? " marino" : ""}" data-jarraitu="${p.lo_sigo ? "utzi" : "bai"}">${p.lo_sigo ? tx.jarraitzenDuzu : tx.jarraitu}</button>`}</div>
+    <div id="profila-editatu"></div>
+    ${zain.length ? `<div class="demo-banda"><span>${tx.argitaratuGabe(zain.length)}</span><button type="button" data-sare="argitaratu">${tx.argitaratuDenak}</button></div>` : ""}
+    <h2 class="azpititulua">${tx.iritziakIzen}</h2><div id="iritziak">${kargatzenHtml()}</div>`;
+  await iritziakKargatu({ modo: "denak", de_usuario: p.usuario }, true, txanda);
+}
+// Lista de valoraciones (feed o perfil) con «Cargar más».
+async function iritziakKargatu(iragazkia, berria, txanda = SARE.txanda) {
+  const kont = document.getElementById("iritziak"); if (!kont) return;
+  if (berria) { SARE.iritziak.clear(); SARE.azkena = null; SARE.iragazkia = iragazkia; }
+  const { data, error } = await SARE.sb.rpc("muro", { ...SARE.iragazkia, antes: SARE.azkena, limite: 20 });
+  if (SARE.txanda !== txanda) return;
+  document.getElementById("gehiago")?.remove();
+  if (error) { if (berria) kont.innerHTML = htmlSareErrorea(error); return; }
+  if (berria) kont.innerHTML = "";
+  data.forEach(v => SARE.iritziak.set(String(v.id), v));
+  kont.insertAdjacentHTML("beforeend", data.map(htmlIritzia).join(""));
+  if (berria && !data.length) {
+    const tx = t();
+    kont.innerHTML = `<div class="hutsik"><div class="ikur">${svgMascara(1, 0)}</div><p>${SARE.iragazkia.de_usuario ? tx.profilHutsik : SARE.iragazkia.modo === "jarraitzen" ? tx.jarioHutsik : tx.jarioHutsikDenak}</p></div>`;
+  }
+  if (data.length) SARE.azkena = data[data.length - 1].editada;
+  if (data.length === 20) kont.insertAdjacentHTML("afterend", `<button type="button" class="botoia marino zabala" id="gehiago" data-sare="gehiago">${t().gehiagoKargatu}</button>`);
+}
+
+// ---------------------------------------------------------------- Acciones
+
+async function sarreraBidali(form) {
+  const tx = t(), oharra = form.querySelector("#sare-oharra"), botoia = form.querySelector("[type=submit]");
+  const email = form.email.value.trim(), pasahitza = form.pasahitza.value, berria = form.dataset.modua === "erregistratu";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { oharra.textContent = tx.emailOkerra; return; }
+  if (pasahitza.length < 6) { oharra.textContent = tx.sareErroreak.ahula; return; }
+  botoia.disabled = true; oharra.textContent = "";
+  try {
+    const sb = await sareaKargatu();
+    const { data, error } = berria ? await sb.auth.signUp({ email, password: pasahitza }) : await sb.auth.signInWithPassword({ email, password: pasahitza });
+    if (error) throw error;
+    if (!data.session) {   // el proyecto pide confirmar el correo
+      document.getElementById("sare-edukia").innerHTML = htmlSarrera("sartu", tx.egiaztatuEmaila(email), true);
+      return;
+    }
+    SARE.saioa = data.session; SARE.perfil = undefined;
+    await nirePerfilaKargatu();
+    pintar();
+  } catch (e) { oharra.textContent = sareErrorea(e); botoia.disabled = false; }
+}
+async function perfilaBidali(form) {
+  const tx = t(), oharra = form.querySelector("#sare-oharra"), botoia = form.querySelector("[type=submit]");
+  const fila = { usuario: form.usuario.value.trim().toLowerCase(), nombre: form.nombre.value.trim(), bio: form.bio.value.trim(), color: form.color.value };
+  if (!/^[a-z0-9_]{3,20}$/.test(fila.usuario)) { oharra.textContent = tx.sareErroreak.okerra; form.usuario.focus(); return; }
+  if (!fila.nombre) { oharra.textContent = tx.izenaFalta; form.nombre.focus(); return; }
+  if (!KOLOREAK.includes(fila.color)) fila.color = KOLOREAK[0];
+  botoia.disabled = true; oharra.textContent = "";
+  const sortu = form.dataset.modua === "sortu";
+  const kontsulta = sortu ? SARE.sb.from("perfiles").insert({ id: SARE.saioa.user.id, ...fila }) : SARE.sb.from("perfiles").update(fila).eq("id", SARE.perfil.id);
+  const { data, error } = await kontsulta.select("id, usuario, nombre, bio, color").single();
+  if (error) { oharra.textContent = sareErrorea(error); botoia.disabled = false; return; }
+  SARE.perfil = data; pintarProfilaBotoia();
+  if (sortu) sinkronizatu();
+  if (vista.nombre === "profila") vista = { nombre: "profila" };
+  pintar();
+}
+async function txaloa(id) {
+  const v = SARE.iritziak.get(String(id)); if (!v || !haySesion()) return;
+  const eman = !v.txalo_mio;
+  const egin = (mio, n) => { v.txalo_mio = mio; v.txaloak = n; const b = document.querySelector(`[data-txalo="${id}"]`); if (b) { b.setAttribute("aria-pressed", mio); b.querySelector("span").textContent = n; } };
+  const lehen = [v.txalo_mio, Number(v.txaloak)];
+  egin(eman, lehen[1] + (eman ? 1 : -1));
+  const { error } = eman ? await SARE.sb.from("txaloak").insert({ usuario_id: SARE.perfil.id, valoracion_id: v.id })
+    : await SARE.sb.from("txaloak").delete().eq("usuario_id", SARE.perfil.id).eq("valoracion_id", v.id);
+  if (error && error.code !== "23505") egin(...lehen);
+}
+async function jarraitu(bai) {
+  const p = SARE.profila; if (!p || !haySesion()) return;
+  const botoia = document.querySelector("[data-jarraitu]"); botoia.disabled = true;
+  const { error } = bai ? await SARE.sb.from("seguimientos").insert({ seguidor: SARE.perfil.id, seguido: p.id })
+    : await SARE.sb.from("seguimientos").delete().eq("seguidor", SARE.perfil.id).eq("seguido", p.id);
+  botoia.disabled = false;
+  if (error && error.code !== "23505") return;
+  p.lo_sigo = bai; p.seguidores = Number(p.seguidores) + (bai ? 1 : -1);
+  botoia.dataset.jarraitu = bai ? "utzi" : "bai"; botoia.textContent = bai ? t().jarraitzenDuzu : t().jarraitu; botoia.classList.toggle("marino", bai);
+  document.getElementById("jarraitzaileak").textContent = p.seguidores;
+}
+async function iritziaEzabatu(id) {
+  if (SARE.ezabatuArmatua !== id) {
+    SARE.ezabatuArmatua = id;
+    const b = document.querySelector(`[data-iritzia-ezabatu="${id}"]`); if (b) b.textContent = t().ziurEzabatu;
+    setTimeout(() => { if (SARE.ezabatuArmatua === id) { SARE.ezabatuArmatua = null; const b = document.querySelector(`[data-iritzia-ezabatu="${id}"]`); if (b) b.textContent = t().ezabatuIritzia; } }, 4000);
+    return;
+  }
+  SARE.ezabatuArmatua = null;
+  const v = SARE.iritziak.get(String(id));
+  const { error } = await SARE.sb.from("valoraciones").delete().eq("id", id);
+  if (error) return;
+  document.querySelector(`[data-iritzia="${id}"]`)?.remove();
+  // En este móvil sigue (constelación, Wrapped), pero ya no se vuelve a publicar sola.
+  const mia = v && misObras().find(x => x.obra === v.obra); if (mia) { mia.sare = "ez"; guardar(); }
+}
+let bilaketaTimer = null;
+function bilatu(q) {
+  clearTimeout(bilaketaTimer);
+  const kont = document.getElementById("bilaketa");
+  if (q.trim().replace(/^@/, "").length < 2) { kont.innerHTML = ""; return; }
+  bilaketaTimer = setTimeout(async () => {
+    const { data, error } = await SARE.sb.rpc("buscar_perfiles", { q: q.trim().replace(/^@/, "") });
+    if (error || document.getElementById("bilatu")?.value !== q) return;
+    kont.innerHTML = data.length ? `<ul class="pertsonak">${data.map(p => `<li><button type="button" class="nor" data-profila="${esc(p.usuario)}">${avatarra(p)}<span><b>${esc(p.nombre)}</b><small>@${esc(p.usuario)}${p.lo_sigo ? ` · ${t().jarraitzenDuzu}` : ""}</small></span></button></li>`).join("")}</ul>`
+      : `<p class="azalpena">${t().ezDaAurkitu}</p>`;
+  }, 300);
+}
+async function irten() {
+  try { await SARE.sb.auth.signOut(); } catch (e) { /* sin conexión: se borra la sesión local igualmente */ }
+  try { localStorage.removeItem(SB_SAIOA); } catch (e) {}
+  SARE.saioa = null; SARE.perfil = undefined; pintarProfilaBotoia();
+}
+async function kontuaEzabatu() {
+  const { error } = await SARE.sb.rpc("borrar_cuenta");
+  if (error) return false;
+  G.valoraciones.forEach(v => delete v.sare); guardar();
+  await irten();
+  return true;
+}
+
+// ---------------------------------------------------------------- Cabecera y ajustes
+
+function pintarProfilaBotoia() {
+  const b = document.getElementById("profila-botoia"); if (!b) return;
+  b.hidden = !sareaPrest();
+  b.innerHTML = SARE.perfil ? avatarra(SARE.perfil) : ICONOS.profila;
+  b.setAttribute("aria-label", t().profila);
+}
+function htmlKontua() {
+  if (!sareaPrest()) return "";
+  const tx = t();
+  return `<div class="lerroa" style="display:block"><b>${tx.kontua}</b>
+    ${haySesion() ? `<p class="txikia">${tx.kontuaAzal(esc(SARE.perfil.usuario))}</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px"><button type="button" class="botoia marino" data-sare="irten">${tx.irten}</button>
+        <button type="button" class="botoia" data-sare="kontua-ezabatu">${SARE.kontuaArmatua ? tx.ziur : tx.kontuaEzabatu}</button></div>
+      <p class="txikia">${tx.kontuaEzabatuAzal}</p>`
+    : `<p class="txikia">${tx.kontuaGabe}</p><button type="button" class="botoia" data-vista="jarioa" style="margin-top:10px">${tx.sartu}</button>`}</div>`;
+}
+
+// ---------------------------------------------------------------- Eventos de la red social
+
+document.addEventListener("submit", e => {
+  if (e.target.id === "sarrera-form") { e.preventDefault(); sarreraBidali(e.target); }
+  if (e.target.id === "perfil-form") { e.preventDefault(); perfilaBidali(e.target); }
+});
+document.addEventListener("input", e => { if (e.target.id === "bilatu") bilatu(e.target.value); });
+function sareKlik(e) {
+  const q = s => e.target.closest(s);
+  let el;
+  if ((el = q("[data-profila]"))) { irA("profila", { usuario: el.dataset.profila }); return true; }
+  if (q("#profila-botoia")) { cerrarAjustes(); irA("profila"); return true; }
+  if ((el = q("[data-sarrera]"))) { document.getElementById("sare-edukia").innerHTML = htmlSarrera(el.dataset.sarrera); return true; }
+  if ((el = q("[data-jario-modua]"))) { vista.modua = el.dataset.jarioModua; pintar(); return true; }
+  if ((el = q("[data-txalo]"))) { txaloa(el.dataset.txalo); return true; }
+  if ((el = q("[data-jarraitu]"))) { jarraitu(el.dataset.jarraitu === "bai"); return true; }
+  if ((el = q("[data-iritzia-ezabatu]"))) { iritziaEzabatu(Number(el.dataset.iritziaEzabatu)); return true; }
+  if ((el = q("[data-sare]"))) {
+    const a = el.dataset.sare;
+    if (a === "berriz" || a === "eguneratu") pintar();
+    else if (a === "gehiago") { el.disabled = true; iritziakKargatu(SARE.iragazkia, false); }
+    else if (a === "editatu") document.getElementById("profila-editatu").innerHTML = htmlPerfilForm(SARE.perfil);
+    else if (a === "editatu-utzi") document.getElementById("profila-editatu").innerHTML = "";
+    else if (a === "argitaratu") { sinPublicar().forEach(v => { v.sare = "zain"; }); guardar(); el.disabled = true; sinkronizatu().then(pintar); }
+    else if (a === "irten") { cerrarAjustes(); irten().then(() => irA("jarioa")); }
+    else if (a === "kontua-ezabatu") {
+      if (!SARE.kontuaArmatua) { SARE.kontuaArmatua = true; abrirAjustes(); setTimeout(() => { if (SARE.kontuaArmatua) { SARE.kontuaArmatua = false; if (!document.getElementById("orria").hidden) abrirAjustes(); } }, 4000); }
+      else { SARE.kontuaArmatua = false; el.disabled = true; kontuaEzabatu().then(ok => { cerrarAjustes(); if (ok) irA("jarioa"); }); }
+    }
+    return true;
+  }
+  return false;
+}
+// Si ya había sesión en este móvil, se recupera al arrancar (para el botón de perfil y publicar lo pendiente).
+function sareaArrancar() {
+  pintarProfilaBotoia();
+  let haySaioa = false;
+  try { haySaioa = !!localStorage.getItem(SB_SAIOA); } catch (e) {}
+  if (sareaPrest() && haySaioa) addEventListener("load", () => sareaHasi().catch(() => {}), { once: true });
+}
 
 // ================================================================ Confeti
 
@@ -1231,9 +1728,10 @@ document.addEventListener("click", e => {
   if ((el = q("[data-vista]"))) { cerrarAjustes(); return irA(el.dataset.vista); }
   if ((el = q("[data-fitxa]"))) return irA("fitxa", { obra: el.dataset.fitxa });
   if ((el = q("[data-baloratu]"))) { e.stopPropagation(); return abrirValorar(el.dataset.baloratu); }
+  if (sareKlik(e)) return;
   if ((el = q("[data-wrapped]"))) { if (el.dataset.wrapped === "demo") { ponerDemo(); pintar(); } return abrirWrapped(el.dataset.wrapped === "mundiala" ? "mundiala" : "zurea"); }
   if ((el = q("[data-demo]"))) { el.dataset.demo === "jarri" ? ponerDemo() : quitarDemo(); cerrarAjustes(); return pintar(); }
-  if ((el = q("[data-lang]"))) { G.lang = el.dataset.lang; guardar(); pintar(); pintarInstalar(); return abrirAjustes(); }
+  if ((el = q("[data-lang]"))) { G.lang = el.dataset.lang; guardar(); pintar(); pintarInstalar(); pintarProfilaBotoia(); return abrirAjustes(); }
   if (q("#ezarpenak")) return abrirAjustes();
   if ((el = q("[data-proba-ezabatu]"))) {
     const id = el.dataset.probaEzabatu; borrarPrueba(id);
@@ -1267,6 +1765,7 @@ document.addEventListener("click", e => {
     const a = el.dataset.bal;
     if (a === "itxi") { const volver = baloraketa?.urratsa === 2; cerrarValorar(); return volver ? irA(vista.nombre, vista) : null; }
     if (a === "konst") { cerrarValorar(); return irA("konst"); }
+    if (a === "jarioa") { cerrarValorar(); return irA("jarioa"); }
     if (a === "atzera") { baloraketa.urratsa--; return pintarValorar(); }
     if (a === "hurrengoa") {
       if (baloraketa.urratsa === 0 && !CFG.nota_obra.some(g => baloraketa.notas[g])) { document.getElementById("oharra").textContent = t().gutxienez; return; }
@@ -1313,6 +1812,8 @@ document.getElementById("marka-logoa").innerHTML = svgLogoLiquido(10, { animar: 
 const h = location.hash.slice(1);
 if (h.startsWith("obra-") && obraCat(h.slice(5))) vista = { nombre: "fitxa", obra: h.slice(5) };
 else if (VISTAS.includes(h)) vista = { nombre: h };
+else if (h === "profila" || h.startsWith("profila-")) vista = { nombre: "profila", usuario: h.slice(8) || undefined };
+sareaArrancar();
 pintar(); pintarInstalar();
 if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>

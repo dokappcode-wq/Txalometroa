@@ -18,6 +18,7 @@ python analizar.py datos/<export>.xls   # análisis por línea de comandos (gene
 ```
 
 - Edita solo las plantillas (`*.src.html`, `movil/sw.src.js`), `app/nucleo.js`, `config.json` y `app/catalogo.json`. Los `.html` finales y `movil/sw.js` se generan.
+- La red social (cuentas, perfiles y feed) usa Supabase: tablas, permisos (RLS) y funciones en `supabase/esquema.sql`; puesta en marcha en `supabase/README.md`. La URL y la clave pública van en `config.json` → `supabase`.
 - La lógica compartida está en `app/nucleo.js`. Las reglas de limpieza están también en `analizar.py`: si cambias una, cambia la otra.
 - Después de compilar, comprueba la sintaxis del JavaScript incrustado (por ejemplo, extrae el `<script>` y pásalo por `node --check`).
 - Para ver la app móvil a tamaño de teléfono (390 px) en Chrome headless, mételo en un `iframe` de 390 px: Chrome headless no baja de unos 500 px de ancho. Las animaciones SMIL del logo líquido no avanzan en capturas headless; en un navegador normal sí.

@@ -60,10 +60,11 @@ También genera `movil/sw.js` a partir de `movil/sw.src.js`, con una versión ca
 
 ## La app móvil (`movil/`)
 
-Cuatro pestañas y un menú de ajustes:
+Cinco pestañas, un botón de perfil y un menú de ajustes:
 
 - **Obras:** obras activas con su foto, el logo líquido con la nota del público y el botón TXALOTU. Debajo, el repertorio para añadir obras ya vistas. La ficha de cada obra muestra cada aspecto con 5 máscaras.
 - **Valorar** (2 pasos): notas con máscaras (media máscara = 1 punto, entera = 2, escala 1–10) y un solo cuadro de texto, opcional, para dejar la opinión. Exige al menos una nota de GAL1–GAL4 y bloquea el botón al enviar.
+- **Feed:** opiniones de la gente («Todos») o de quien sigues («Siguiendo»), con buscador de personas y txalos (me gusta). Pide entrar o crear una cuenta (correo y contraseña) y luego crear el perfil (@usuario, nombre, bio y color). Desde ahí se abre el **perfil** de cada persona para seguirla; el tuyo, también desde el botón de la cabecera, para editarlo o cerrar sesión. Al valorar una obra con la sesión abierta, la valoración se publica sola en el feed. Usa Supabase: ver [`supabase/README.md`](../supabase/README.md).
 - **Butacas:** mapa de 12 filas × 18 butacas que se llena solo. **Es una simulación**; el usuario puede marcar su butaca.
 - **Constelación:** dibujada en un canvas. Ángulo = género, distancia al centro = nota (más cerca, mejor), tamaño = emoción y textos. Las líneas unen el orden cronológico y las obras del mismo género.
 - **Wrapped:** historias a pantalla completa. El mundial sale del export real; el personal, de las valoraciones del usuario. Toca para avanzar y mantén pulsado para pausar.
@@ -83,6 +84,7 @@ Es instalable: tiene `manifest.webmanifest`, iconos en `movil/icons/`, un servic
 | Pieza | Clave de `localStorage` | Contenido |
 | --- | --- | --- |
 | App móvil | `txalometroa-mugikorra` | `lang`, `valoraciones`, `butaka`, `pruebak` (obras de prueba) |
+| App móvil | `txalometroa-saioa` | La sesión de Supabase (la gestiona su cliente). Cada valoración lleva `sare`: `zain` (pendiente de publicar), `bai` (publicada) o `ez` (borrada del feed) |
 | App de análisis | `txalometroa-app` | `cfg`, último `fichero` cargado, `vaciado` |
 | Réplica | `txalometroa-replica-hika` | `modo`, `cfg`, `fichero`, `votos`, `pegado`, `estrenos` |
 
