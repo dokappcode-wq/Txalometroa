@@ -262,6 +262,19 @@ language sql stable security invoker set search_path = public as $$
   limit 200;
 $$;
 
+-- ================================================================ Permisos de acceso (Data API)
+-- Los proyectos nuevos de Supabase no dan permisos automáticos sobre las tablas nuevas:
+-- se dan aquí, y las políticas RLS de arriba deciden qué filas puede ver o tocar cada uno.
+grant usage on schema public to anon, authenticated;
+grant select on public.perfiles, public.valoraciones, public.seguimientos, public.txaloak, public.funciones, public.comentarios to anon, authenticated;
+grant insert, update, delete on public.valoraciones, public.seguimientos, public.txaloak, public.funciones, public.comentarios to authenticated;
+revoke insert, update on public.perfiles from anon, authenticated;
+grant insert (id, usuario, nombre, bio, color), update (usuario, nombre, bio, color) on public.perfiles to authenticated;
+grant usage on all sequences in schema public to authenticated;
+grant execute on function public.muro(text, text, timestamptz, int), public.perfil_de(text), public.buscar_perfiles(text),
+  public.funciones_activas(), public.pizarra(bigint), public.es_admin() to anon, authenticated;
+grant execute on function public.terminar_funcion(bigint) to authenticated;
+
 -- Tiempo real: la app se entera al momento de las funciones, los comentarios y las valoraciones nuevas.
 do $$
 declare t text;
