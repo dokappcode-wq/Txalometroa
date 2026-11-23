@@ -18,11 +18,14 @@ create table if not exists public.perfiles (
   creado timestamptz not null default now()
 );
 
+-- Foto de perfil (URL pública del almacén «fotos» de este proyecto).
+alter table public.perfiles add column if not exists foto text check (foto is null or foto ~ '^https://');
+
 -- Rol: 'admin' puede programar funciones en directo. Solo se cambia desde el panel de Supabase (SQL Editor):
 --   update public.perfiles set rol = 'admin' where usuario = 'hika';
 alter table public.perfiles add column if not exists rol text not null default 'publico' check (rol in ('publico', 'admin'));
 revoke insert, update on public.perfiles from anon, authenticated;
-grant insert (id, usuario, nombre, bio, color), update (usuario, nombre, bio, color) on public.perfiles to authenticated;
+grant insert (id, usuario, nombre, bio, color, foto), update (usuario, nombre, bio, color, foto) on public.perfiles to authenticated;
 
 -- Una valoración por persona y obra (si vuelve a valorar, se sustituye).
 -- obra = id del catálogo de la app (app/catalogo.json). Notas 0–10; 0 = sin contestar.
@@ -45,6 +48,18 @@ create table if not exists public.valoraciones (
   check (gal1 + gal2 + gal3 + gal4 > 0)          -- como en la app: al menos una nota de GAL1–GAL4
 );
 create index if not exists valoraciones_editada on public.valoraciones (editada desc, id desc);
+-- Foto que acompaña a la opinión.
+alter table public.valoraciones add column if not exists foto text check (foto is null or foto ~ '^https://');
+
+-- Comentarios en las opiniones del feed.
+create table if not exists public.respuestas (
+  id bigint generated always as identity primary key,
+  valoracion_id bigint not null references public.valoraciones (id) on delete cascade,
+  usuario_id uuid not null default auth.uid() references public.perfiles (id) on delete cascade,
+  texto text not null check (char_length(btrim(texto)) between 1 and 500),
+  creado timestamptz not null default now()
+);
+create index if not exists respuestas_valoracion on public.respuestas (valoracion_id, creado);
 
 create table if not exists public.seguimientos (
   seguidor uuid not null default auth.uid() references public.perfiles (id) on delete cascade,
@@ -101,6 +116,16 @@ create policy "seguimientos: leer" on public.seguimientos for select using (true
 create policy "seguimientos: seguir" on public.seguimientos for insert to authenticated with check (seguidor = auth.uid());
 create policy "seguimientos: dejar de seguir" on public.seguimientos for delete to authenticated using (seguidor = auth.uid());
 
+alter table public.respuestas enable row level security;
+drop policy if exists "respuestas: leer" on public.respuestas;
+drop policy if exists "respuestas: escribir las mías" on public.respuestas;
+drop policy if exists "respuestas: borrar" on public.respuestas;
+create policy "respuestas: leer" on public.respuestas for select using (true);
+create policy "respuestas: escribir las mías" on public.respuestas for insert to authenticated with check (usuario_id = auth.uid());
+-- Borra quien la escribió o quien escribió la opinión.
+create policy "respuestas: borrar" on public.respuestas for delete to authenticated using (
+  usuario_id = auth.uid() or exists (select 1 from public.valoraciones v where v.id = valoracion_id and v.usuario_id = auth.uid()));
+
 drop policy if exists "txaloak: leer" on public.txaloak;
 drop policy if exists "txaloak: dar" on public.txaloak;
 drop policy if exists "txaloak: quitar" on public.txaloak;
@@ -113,16 +138,22 @@ create policy "txaloak: quitar" on public.txaloak for delete to authenticated us
 -- Feed: valoraciones con su autor y sus txalos, de la más reciente a la más antigua.
 -- modo 'jarraitzen' = solo las mías y las de quien sigo; de_usuario = solo las de ese perfil.
 -- Paginación: pasa en «antes» la fecha «editada» de la última que ya tienes.
+drop function if exists public.muro(text, text, timestamptz, int);
+drop function if exists public.perfil_de(text);
+drop function if exists public.buscar_perfiles(text);
 create or replace function public.muro(modo text default 'denak', de_usuario text default null, antes timestamptz default null, limite int default 20)
 returns table (id bigint, obra text, nota numeric, gal1 smallint, gal2 smallint, gal3 smallint, gal4 smallint, opinion text,
-               creada timestamptz, editada timestamptz, usuario text, nombre text, color text, txaloak bigint, txalo_mio boolean, mia boolean)
+               creada timestamptz, editada timestamptz, usuario text, nombre text, color text, txaloak bigint, txalo_mio boolean, mia boolean,
+               foto text, avatar text, respuestas bigint)
 language sql stable security invoker set search_path = public as $$
   select v.id, v.obra,
          (select round(avg(x), 2) from unnest(array[v.gal1, v.gal2, v.gal3, v.gal4]) x where x > 0),
          v.gal1, v.gal2, v.gal3, v.gal4, v.opinion, v.creada, v.editada, p.usuario, p.nombre, p.color,
          (select count(*) from txaloak t where t.valoracion_id = v.id),
          exists (select 1 from txaloak t where t.valoracion_id = v.id and t.usuario_id = auth.uid()),
-         v.usuario_id = auth.uid()
+         v.usuario_id = auth.uid(),
+         v.foto, p.foto,
+         (select count(*) from respuestas r where r.valoracion_id = v.id)
   from valoraciones v join perfiles p on p.id = v.usuario_id
   where (antes is null or v.editada < antes)
     and (de_usuario is null or p.usuario = de_usuario)
@@ -135,29 +166,55 @@ $$;
 -- Ficha de un perfil con sus cifras y si yo le sigo.
 create or replace function public.perfil_de(p_usuario text)
 returns table (id uuid, usuario text, nombre text, bio text, color text, creado timestamptz,
-               valoraciones bigint, seguidores bigint, siguiendo bigint, lo_sigo boolean, es_yo boolean)
+               valoraciones bigint, seguidores bigint, siguiendo bigint, lo_sigo boolean, es_yo boolean, foto text)
 language sql stable security invoker set search_path = public as $$
   select p.id, p.usuario, p.nombre, p.bio, p.color, p.creado,
          (select count(*) from valoraciones v where v.usuario_id = p.id),
          (select count(*) from seguimientos s where s.seguido = p.id),
          (select count(*) from seguimientos s where s.seguidor = p.id),
          exists (select 1 from seguimientos s where s.seguido = p.id and s.seguidor = auth.uid()),
-         p.id = auth.uid()
+         p.id = auth.uid(), p.foto
   from perfiles p where p.usuario = lower(p_usuario);
 $$;
 
 -- Buscar gente por usuario o nombre.
 create or replace function public.buscar_perfiles(q text)
-returns table (usuario text, nombre text, color text, lo_sigo boolean)
+returns table (usuario text, nombre text, color text, lo_sigo boolean, foto text)
 language sql stable security invoker set search_path = public as $$
   select p.usuario, p.nombre, p.color,
-         exists (select 1 from seguimientos s where s.seguido = p.id and s.seguidor = auth.uid())
+         exists (select 1 from seguimientos s where s.seguido = p.id and s.seguidor = auth.uid()), p.foto
   from perfiles p
   where char_length(btrim(q)) >= 2
     and (p.usuario ilike '%' || replace(replace(btrim(q), '%', ''), '_', '\_') || '%'
          or p.nombre ilike '%' || replace(replace(btrim(q), '%', ''), '_', '\_') || '%')
   order by p.usuario
   limit 20;
+$$;
+
+-- A quién sigue un perfil (tipo 'seguidos') o quién le sigue ('seguidores').
+create or replace function public.seguimientos_de(p_usuario text, tipo text default 'seguidos')
+returns table (usuario text, nombre text, color text, foto text, lo_sigo boolean)
+language sql stable security invoker set search_path = public as $$
+  with yo as (select id from perfiles where usuario = lower(p_usuario))
+  select p.usuario, p.nombre, p.color, p.foto,
+         exists (select 1 from seguimientos s2 where s2.seguido = p.id and s2.seguidor = auth.uid())
+  from seguimientos s, yo, perfiles p
+  where (tipo = 'seguidos' and s.seguidor = yo.id and p.id = s.seguido)
+     or (tipo = 'seguidores' and s.seguido = yo.id and p.id = s.seguidor)
+  order by s.creado desc
+  limit 200;
+$$;
+
+-- Comentarios de una opinión.
+create or replace function public.respuestas_de(p_valoracion bigint)
+returns table (id bigint, texto text, creado timestamptz, usuario text, nombre text, color text, foto text, puedo_borrar boolean)
+language sql stable security invoker set search_path = public as $$
+  select r.id, r.texto, r.creado, p.usuario, p.nombre, p.color, p.foto,
+         r.usuario_id = auth.uid() or v.usuario_id = auth.uid()
+  from respuestas r join perfiles p on p.id = r.usuario_id join valoraciones v on v.id = r.valoracion_id
+  where r.valoracion_id = p_valoracion
+  order by r.creado
+  limit 200;
 $$;
 
 -- Borrar mi cuenta y todo lo mío (RGPD). Borra el usuario de Auth; lo demás cae en cascada.
@@ -279,13 +336,13 @@ $$;
 -- Los proyectos nuevos de Supabase no dan permisos automáticos sobre las tablas nuevas:
 -- se dan aquí, y las políticas RLS de arriba deciden qué filas puede ver o tocar cada uno.
 grant usage on schema public to anon, authenticated;
-grant select on public.perfiles, public.valoraciones, public.seguimientos, public.txaloak, public.funciones, public.comentarios to anon, authenticated;
-grant insert, update, delete on public.valoraciones, public.seguimientos, public.txaloak, public.funciones, public.comentarios to authenticated;
+grant select on public.perfiles, public.valoraciones, public.seguimientos, public.txaloak, public.funciones, public.comentarios, public.respuestas to anon, authenticated;
+grant insert, update, delete on public.valoraciones, public.seguimientos, public.txaloak, public.funciones, public.comentarios, public.respuestas to authenticated;
 revoke insert, update on public.perfiles from anon, authenticated;
-grant insert (id, usuario, nombre, bio, color), update (usuario, nombre, bio, color) on public.perfiles to authenticated;
+grant insert (id, usuario, nombre, bio, color, foto), update (usuario, nombre, bio, color, foto) on public.perfiles to authenticated;
 grant usage on all sequences in schema public to authenticated;
 grant execute on function public.muro(text, text, timestamptz, int), public.perfil_de(text), public.buscar_perfiles(text),
-  public.funciones_activas(), public.pizarra(bigint), public.es_admin() to anon, authenticated;
+  public.funciones_activas(), public.pizarra(bigint), public.es_admin(), public.seguimientos_de(text, text), public.respuestas_de(bigint) to anon, authenticated;
 grant execute on function public.terminar_funcion(bigint), public.borrar_pizarra(bigint) to authenticated;
 
 -- Tiempo real: la app se entera al momento de las funciones, los comentarios y las valoraciones nuevas.
@@ -293,10 +350,28 @@ do $$
 declare t text;
 begin
   if exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
-    foreach t in array array['funciones', 'comentarios', 'valoraciones'] loop
+    foreach t in array array['funciones', 'comentarios', 'valoraciones', 'respuestas'] loop
       if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = t) then
         execute format('alter publication supabase_realtime add table public.%I', t);
       end if;
     end loop;
   end if;
 end $$;
+
+-- ================================================================ Fotos (Supabase Storage)
+-- Almacén público «fotos»: cada persona sube solo dentro de su carpeta (<su id>/...), 5 MB como máximo.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('fotos', 'fotos', true, 5242880, array['image/jpeg', 'image/png', 'image/webp'])
+on conflict (id) do update set public = true, file_size_limit = 5242880, allowed_mime_types = array['image/jpeg', 'image/png', 'image/webp'];
+
+drop policy if exists "fotos: leer" on storage.objects;
+drop policy if exists "fotos: subir a mi carpeta" on storage.objects;
+drop policy if exists "fotos: cambiar las mías" on storage.objects;
+drop policy if exists "fotos: borrar las mías" on storage.objects;
+create policy "fotos: leer" on storage.objects for select using (bucket_id = 'fotos');
+create policy "fotos: subir a mi carpeta" on storage.objects for insert to authenticated
+  with check (bucket_id = 'fotos' and (storage.foldername(name))[1] = auth.uid()::text);
+create policy "fotos: cambiar las mías" on storage.objects for update to authenticated
+  using (bucket_id = 'fotos' and (storage.foldername(name))[1] = auth.uid()::text);
+create policy "fotos: borrar las mías" on storage.objects for delete to authenticated
+  using (bucket_id = 'fotos' and (storage.foldername(name))[1] = auth.uid()::text);

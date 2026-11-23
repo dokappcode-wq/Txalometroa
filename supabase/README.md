@@ -39,9 +39,12 @@ La app móvil usa Supabase para las cuentas, los perfiles, el feed, los seguimie
 | `seguimientos` | Quién sigue a quién | Cada persona sus seguimientos |
 | `txaloak` | Los «txalos» (me gusta) a cada valoración | Cada persona los suyos |
 | `funciones` | Funciones en directo: obra del catálogo (o título y género de una obra nueva), lugar, fecha y hora, minutos de pizarra y estado | Solo `rol = 'admin'` |
+| `respuestas` | Comentarios en las opiniones del feed (500 caracteres como máximo) | Cada persona los suyos; los borra quien los escribe o el autor de la opinión |
 | `comentarios` | Lo que el público escribe en la pizarra (280 caracteres como máximo) | Cada persona los suyos, y solo con la pizarra abierta |
 
 Todo se puede leer (perfiles y opiniones son públicos). Funciones que llama la app: `muro` (el feed, «Todos» o «Siguiendo», y las opiniones de un perfil), `perfil_de`, `buscar_perfiles`, `borrar_cuenta` (borra la cuenta y todo lo suyo), `funciones_activas`, `terminar_funcion` (abre la pizarra con la hora del servidor) y `pizarra` (comentarios y valoraciones de la obra desde que empezó la función).
+
+**Fotos:** las de perfil y las de las opiniones se guardan en el almacén público `fotos` de Supabase Storage (lo crea `esquema.sql`). Cada persona solo puede subir a su carpeta; la app reduce las fotos a 1280 px en JPEG (512 px las de perfil) antes de subirlas, con un límite de 5 MB.
 
 ## Funciones en directo y pizarra
 
@@ -60,4 +63,4 @@ Los navegadores de móvil no dejan grabar la pantalla, así que no se envía ví
 
 ## Diferencias con la especificación definitiva
 
-Esto es un primer paso hacia [`docs/version-definitiva.md`](../docs/version-definitiva.md). Todavía no incluye: butacas con QR (las valoraciones van por obra, no por función), perfiles privados, comentarios en el feed (solo en la pizarra), notificaciones, bloquear y denunciar, fotos de perfil ni inicio de sesión con Google. Las valoraciones del export histórico tampoco están en la base de datos: la nota pública de cada obra sigue saliendo del export, como antes.
+Esto es un primer paso hacia [`docs/version-definitiva.md`](../docs/version-definitiva.md). Todavía no incluye: butacas con QR (las valoraciones van por obra, no por función), perfiles privados, notificaciones, bloquear y denunciar ni inicio de sesión con Google. Las valoraciones del export histórico tampoco están en la base de datos: la nota pública de cada obra sigue saliendo del export, como antes.

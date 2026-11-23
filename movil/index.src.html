@@ -152,7 +152,12 @@ h2.azpititulua { font: 400 30px/1 var(--pixel); margin: 30px 0 10px; letter-spac
 .maskarak output { font: 400 30px/1 var(--pixel); text-align: right; color: var(--tinta-3); }
 .maskarak output.jarrita { color: var(--crema); }
 details.gehiago summary { cursor: pointer; padding: 14px 0; color: var(--tinta-2); font-weight: 600; }
-textarea.iritzia { display: block; min-height: 200px; margin-top: 16px; }
+textarea.iritzi-testua { display: block; min-height: 200px; margin-top: 16px; }
+/* Campos de texto: fondo claro y letra oscura siempre (también con el modo oscuro del móvil y al autocompletar). */
+textarea:focus, .eremua input:focus, .bilatu input:focus, .iruzkin-form input:focus, .erantzun-form input:focus, .pantaila-form input:focus { background: #fff; }
+textarea, .eremua input, .eremua select, .bilatu input, .iruzkin-form input, .erantzun-form input, .pantaila-form input { color: #111 !important; -webkit-text-fill-color: #111; caret-color: #111; color-scheme: light; }
+textarea::placeholder, input::placeholder { color: #777; -webkit-text-fill-color: #777; opacity: 1; }
+input:-webkit-autofill { -webkit-box-shadow: 0 0 0 40px #fff inset; }
 textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(--texto); color: var(--negro); background: var(--crema); border: 0; border-radius: 10px; padding: 10px 12px; }
 .baloratu .beheko { position: fixed; left: 0; right: 0; bottom: 0; z-index: 51; display: flex; gap: 10px; padding: 12px var(--lado-d) calc(var(--abajo) + 12px) var(--lado-i); background: linear-gradient(180deg, transparent, var(--gris-3) 30%); }
 .baloratu .beheko > * { max-width: 620px; }
@@ -330,6 +335,29 @@ textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(
 .profila-buru .erabiltzailea { margin: 2px 0 0; color: var(--tinta-2); }
 .bio { margin: 6px 0; white-space: pre-line; overflow-wrap: anywhere; }
 .emaitza .partekatu { color: var(--tinta-2); font-size: 14px; margin: 0 0 14px; }
+.avatarra.argazkiduna { padding: 0; overflow: hidden; background: #222; }
+.avatarra.argazkiduna img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.argazki-eremua { display: flex; align-items: center; gap: 12px; margin: 8px 0; }
+.argazki-botoia { display: inline-flex; align-items: center; gap: 8px; border: 1px dashed rgba(255, 255, 255, .45); border-radius: 10px; padding: 10px 14px; font-weight: 600; cursor: pointer; }
+.argazki-botoia input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.argazki-aurrebista { max-width: 100%; max-height: 260px; border-radius: 12px; display: block; margin-top: 10px; }
+.iritzi-argazkia { width: 100%; max-height: 420px; object-fit: cover; border-radius: 12px; display: block; }
+.iritzia footer .eskuin { display: flex; gap: 8px; align-items: center; }
+.erantzunak { border-top: 1px solid rgba(255, 255, 255, .1); padding-top: 10px; display: grid; gap: 10px; }
+.erantzunak ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.erantzunak li { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 8px; align-items: start; font-size: 14px; }
+.erantzunak li .avatarra { width: 32px; height: 32px; font-size: 18px; }
+.erantzunak li p { margin: 0; overflow-wrap: anywhere; white-space: pre-line; }
+.erantzunak li small { color: var(--tinta-3); }
+.erantzunak li .ezabatu { border: 0; background: none; color: var(--tinta-3); font-size: 18px; line-height: 1; padding: 2px 4px; }
+.erantzun-form { display: flex; gap: 8px; }
+.erantzun-form input { flex: 1; min-width: 0; font: 15px/1.3 var(--texto); background: var(--crema); border: 0; border-radius: 10px; padding: 9px 12px; }
+.erantzun-form .botoia { padding: 9px 14px; font-size: 18px; }
+.estatistikak button { border: 0; font: inherit; color: inherit; text-align: left; background: rgba(13, 13, 13, .35); border-radius: 12px; padding: 10px; cursor: pointer; }
+.estatistikak button[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--crema); }
+.estatistikak button b { display: block; font: 400 38px/1 var(--pixel); }
+.estatistikak button span { font-size: 12px; color: var(--tinta-2); }
+#jarraipenak h3 { font: 400 26px var(--pixel); margin: 14px 0 8px; }
 
 /* ---------- Funciones en directo */
 #zuzenean-atala { display: grid; gap: 14px; margin-top: 14px; }
@@ -710,6 +738,10 @@ const T = {
     kontuaEzabatu: "Kontua ezabatu", kontuaEzabatuAzal: "Kontua ezabatzean, zure profila, iritziak eta jarraipenak betiko ezabatzen dira.",
     partekatzen: "Jarioan partekatzen…", partekatuta: "Jarioan partekatuta.", partekatuEzin: "Ezin izan da partekatu; berriro saiatuko gara.",
     partekatuSartu: "Sartu zure iritzia jarioan partekatzeko",
+    argazkiaProfila: "Profileko argazkia", argazkiaGehitu: "Gehitu argazki bat", argazkiaAldatu: "Aldatu argazkia", argazkiaKendu: "Kendu argazkia",
+    argazkiaIgotzen: "Argazkia igotzen…", argazkiaSartu: "Kontuarekin sartzen bazara, argazki bat ere gehi dezakezu.",
+    erantzunIrud: "Idatzi iruzkin bat…", erantzunHutsik: "Oraindik ez dago iruzkinik.",
+    jarraituakIzen: "Jarraitzen dituenak", jarraitzaileakIzen: "Jarraitzaileak", inor: "Inor ez oraindik.",
     // Funciones en directo y pizarra
     arbelaIrekita: "Arbela irekita", arbelaItxitaIzen: "Arbela itxita", arbelaIkusi: "Ikusi arbela", arbelaIxten: "Arbela ixteko:", hurrengoFuntzioak: "Hurrengo emanaldiak",
     amaituObra: "Amaitu obra", atzeraKontua: "Atzera-kontua", arbela: "Arbela",
@@ -784,6 +816,10 @@ const T = {
     kontuaEzabatu: "Borrar cuenta", kontuaEzabatuAzal: "Al borrar la cuenta se borran para siempre tu perfil, tus opiniones y a quién sigues.",
     partekatzen: "Compartiendo en el feed…", partekatuta: "Compartida en el feed.", partekatuEzin: "No se ha podido compartir; lo volveremos a intentar.",
     partekatuSartu: "Entra para compartir tu opinión en el feed",
+    argazkiaProfila: "Foto de perfil", argazkiaGehitu: "Añadir una foto", argazkiaAldatu: "Cambiar la foto", argazkiaKendu: "Quitar la foto",
+    argazkiaIgotzen: "Subiendo la foto…", argazkiaSartu: "Si entras con tu cuenta, también puedes añadir una foto.",
+    erantzunIrud: "Escribe un comentario…", erantzunHutsik: "Todavía no hay comentarios.",
+    jarraituakIzen: "Siguiendo", jarraitzaileakIzen: "Seguidores", inor: "Nadie todavía.",
     arbelaIrekita: "Pizarra abierta", arbelaItxitaIzen: "Pizarra cerrada", arbelaIkusi: "Ver la pizarra", arbelaIxten: "La pizarra se cierra en", hurrengoFuntzioak: "Próximas funciones",
     amaituObra: "Terminar obra", atzeraKontua: "Cuenta atrás", arbela: "Pizarra",
     atzeraAzal: "El público está escribiendo en la pizarra. Cuando acabe el tiempo, se cerrará.", arbelaItxita: "La pizarra se ha cerrado. ¡Gracias!",
@@ -902,6 +938,7 @@ const ICONOS = {
   wrapped: `<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M10 8v8l6-4z" fill="#0d0d0d"/></svg>`,
   jarioa: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10l-5 4v-4H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm3 5v2h10V8Zm0 4v2h7v-2Z"/></svg>`,
   profila: `<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4.2"/><path d="M3.5 21c.8-4.4 4.3-7 8.5-7s7.7 2.6 8.5 7Z"/></svg>`,
+  iruzkin: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>`,
   txalo: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13.5 5.2 10.7a1.5 1.5 0 0 1 2.1-2.1l3.2 3.2"/><path d="m9.5 10.5-3-3a1.5 1.5 0 0 1 2.1-2.1l4.6 4.6"/><path d="m11 8-1.4-1.4a1.5 1.5 0 0 1 2.1-2.1l4.5 4.5c2.6 2.6 2.6 6.1.4 8.3s-5.7 2.2-8.3-.4l-3.5-3.5a1.5 1.5 0 0 1 2.1-2.1l1.6 1.6"/><path d="M17 3.5c1 .4 1.9 1 2.6 1.9M19.5 2c.8.5 1.5 1.1 2 1.9"/></svg>`,
   atzera: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>`,
   itxi: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>`,
@@ -913,7 +950,7 @@ function htmlNeurgailua(nota, etiketa, clase = "") {
 }
 // Medida 0–10 dibujada con 5 máscaras rellenas en parte (de drama a comedia).
 function htmlMaskaraNeurria(v) {
-  return `<div class="maskara-neurria" aria-hidden="true">${K_MASCARA.map((k, i) => svgMascara(k, Math.max(0, Math.min(1, (v ?? 0) / 2 - i)))).join("")}</div>`;
+  return `<div class="maskara-neurria" aria-hidden="true">${K_MASCARA.map((k, i) => svgMaskaraUrrea(k, Math.max(0, Math.min(1, (v ?? 0) / 2 - i)))).join("")}</div>`;
 }
 // Máscara de teatro dorada para valorar (diseño de Hika): k va de la tragedia (-1) a la comedia (1).
 // Debajo, la máscara en gris; encima, la dorada recortada según «relleno» (0, media o entera).
@@ -1061,7 +1098,10 @@ function pintarValorar() {
       <p class="oharra" id="oharra" aria-live="polite"></p>`;
   } else {
     cuerpo = `<h2>${tx.urratsa[1]}</h2><p class="azalpena">${tx.iritziAzal}</p>
-      <textarea class="iritzia" data-testua="iritzia" maxlength="1500" aria-label="${tx.iritzia}" placeholder="${tx.iritziaIdatzi}">${esc(b.testuak.iritzia || "")}</textarea>`;
+      <textarea class="iritzi-testua" data-testua="iritzia" maxlength="1500" aria-label="${tx.iritzia}" placeholder="${tx.iritziaIdatzi}">${esc(b.testuak.iritzia || "")}</textarea>
+      ${haySesion() ? `<div class="argazki-eremua"><label class="argazki-botoia">📷 ${b.argazkia ? tx.argazkiaAldatu : tx.argazkiaGehitu}<input type="file" accept="image/*" data-bal-argazkia></label>
+        ${b.argazkia ? `<button type="button" class="esteka" data-bal="argazkia-kendu">${tx.argazkiaKendu}</button>` : ""}</div>
+        ${b.argazkiUrl ? `<img class="argazki-aurrebista" src="${b.argazkiUrl}" alt="">` : ""}` : (sareaPrest() ? `<p class="azalpena" style="margin-top:12px">${tx.argazkiaSartu}</p>` : "")}`;
   }
   el.innerHTML = `<div class="goia"><button type="button" class="atzera" data-bal="itxi" aria-label="${tx.atzera}">${ICONOS.itxi}</button>${pasos}</div>
     <div class="edukia">${cuerpo}</div>
@@ -1090,7 +1130,8 @@ function enviarValoracion() {
   b.partekatu = !sareaPrest() || !partekagarria(nueva) ? null : haySesion() ? "zain" : "sartu";
   if (b.partekatu === "zain") {
     nueva.sare = "zain";
-    argitaratu(nueva).then(() => "bai", () => "errorea").then(egoera => {
+    const fitx = b.argazkia;
+    (fitx ? argazkiaIgo(fitx, "iritzia").then(u => { nueva.foto = u; guardar(); }) : Promise.resolve()).then(() => argitaratu(nueva)).then(() => "bai", () => "errorea").then(egoera => {
       if (baloraketa !== b) return;
       b.partekatu = egoera; const el = document.getElementById("partekatu-egoera"); if (el) el.textContent = egoera === "bai" ? t().partekatuta : t().partekatuEzin;
     });
@@ -1496,7 +1537,7 @@ async function sareaHasi() {
   return sb;
 }
 async function nirePerfilaKargatu() {
-  const { data, error } = await SARE.sb.from("perfiles").select("id, usuario, nombre, bio, color, rol").eq("id", SARE.saioa.user.id).maybeSingle();
+  const { data, error } = await SARE.sb.from("perfiles").select("id, usuario, nombre, bio, color, rol, foto").eq("id", SARE.saioa.user.id).maybeSingle();
   if (error) throw error;
   SARE.perfil = data;
   pintarProfilaBotoia();
@@ -1508,9 +1549,27 @@ const haySesion = () => !!(SARE.saioa && SARE.perfil);
 
 const partekagarria = v => !v.demo && !String(v.obra).startsWith("proba-") && CFG.nota_obra.some(g => v.notas[g]);
 const filaSare = v => ({
-  usuario_id: SARE.perfil.id, obra: v.obra, lang: v.lang === "es" ? "es" : "eu", opinion: iritziaDe(v).slice(0, 1500),
+  usuario_id: SARE.perfil.id, obra: v.obra, lang: v.lang === "es" ? "es" : "eu", opinion: iritziaDe(v).slice(0, 1500), foto: fotoOna(v.foto) ? v.foto : null,
   ...Object.fromEntries(PREG.map(g => [g.toLowerCase(), Math.max(0, Math.min(10, Math.round(v.notas[g] || 0)))]))
 });
+// Fotos: se reducen en el móvil (JPEG, 1280 px como máximo) y se suben al almacén «fotos», en la carpeta de cada persona.
+async function argazkiaPrestatu(fitx, max = 1280) {
+  const url = URL.createObjectURL(fitx);
+  try {
+    const img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = url; });
+    const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight)), c = document.createElement("canvas");
+    c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    return await new Promise(ok => c.toBlob(ok, "image/jpeg", .85));
+  } finally { URL.revokeObjectURL(url); }
+}
+async function argazkiaIgo(fitx, izena, max) {
+  const blob = await argazkiaPrestatu(fitx, max), bidea = `${SARE.saioa.user.id}/${izena}-${Date.now()}.jpg`;
+  const { error } = await SARE.sb.storage.from("fotos").upload(bidea, blob, { contentType: "image/jpeg", upsert: true });
+  if (error) throw error;
+  return SARE.sb.storage.from("fotos").getPublicUrl(bidea).data.publicUrl;
+}
+const fotoOna = u => typeof u === "string" && /^https:\/\//.test(u);
 async function argitaratu(v) {
   const { error } = await SARE.sb.from("valoraciones").upsert(filaSare(v), { onConflict: "usuario_id,obra" });
   if (error) throw error;
@@ -1526,7 +1585,9 @@ const sinPublicar = () => misObras().filter(v => !v.sare && partekagarria(v));
 // ---------------------------------------------------------------- Piezas
 
 const inicial = s => ([...String(s || "?").trim()][0] || "?").toUpperCase();
-const avatarra = (p, clase = "") => `<span class="avatarra ${clase}" style="--k:${KOLOREAK.includes(p.color) ? p.color : "#c80000"}" aria-hidden="true">${esc(inicial(p.nombre))}</span>`;
+const avatarra = (p, clase = "") => { const foto = p.avatar !== undefined ? p.avatar : p.foto;
+  return fotoOna(foto) ? `<span class="avatarra argazkiduna ${clase}" aria-hidden="true"><img src="${esc(foto)}" alt="" loading="lazy"></span>`
+    : `<span class="avatarra ${clase}" style="--k:${KOLOREAK.includes(p.color) ? p.color : "#c80000"}" aria-hidden="true">${esc(inicial(p.nombre))}</span>`; };
 function denboraLehen(iso) {
   const s = (new Date(iso) - Date.now()) / 1000, rtf = new Intl.RelativeTimeFormat(G.lang, { numeric: "auto" });
   for (const [u, seg] of [["year", 31536000], ["month", 2592000], ["week", 604800], ["day", 86400], ["hour", 3600], ["minute", 60]]) {
@@ -1572,6 +1633,8 @@ function htmlPerfilForm(p = null) {
       <small>${tx.sareErroreak.okerra}</small></label>
     <label class="eremua">${tx.izenaEtiketa}<input name="nombre" value="${esc(p?.nombre || "")}" required maxlength="40" autocomplete="name"></label>
     <label class="eremua">${tx.bio} <small>(${tx.aukerakoa})</small><textarea name="bio" maxlength="160" rows="2">${esc(p?.bio || "")}</textarea></label>
+    <div class="argazki-eremua"><span id="perfil-argazkia">${avatarra(p || { nombre: "?", color: kolorea }, "handia")}</span>
+      <label class="argazki-botoia">${tx.argazkiaProfila}<input type="file" name="foto" accept="image/*" data-perfil-argazkia></label></div>
     <fieldset class="koloreak"><legend>${tx.kolorea}</legend>${KOLOREAK.map(k => `<label><input type="radio" name="color" value="${k}" ${k === kolorea ? "checked" : ""}><span style="--k:${k}"></span></label>`).join("")}</fieldset>
     <p class="oharra" id="sare-oharra" aria-live="polite"></p>
     <div class="botoiak"><button type="submit" class="botoia">${tx.gorde}</button>${p ? `<button type="button" class="botoia marino" data-sare="editatu-utzi">${tx.utzi}</button>` : ""}</div>
@@ -1585,8 +1648,11 @@ function htmlIritzia(v) {
       <span><b>${esc(o ? izena(o) : v.obra)}</b>${o ? `<small><i style="--c:${genKolorea(o.genero)}"></i>${esc(genIzena(o.genero))}</small>` : ""}</span><span class="zbk">${fmt(nota)}</span></button>
     ${htmlMaskaraNeurria(nota)}
     ${v.opinion ? `<p class="testua">${esc(v.opinion)}</p>` : ""}
-    <footer><button type="button" class="txalo" data-txalo="${v.id}" aria-pressed="${!!v.txalo_mio}" aria-label="${tx.txaloEman}">${ICONOS.txalo}<span>${v.txaloak}</span></button>
+    ${fotoOna(v.foto) ? `<img class="iritzi-argazkia" src="${esc(v.foto)}" alt="" loading="lazy">` : ""}
+    <footer><span class="eskuin"><button type="button" class="txalo" data-txalo="${v.id}" aria-pressed="${!!v.txalo_mio}" aria-label="${tx.txaloEman}">${ICONOS.txalo}<span>${v.txaloak}</span></button>
+      <button type="button" class="txalo" data-erantzunak="${v.id}" aria-expanded="false" aria-label="${tx.iruzkinak}">${ICONOS.iruzkin}<span>${v.respuestas || 0}</span></button></span>
       ${v.mia ? `<button type="button" class="esteka" data-iritzia-ezabatu="${v.id}">${SARE.ezabatuArmatua === v.id ? tx.ziurEzabatu : tx.ezabatuIritzia}</button>` : ""}</footer>
+    <div class="erantzunak" id="erantzunak-${v.id}" hidden></div>
   </article>`;
 }
 
@@ -1635,7 +1701,10 @@ async function hasiProfila() {
   const zain = p.es_yo ? sinPublicar() : [];
   kont.innerHTML = `<div class="profila-buru">${avatarra(p, "handia")}<div><h1>${esc(p.nombre)}</h1><p class="erabiltzailea">@${esc(p.usuario)}</p></div></div>
     ${p.bio ? `<p class="bio">${esc(p.bio)}</p>` : ""}
-    <div class="estatistikak"><div><b>${p.valoraciones}</b><span>${tx.balorazioak}</span></div><div><b id="jarraitzaileak">${p.seguidores}</b><span>${tx.jarraitzaileak}</span></div><div><b>${p.siguiendo}</b><span>${tx.jarraituak}</span></div></div>
+    <div class="estatistikak"><div><b>${p.valoraciones}</b><span>${tx.balorazioak}</span></div>
+      <button type="button" data-jarraipenak="seguidores" aria-pressed="false"><b id="jarraitzaileak">${p.seguidores}</b><span>${tx.jarraitzaileak}</span></button>
+      <button type="button" data-jarraipenak="seguidos" aria-pressed="false"><b>${p.siguiendo}</b><span>${tx.jarraituak}</span></button></div>
+    <div id="jarraipenak"></div>
     <div class="botoiak">${p.es_yo ? `<button type="button" class="botoia marino" data-sare="editatu">${tx.perfilaEditatu}</button><button type="button" class="botoia marino" data-sare="irten">${tx.irten}</button>`
       : `<button type="button" class="botoia${p.lo_sigo ? " marino" : ""}" data-jarraitu="${p.lo_sigo ? "utzi" : "bai"}">${p.lo_sigo ? tx.jarraitzenDuzu : tx.jarraitu}</button>`}</div>
     <div id="profila-editatu"></div>
@@ -1691,9 +1760,15 @@ async function perfilaBidali(form) {
   if (!fila.nombre) { oharra.textContent = tx.izenaFalta; form.nombre.focus(); return; }
   if (!KOLOREAK.includes(fila.color)) fila.color = KOLOREAK[0];
   botoia.disabled = true; oharra.textContent = "";
+  const fitx = form.foto?.files?.[0];
+  if (fitx) {
+    oharra.textContent = tx.argazkiaIgotzen;
+    try { fila.foto = await argazkiaIgo(fitx, "perfil", 512); oharra.textContent = ""; }
+    catch (e) { oharra.textContent = sareErrorea(e); botoia.disabled = false; return; }
+  }
   const sortu = form.dataset.modua === "sortu";
   const kontsulta = sortu ? SARE.sb.from("perfiles").insert({ id: SARE.saioa.user.id, ...fila }) : SARE.sb.from("perfiles").update(fila).eq("id", SARE.perfil.id);
-  const { data, error } = await kontsulta.select("id, usuario, nombre, bio, color, rol").single();
+  const { data, error } = await kontsulta.select("id, usuario, nombre, bio, color, rol, foto").single();
   if (error) { oharra.textContent = sareErrorea(error); botoia.disabled = false; return; }
   SARE.perfil = data; pintarProfilaBotoia();
   if (sortu) sinkronizatu();
@@ -1735,6 +1810,44 @@ async function iritziaEzabatu(id) {
   document.querySelector(`[data-iritzia="${id}"]`)?.remove();
   // En este móvil sigue (constelación, Wrapped), pero ya no se vuelve a publicar sola.
   const mia = v && misObras().find(x => x.obra === v.obra); if (mia) { mia.sare = "ez"; guardar(); }
+}
+// Comentarios de una opinión del feed: se abren debajo de la tarjeta.
+async function erantzunakIreki(id, behartu = false) {
+  const kont = document.getElementById(`erantzunak-${id}`), botoia = document.querySelector(`[data-erantzunak="${id}"]`); if (!kont) return;
+  if (!kont.hidden && !behartu) { kont.hidden = true; botoia?.setAttribute("aria-expanded", "false"); return; }
+  kont.hidden = false; botoia?.setAttribute("aria-expanded", "true");
+  if (!behartu) kont.innerHTML = kargatzenHtml();
+  const tx = t(), { data, error } = await SARE.sb.rpc("respuestas_de", { p_valoracion: Number(id) });
+  if (error) { kont.innerHTML = `<p class="oharra">${esc(sareErrorea(error))}</p>`; return; }
+  const v = SARE.iritziak.get(String(id)); if (v) { v.respuestas = data.length; const n = botoia?.querySelector("span"); if (n) n.textContent = data.length; }
+  kont.innerHTML = `${data.length ? `<ul>${data.map(r => `<li>${avatarra(r)}<div><p><button type="button" class="esteka" style="padding:0" data-profila="${esc(r.usuario)}">${esc(r.nombre)}</button> ${esc(r.texto)}</p><small>${denboraLehen(r.creado)}</small></div>
+      ${r.puedo_borrar ? `<button type="button" class="ezabatu" data-erantzuna-ezabatu="${r.id}" data-valoracion="${id}" aria-label="${tx.ezabatuIritzia}">×</button>` : "<span></span>"}</li>`).join("")}</ul>` : `<p class="azalpena" style="margin:0">${tx.erantzunHutsik}</p>`}
+    ${haySesion() ? `<form class="erantzun-form" data-valoracion="${id}"><input name="testua" maxlength="500" placeholder="${tx.erantzunIrud}" aria-label="${tx.erantzunIrud}" autocomplete="off"><button type="submit" class="botoia">${tx.bidaliIruzkina}</button></form>` : ""}`;
+}
+async function erantzunaBidali(form) {
+  const testua = form.testua.value.trim(); if (!testua || !haySesion()) return;
+  const botoia = form.querySelector("[type=submit]"); botoia.disabled = true;
+  const { error } = await SARE.sb.from("respuestas").insert({ valoracion_id: Number(form.dataset.valoracion), usuario_id: SARE.perfil.id, texto: testua.slice(0, 500) });
+  botoia.disabled = false;
+  if (error) return;
+  erantzunakIreki(form.dataset.valoracion, true);
+}
+async function erantzunaEzabatu(id, valoracion) {
+  const { error } = await SARE.sb.from("respuestas").delete().eq("id", Number(id));
+  if (!error) erantzunakIreki(valoracion, true);
+}
+// A quién sigue / quién sigue a este perfil.
+async function jarraipenakErakutsi(mota) {
+  const kont = document.getElementById("jarraipenak"), p = SARE.profila; if (!kont || !p) return;
+  const botoia = document.querySelector(`[data-jarraipenak="${mota}"]`), irekita = botoia?.getAttribute("aria-pressed") === "true";
+  document.querySelectorAll("[data-jarraipenak]").forEach(b => b.setAttribute("aria-pressed", "false"));
+  if (irekita) { kont.innerHTML = ""; return; }
+  botoia?.setAttribute("aria-pressed", "true"); kont.innerHTML = kargatzenHtml();
+  const tx = t(), { data, error } = await SARE.sb.rpc("seguimientos_de", { p_usuario: p.usuario, tipo: mota });
+  if (error) { kont.innerHTML = `<p class="oharra">${esc(sareErrorea(error))}</p>`; return; }
+  kont.innerHTML = `<h3>${mota === "seguidos" ? tx.jarraituakIzen : tx.jarraitzaileakIzen}</h3>${data.length
+    ? `<ul class="pertsonak">${data.map(x => `<li><button type="button" class="nor" data-profila="${esc(x.usuario)}">${avatarra(x)}<span><b>${esc(x.nombre)}</b><small>@${esc(x.usuario)}${x.lo_sigo ? ` · ${tx.jarraitzenDuzu}` : ""}</small></span></button></li>`).join("")}</ul>`
+    : `<p class="azalpena">${tx.inor}</p>`}`;
 }
 let bilaketaTimer = null;
 function bilatu(q) {
@@ -1783,10 +1896,22 @@ function htmlKontua() {
 // ---------------------------------------------------------------- Eventos de la red social
 
 document.addEventListener("submit", e => {
+  if (e.target.classList.contains("erantzun-form")) { e.preventDefault(); erantzunaBidali(e.target); }
   if (e.target.id === "sarrera-form") { e.preventDefault(); sarreraBidali(e.target); }
   if (e.target.id === "perfil-form") { e.preventDefault(); perfilaBidali(e.target); }
 });
 document.addEventListener("input", e => { if (e.target.id === "bilatu") bilatu(e.target.value); });
+document.addEventListener("change", e => {
+  const fitx = e.target.files?.[0]; if (!fitx) return;
+  if (e.target.matches("[data-bal-argazkia]") && baloraketa) {
+    if (baloraketa.argazkiUrl) URL.revokeObjectURL(baloraketa.argazkiUrl);
+    baloraketa.argazkia = fitx; baloraketa.argazkiUrl = URL.createObjectURL(fitx); pintarValorar();
+    document.getElementById("baloratu").scrollTop = 1e6;
+  }
+  if (e.target.matches("[data-perfil-argazkia]")) {
+    const el = document.getElementById("perfil-argazkia"); if (el) el.innerHTML = `<span class="avatarra argazkiduna handia"><img src="${URL.createObjectURL(fitx)}" alt=""></span>`;
+  }
+});
 function sareKlik(e) {
   const q = s => e.target.closest(s);
   let el;
@@ -1795,6 +1920,9 @@ function sareKlik(e) {
   if ((el = q("[data-sarrera]"))) { document.getElementById("sare-edukia").innerHTML = htmlSarrera(el.dataset.sarrera); return true; }
   if ((el = q("[data-jario-modua]"))) { vista.modua = el.dataset.jarioModua; pintar(); return true; }
   if ((el = q("[data-txalo]"))) { txaloa(el.dataset.txalo); return true; }
+  if ((el = q("[data-erantzunak]"))) { erantzunakIreki(el.dataset.erantzunak); return true; }
+  if ((el = q("[data-erantzuna-ezabatu]"))) { erantzunaEzabatu(el.dataset.erantzunaEzabatu, el.dataset.valoracion); return true; }
+  if ((el = q("[data-jarraipenak]"))) { jarraipenakErakutsi(el.dataset.jarraipenak); return true; }
   if ((el = q("[data-jarraitu]"))) { jarraitu(el.dataset.jarraitu === "bai"); return true; }
   if ((el = q("[data-iritzia-ezabatu]"))) { iritziaEzabatu(Number(el.dataset.iritziaEzabatu)); return true; }
   if ((el = q("[data-sare]"))) {
@@ -2359,6 +2487,7 @@ document.addEventListener("click", e => {
     if (a === "itxi") { const volver = baloraketa?.urratsa === 2; cerrarValorar(); return volver ? irA(vista.nombre, vista) : null; }
     if (a === "konst") { cerrarValorar(); return irA("konst"); }
     if (a === "jarioa") { cerrarValorar(); return irA("jarioa"); }
+    if (a === "argazkia-kendu") { if (baloraketa.argazkiUrl) URL.revokeObjectURL(baloraketa.argazkiUrl); baloraketa.argazkia = baloraketa.argazkiUrl = null; return pintarValorar(); }
     if (a === "atzera") { baloraketa.urratsa--; return pintarValorar(); }
     if (a === "hurrengoa") {
       if (baloraketa.urratsa === 0 && !CFG.nota_obra.some(g => baloraketa.notas[g])) { document.getElementById("oharra").textContent = t().gutxienez; return; }
