@@ -18,6 +18,12 @@ create table if not exists public.perfiles (
   creado timestamptz not null default now()
 );
 
+-- Rol: 'admin' puede programar funciones en directo. Solo se cambia desde el panel de Supabase (SQL Editor):
+--   update public.perfiles set rol = 'admin' where usuario = 'hika';
+alter table public.perfiles add column if not exists rol text not null default 'publico' check (rol in ('publico', 'admin'));
+revoke insert, update on public.perfiles from anon, authenticated;
+grant insert (id, usuario, nombre, bio, color), update (usuario, nombre, bio, color) on public.perfiles to authenticated;
+
 -- Una valoración por persona y obra (si vuelve a valorar, se sustituye).
 -- obra = id del catálogo de la app (app/catalogo.json). Notas 0–10; 0 = sin contestar.
 create table if not exists public.valoraciones (
@@ -163,3 +169,108 @@ begin
 end $$;
 revoke execute on function public.borrar_cuenta() from public, anon;
 grant execute on function public.borrar_cuenta() to authenticated;
+
+-- ================================================================ Funciones en directo y pizarra
+-- Hika (rol admin) programa una función con fecha y hora. A esa hora sale «en directo» en la app.
+-- Al pulsar «Terminar obra» se abre la pizarra durante «minutos_pizarra»: el público ve en vivo
+-- las valoraciones y los comentarios, y quien la terminó ve la cuenta atrás.
+
+create or replace function public.es_admin() returns boolean
+language sql stable security definer set search_path = '' as $$
+  select exists (select 1 from public.perfiles where id = auth.uid() and rol = 'admin');
+$$;
+
+create table if not exists public.funciones (
+  id bigint generated always as identity primary key,
+  obra text check (obra ~ '^[a-z0-9-]{1,60}$'),               -- obra del catálogo, o null si es una obra nueva
+  titulo text not null default '' check (char_length(titulo) <= 80),   -- título de la obra nueva
+  genero text not null default 'drama' check (genero ~ '^[a-z]{1,20}$'),
+  lugar text not null default '' check (char_length(lugar) <= 80),
+  empieza timestamptz not null,
+  minutos_pizarra smallint not null default 10 check (minutos_pizarra between 1 and 120),
+  estado text not null default 'programada' check (estado in ('programada', 'pizarra')),
+  terminada_en timestamptz,
+  pizarra_hasta timestamptz,
+  creada_por uuid not null default auth.uid() references public.perfiles (id) on delete cascade,
+  creada timestamptz not null default now(),
+  check (obra is not null or char_length(btrim(titulo)) > 0)
+);
+create index if not exists funciones_empieza on public.funciones (empieza);
+
+create table if not exists public.comentarios (
+  id bigint generated always as identity primary key,
+  funcion_id bigint not null references public.funciones (id) on delete cascade,
+  usuario_id uuid not null default auth.uid() references public.perfiles (id) on delete cascade,
+  texto text not null check (char_length(btrim(texto)) between 1 and 280),
+  creado timestamptz not null default now()
+);
+create index if not exists comentarios_funcion on public.comentarios (funcion_id, creado);
+
+alter table public.funciones enable row level security;
+alter table public.comentarios enable row level security;
+
+drop policy if exists "funciones: leer" on public.funciones;
+drop policy if exists "funciones: crear (admin)" on public.funciones;
+drop policy if exists "funciones: editar (admin)" on public.funciones;
+drop policy if exists "funciones: borrar (admin)" on public.funciones;
+create policy "funciones: leer" on public.funciones for select using (true);
+create policy "funciones: crear (admin)" on public.funciones for insert to authenticated with check (public.es_admin() and creada_por = auth.uid());
+create policy "funciones: editar (admin)" on public.funciones for update to authenticated using (public.es_admin()) with check (public.es_admin());
+create policy "funciones: borrar (admin)" on public.funciones for delete to authenticated using (public.es_admin());
+
+-- Comentar solo mientras la pizarra está abierta.
+drop policy if exists "comentarios: leer" on public.comentarios;
+drop policy if exists "comentarios: escribir en la pizarra" on public.comentarios;
+drop policy if exists "comentarios: borrar los míos" on public.comentarios;
+create policy "comentarios: leer" on public.comentarios for select using (true);
+create policy "comentarios: escribir en la pizarra" on public.comentarios for insert to authenticated with check (
+  usuario_id = auth.uid() and exists (select 1 from public.funciones f where f.id = funcion_id and f.estado = 'pizarra' and now() < f.pizarra_hasta));
+create policy "comentarios: borrar los míos" on public.comentarios for delete to authenticated using (usuario_id = auth.uid() or public.es_admin());
+
+-- Funciones de hoy y próximas (y las pizarras de la última hora).
+create or replace function public.funciones_activas()
+returns setof public.funciones
+language sql stable security invoker set search_path = public as $$
+  select * from funciones
+  where empieza > now() - interval '12 hours' or (estado = 'pizarra' and pizarra_hasta > now() - interval '1 hour')
+  order by empieza limit 30;
+$$;
+
+-- «Terminar obra»: abre la pizarra con la hora del servidor (igual para todos los móviles).
+create or replace function public.terminar_funcion(p_id bigint)
+returns setof public.funciones
+language sql volatile security invoker set search_path = public as $$
+  update funciones set estado = 'pizarra', terminada_en = now(), pizarra_hasta = now() + make_interval(mins => minutos_pizarra)
+  where id = p_id and estado = 'programada'
+  returning *;
+$$;
+
+-- Lo que sale en la pizarra: comentarios y valoraciones de la obra desde que empezó la función.
+create or replace function public.pizarra(p_funcion bigint)
+returns table (tipo text, id bigint, texto text, nota numeric, usuario text, nombre text, color text, creado timestamptz)
+language sql stable security invoker set search_path = public as $$
+  with f as (select * from funciones where id = p_funcion)
+  select 'iruzkina', c.id, c.texto, null::numeric, p.usuario, p.nombre, p.color, c.creado
+  from comentarios c join perfiles p on p.id = c.usuario_id, f where c.funcion_id = f.id
+  union all
+  select 'balorazioa', v.id, v.opinion,
+         (select round(avg(x), 2) from unnest(array[v.gal1, v.gal2, v.gal3, v.gal4]) x where x > 0),
+         p.usuario, p.nombre, p.color, v.editada
+  from valoraciones v join perfiles p on p.id = v.usuario_id, f
+  where v.obra = coalesce(f.obra, 'zuzen-' || f.id) and v.editada >= f.empieza
+  order by 8 desc
+  limit 200;
+$$;
+
+-- Tiempo real: la app se entera al momento de las funciones, los comentarios y las valoraciones nuevas.
+do $$
+declare t text;
+begin
+  if exists (select 1 from pg_publication where pubname = 'supabase_realtime') then
+    foreach t in array array['funciones', 'comentarios', 'valoraciones'] loop
+      if not exists (select 1 from pg_publication_tables where pubname = 'supabase_realtime' and schemaname = 'public' and tablename = t) then
+        execute format('alter publication supabase_realtime add table public.%I', t);
+      end if;
+    end loop;
+  end if;
+end $$;

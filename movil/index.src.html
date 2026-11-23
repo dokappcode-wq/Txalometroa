@@ -14,7 +14,7 @@
 <title>Txalometroa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Raleway:wght@400;600;700&family=Playfair+Display:wght@600;800&family=Inter:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Raleway:wght@400;600;700&family=Playfair+Display:wght@600;800&family=Inter:wght@400;600&family=Caveat:wght@500;700&display=swap">
 <style>
 /* Diseño: fondo gris de las referencias con resplandores rojo y crema, letra pixelada
    para titulares y cifras, tarjetas crema con el logo de Hika. Una sola columna móvil. */
@@ -167,32 +167,12 @@ textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(
 .izar-berria { display: inline-flex; gap: 8px; align-items: center; background: rgba(13, 13, 13, .4); padding: 10px 14px; border-radius: 999px; margin-bottom: 18px; }
 .konfetia { position: fixed; inset: 0; pointer-events: none; z-index: 90; }
 
-/* ---------- Butacas */
+/* ---------- Butacas (próximamente) y punto «en directo» */
 .zuzenean { display: inline-flex; align-items: center; gap: 8px; font: 400 20px var(--pixel); letter-spacing: .08em; color: var(--rojo-vivo); }
 .zuzenean i { width: 10px; height: 10px; border-radius: 50%; background: var(--rojo-vivo); animation: taupada 1.2s infinite; }
 @keyframes taupada { 50% { opacity: .25; transform: scale(.7); } }
-.kontagailua { display: flex; align-items: baseline; gap: 10px; margin: 6px 0 2px; }
-.kontagailua b { font: 400 76px/.85 var(--pixel); font-variant-numeric: tabular-nums; }
-.kontagailua span { color: var(--tinta-2); }
-.betetzea { height: 8px; border-radius: 4px; background: rgba(255, 255, 255, .12); overflow: hidden; margin: 6px 0 4px; }
-.betetzea i { display: block; height: 100%; background: var(--rojo-vivo); transition: width .6s; }
-.aretoa { margin: 18px 0 8px; padding: 14px 10px 16px; background: var(--negro); border-radius: 18px; overflow-x: auto; }
-.eszenatokia { margin: 0 auto 18px; width: 82%; text-align: center; background: var(--crema-logo); color: var(--negro); font: 400 22px/1 var(--pixel); letter-spacing: .3em; padding: 8px 0 6px; border-radius: 3px 3px 40% 40% / 3px 3px 14px 14px; }
-.ilarak { display: grid; gap: 5px; min-width: 330px; }
-.ilara { display: grid; grid-template-columns: 14px repeat(9, 1fr) 10px repeat(9, 1fr) 14px; gap: 4px; align-items: center; }
-.ilara > span { font: 400 13px var(--pixel); color: var(--tinta-3); text-align: center; }
-.butaka { aspect-ratio: 1 / .9; border: 0; padding: 0; border-radius: 4px 4px 2px 2px; background: #333; transition: background .4s, transform .25s; }
-.butaka.hartuta { background: var(--rojo); }
-.butaka.berria { animation: eseri .7s ease-out; }
-@keyframes eseri { 0% { transform: scale(1.6); background: var(--crema); } 100% { transform: scale(1); } }
-.butaka.nirea { background: var(--crema); box-shadow: 0 0 0 2px var(--crema-logo), 0 0 14px 2px rgba(253, 238, 199, .8); }
-.legenda { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--tinta-2); margin: 8px 0; }
-.legenda i { display: inline-block; width: 12px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
-.jarioa { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 4px; font-size: 14px; color: var(--tinta-2); min-height: 92px; }
-.jarioa li { animation: sartu .4s ease-out; }
-.jarioa b { color: var(--tinta); font-family: var(--pixel); font-size: 18px; font-weight: 400; }
-@keyframes sartu { from { opacity: 0; transform: translateY(-6px); } }
-.simulazioa { font-size: 13px; color: var(--tinta-3); border-left: 3px solid var(--rojo); padding-left: 10px; margin-top: 14px; }
+.hutsik.laster .ikur { width: 74px; color: var(--crema-logo); }
+.laster-txip { font: 400 24px/1 var(--pixel); letter-spacing: .12em; text-transform: uppercase; background: var(--crema); color: var(--negro); padding: 6px 12px 4px; border-radius: 4px; }
 
 /* ---------- Constelación */
 .zerua { position: relative; margin: 14px calc(-1 * var(--lado-d)) 0 calc(-1 * var(--lado-i)); background: radial-gradient(circle at 50% 46%, #1d1630 0%, #0b0a1a 60%, #050509 100%); border-radius: 0; overflow: hidden; touch-action: manipulation; }
@@ -338,6 +318,101 @@ textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(
 .profila-buru .erabiltzailea { margin: 2px 0 0; color: var(--tinta-2); }
 .bio { margin: 6px 0; white-space: pre-line; overflow-wrap: anywhere; }
 .emaitza .partekatu { color: var(--tinta-2); font-size: 14px; margin: 0 0 14px; }
+
+/* ---------- Funciones en directo */
+#zuzenean-atala { display: grid; gap: 14px; margin-top: 14px; }
+#zuzenean-atala:empty { display: none; }
+.zuzen-txartela { border-radius: 18px; overflow: hidden; background: var(--negro); box-shadow: 0 0 0 2px var(--rojo-vivo), 0 12px 30px rgba(200, 0, 0, .3); }
+.zuzen-txartela.e-arbela { box-shadow: 0 0 0 2px #7fb685, 0 12px 30px rgba(40, 90, 50, .4); }
+.zuzen-txartela .argazkia { position: relative; aspect-ratio: 16 / 8; background: #4d3733; }
+.zuzen-txartela .argazkia img { width: 100%; height: 100%; object-fit: cover; }
+.zuzen-txartela .argazkia .zuzenean { position: absolute; left: 12px; top: 12px; background: rgba(13, 13, 13, .85); padding: 5px 10px 3px; border-radius: 4px; text-transform: uppercase; }
+.zuzen-txartela.e-arbela .zuzenean { color: #b9f3b0; } .zuzen-txartela.e-arbela .zuzenean i { background: #b9f3b0; }
+.zuzen-txartela .gorputza { padding: 12px 16px 16px; }
+.zuzen-txartela h2 { font: 400 40px/.92 var(--pixel); margin: 0 0 4px; }
+.zuzen-txartela p { margin: 0; color: var(--tinta-2); font-size: 14px; }
+.zuzen-txartela .atzera-kontua { margin-top: 6px; color: var(--tinta); }
+.zuzen-txartela .atzera-kontua b { font: 400 28px/1 var(--pixel); font-variant-numeric: tabular-nums; }
+.hurrengoak { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.hurrengoak button { width: 100%; display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; gap: 10px; align-items: center; border: 0; border-radius: 12px; background: rgba(13, 13, 13, .35); padding: 6px; text-align: left; }
+.hurrengoak img { width: 64px; height: 48px; object-fit: cover; border-radius: 8px; }
+.hurrengoak b { display: block; font: 400 22px/1 var(--pixel); }
+.hurrengoak small { color: var(--tinta-2); font-size: 13px; }
+.hurrengoak .falta { font-size: 13px; color: var(--crema-logo); padding-right: 6px; }
+.funtzio-zerrenda { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 10px; }
+.funtzio-zerrenda li { background: rgba(13, 13, 13, .35); border-radius: 14px; padding: 12px; display: grid; gap: 8px; }
+.funtzio-zerrenda b { font-weight: 700; }
+.funtzio-zerrenda small { display: block; color: var(--tinta-2); font-size: 13px; }
+.funtzio-zerrenda .botoiak { margin-top: 0; align-items: center; }
+.egoera-txip { display: inline-block; margin-top: 6px; font: 600 12px var(--texto); letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: rgba(255, 255, 255, .12); }
+.egoera-txip.e-zuzenean { background: var(--rojo); } .egoera-txip.e-arbela { background: #2f6b2a; }
+.funtzio-berria summary { cursor: pointer; padding: 12px 0; font: 400 24px var(--pixel); }
+.eremua select { width: 100%; font: 16px/1.3 var(--texto); color: var(--negro); background: var(--crema); border: 0; border-radius: 10px; padding: 11px 12px; }
+.bi-zutabe { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* ---------- Pizarra y cuenta atrás */
+.arbela { position: fixed; inset: 0; z-index: 45; overflow-y: auto; background: #12201a; color: var(--crema);
+  padding: calc(var(--arriba) + 10px) var(--lado-d) calc(var(--abajo) + 20px) var(--lado-i); display: flex; flex-direction: column; }
+.arbela-goia { display: flex; justify-content: space-between; align-items: center; }
+.arbela-goia .atzera { width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(0, 0, 0, .35); display: grid; place-items: center; }
+.arbela-goia .atzera svg { width: 22px; height: 22px; }
+.arbela-markoa { flex: 1; margin: 10px 0; border: 12px solid #6b4423; border-radius: 10px; box-shadow: inset 0 0 0 2px #8a5a30, 0 14px 30px rgba(0, 0, 0, .5); display: flex; }
+.arbela-azala { flex: 1; padding: 14px 14px 18px; font-family: Caveat, "Comic Sans MS", cursive; color: #f4f1e8;
+  background: radial-gradient(120% 80% at 30% 20%, rgba(255, 255, 255, .07), transparent 60%), radial-gradient(90% 60% at 80% 90%, rgba(255, 255, 255, .05), transparent 60%), #1f3b2d; }
+.arbela-azala header { text-align: center; border-bottom: 2px dashed rgba(244, 241, 232, .35); padding-bottom: 10px; margin-bottom: 12px; }
+.arbela-izena { font: 400 18px var(--pixel); letter-spacing: .2em; text-transform: uppercase; opacity: .75; }
+.arbela-azala h2 { font: 700 44px/1 Caveat, cursive; margin: 2px 0; text-shadow: 0 0 1px rgba(255, 255, 255, .6); }
+.arbela-azala header p { margin: 0; font-size: 22px; }
+.arbela-azala header b { font-variant-numeric: tabular-nums; }
+.arbela-zenbakiak { opacity: .8; font-size: 19px !important; }
+.klarionak { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.klarionak li { font-size: 24px; line-height: 1.15; transform: rotate(var(--r, 0deg)); text-shadow: 0 0 1px rgba(255, 255, 255, .5); }
+.klarionak li p { margin: 0; overflow-wrap: anywhere; }
+.klarionak li small { display: block; font-size: 17px; opacity: .7; }
+.klarionak li.balorazioa { color: #ffe6a8; }
+.klarionak .nota { float: left; margin: 0 10px 2px 0; font: 700 30px/1 Caveat, cursive; border: 2px solid currentColor; border-radius: 50%; padding: 8px 6px 4px; min-width: 52px; text-align: center; }
+.klarionak li.hutsa { text-align: center; opacity: .7; }
+.klarionak li.berria { animation: klariona .9s ease-out; }
+@keyframes klariona { from { opacity: 0; transform: rotate(var(--r, 0deg)) translateY(-10px) scale(1.06); } }
+.arbela-oina { display: grid; gap: 10px; }
+.iruzkin-form { display: flex; gap: 8px; }
+.iruzkin-form input { flex: 1; min-width: 0; font: 16px/1.3 var(--texto); color: var(--negro); background: var(--crema); border: 0; border-radius: 10px; padding: 11px 12px; }
+.atzera-pantaila { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 8px; }
+.atzera-pantaila h2 { font: 400 46px/.95 var(--pixel); margin: 0; text-wrap: balance; }
+.atzera-erraldoia { font: 400 min(34vw, 200px)/.85 var(--pixel); font-variant-numeric: tabular-nums; color: #b9f3b0; }
+.atzera-pantaila .zuzenean { color: #b9f3b0; } .atzera-pantaila .zuzenean i { background: #b9f3b0; }
+.atzera-pantaila .estatistikak { width: 100%; max-width: 420px; }
+
+/* ---------- Transmitir a un ordenador */
+.goiburua .transmisioa { flex: none; position: relative; width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 10px; background: var(--rojo); }
+.goiburua .transmisioa svg { width: 22px; height: 22px; }
+.goiburua .transmisioa i { position: absolute; right: 5px; top: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--crema); animation: taupada 1.2s infinite; }
+.goiburua .marka .tile { flex: none; }
+.goiburua .marka b { min-width: 0; overflow: hidden; white-space: nowrap; }
+.pantaila-form { display: flex; gap: 8px; margin-top: 10px; }
+.pantaila-form input { flex: 1; min-width: 0; font: 400 26px/1 var(--pixel); letter-spacing: .3em; text-transform: uppercase; color: var(--negro); background: var(--crema); border: 0; border-radius: 10px; padding: 10px 12px 6px; }
+body.pantaila-modua { overflow: hidden; background: #0d0d0d; }
+body.pantaila-modua > header.goiburua, body.pantaila-modua > main, body.pantaila-modua > nav.oina { display: none; }
+.pantaila { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; overflow: auto;
+  background: radial-gradient(70% 60% at 20% 10%, rgba(200, 0, 0, .3), transparent 60%), radial-gradient(60% 50% at 90% 100%, rgba(253, 238, 199, .14), transparent 65%), #141414; }
+.pantaila-itxaron { text-align: center; display: grid; justify-items: center; gap: 14px; padding: 30px; max-width: 760px; }
+.pantaila-logoa { width: 120px; background: var(--crema-logo); border-radius: 24px; padding: 12px; }
+.pantaila-itxaron h1 { font: 400 64px/.9 var(--pixel); margin: 0; }
+.pantaila-itxaron ol { text-align: left; font-size: 20px; color: var(--tinta-2); margin: 0; }
+.pantaila-kodea { display: flex; gap: 10px; margin: 8px 0; }
+.pantaila-kodea span { width: 84px; height: 110px; display: grid; place-items: center; background: var(--crema); color: var(--negro); border-radius: 12px; font: 400 88px/1 var(--pixel); box-shadow: 0 10px 0 rgba(0, 0, 0, .35); }
+.itxaroten { display: inline-flex; align-items: center; gap: 10px; color: var(--tinta-2); font-size: 18px; }
+.itxaroten i { width: 10px; height: 10px; border-radius: 50%; background: var(--crema-logo); animation: taupada 1.2s infinite; }
+.pantaila-hizkuntza { display: inline-flex; border: 1px solid rgba(255, 255, 255, .25); border-radius: 8px; overflow: hidden; }
+.pantaila-hizkuntza button { border: 0; background: none; padding: 6px 14px; font: 400 20px var(--pixel); }
+.pantaila-hizkuntza button[aria-pressed="true"] { background: var(--crema); color: var(--negro); }
+.ispilu-eszena { display: grid; justify-items: center; gap: 12px; padding: 16px; }
+.ispilu-tokia { position: relative; overflow: hidden; border-radius: 26px; box-shadow: 0 0 0 10px #050505, 0 0 0 12px #333, 0 30px 80px rgba(0, 0, 0, .7); }
+.ispilua { position: absolute; left: 0; top: 0; transform-origin: 0 0; overflow: hidden; pointer-events: none; }
+.ispilu-gorputza { position: absolute; inset: 0; overflow: hidden; color: var(--tinta); font: 16px/1.5 var(--texto);
+  background: radial-gradient(120% 60% at 0% 0%, rgba(200, 0, 0, .38), transparent 60%), radial-gradient(90% 50% at 100% 100%, rgba(253, 238, 199, .22), transparent 65%), var(--gris); }
+.ispilu-gorputza > div { display: contents; }   /* la cabecera sigue fija (sticky) dentro del marco */
+.ispilu-oina { margin: 0; color: var(--tinta-2); font: 400 22px var(--pixel); letter-spacing: .1em; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
@@ -449,6 +524,7 @@ __TELON_JS__
 // y, cuando la página ha cargado, se abre entero. Tocar la pantalla adelanta la apertura.
 (() => {
   const telon = document.getElementById("telon");
+  if (/^#(pantalla|pantaila)$/.test(location.hash)) { telon.remove(); return; }
   try {
     let lang = (navigator.language || "eu").startsWith("es") ? "es" : "eu";
     try { lang = JSON.parse(localStorage.getItem("txalometroa-mugikorra")).lang || lang; } catch (e) { /* sin datos guardados */ }
@@ -495,6 +571,7 @@ __TELON_JS__
 <header class="goiburua">
   <div class="marka"><span class="tile" id="marka-logoa"></span><b>TXALOMETROA</b></div>
   <button class="instalatu" id="instalatu" type="button" hidden></button>
+  <button class="transmisioa" id="transmisioa" type="button" hidden></button>
   <button class="ikono profila-botoia" id="profila-botoia" type="button" hidden></button>
   <button class="ikono" id="ezarpenak" type="button" aria-label="Ezarpenak / Ajustes">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -505,6 +582,8 @@ __TELON_JS__
 <section class="baloratu" id="baloratu" hidden aria-modal="true" role="dialog"></section>
 <div class="istorioa" id="istorioa" hidden role="dialog" aria-modal="true"></div>
 <div class="orria" id="orria" hidden></div>
+<div class="arbela" id="arbela" hidden role="dialog" aria-modal="true"></div>
+<div class="pantaila" id="pantaila" hidden></div>
 <canvas class="konfetia" id="konfetia" hidden></canvas>
 
 <script type="text/plain" id="datos-iniciales" data-nombre="__NOMBRE__">__DATOS__</script>
@@ -554,11 +633,8 @@ const T = {
     // EU: textos nuevos, pendientes de revisión por un hablante nativo.
     iritziAzal: "Nahi baduzu, kontatu zer iruditu zaizun obra (aukerakoa).", iritzia: "Zure iritzia", iritziaIdatzi: "Idatzi hemen zure iritzia…",
     eskerrik: "Eskerrik asko!", izarBerria: "Izar berri bat piztu da zure konstelazioan", ikusiKonst: "Ikusi konstelazioa", itzuli: "Obretara itzuli",
-    // Butacas
-    butakaMapa: "Butaken mapa", zuzenean: "Zuzenean", eszena: "ESZENATOKIA", ikusle: "ikusle orain", libre: "Libre", hartuta: "Hartuta", nirea: "Zurea",
-    eseri: b => `${b} eseri da`, zuEseri: b => `Zu ${b} butakan eseri zara`, altxatu: "Altxatu zara zure butakatik",
-    hasteko: t => `Hasteko ${t}`, martxan: "Funtzioa martxan", ilara: "Ilara", butakaEtiketa: (i, z, e) => `${i} ilara, ${z}. butaka, ${e}`,
-    simulazioa: "Simulazioa: benetako bertsioan butaka bakoitzak QR kode bat izango du; eskaneatzean, zure lekua mapan piztuko da. Ukitu butaka libre bat zurea markatzeko.",
+    // Butacas (próximamente). EU: pendiente de revisión.
+    zuzenean: "Zuzenean", laster: "Laster", butakakLaster: "Laster: eseri zure butakan QR kodea eskaneatuta eta ikusi aretoa nola betetzen den zuzenean.",
     // Constelación
     nireKonst: "Nire konstelazioa", izar: "izar", genero: "genero", nota: "batez beste",
     konstAzal: "Ikusi duzun obra bakoitza izar bat da. Kolorea: generoa. Erdirago, nota altuagoa. Handiagoa, emozio gehiago. Lerroek ikusi dituzun ordena eta genero bereko obrak lotzen dituzte.",
@@ -602,6 +678,23 @@ const T = {
     kontuaEzabatu: "Kontua ezabatu", kontuaEzabatuAzal: "Kontua ezabatzean, zure profila, iritziak eta jarraipenak betiko ezabatzen dira.",
     partekatzen: "Jarioan partekatzen…", partekatuta: "Jarioan partekatuta.", partekatuEzin: "Ezin izan da partekatu; berriro saiatuko gara.",
     partekatuSartu: "Sartu zure iritzia jarioan partekatzeko",
+    // Funciones en directo y pizarra
+    arbelaIrekita: "Arbela irekita", arbelaItxitaIzen: "Arbela itxita", arbelaIkusi: "Ikusi arbela", arbelaIxten: "Arbela ixteko:", hurrengoFuntzioak: "Hurrengo emanaldiak",
+    amaituObra: "Amaitu obra", atzeraKontua: "Atzera-kontua", arbela: "Arbela",
+    atzeraAzal: "Publikoa arbelean idazten ari da. Denbora amaitzean, arbela itxi egingo da.", arbelaItxita: "Arbela itxi da. Eskerrik asko!",
+    arbelaHutsik: "Arbela hutsik dago oraindik: idatzi lehena!", iruzkinak: "iruzkin", iruzkinIrud: "Idatzi arbelean…", bidaliIruzkina: "Bidali",
+    sartuIruzkintzeko: "Sartu arbelean idazteko",
+    funtzioak: "Zuzeneko emanaldiak", funtzioakAzal: "Programatu emanaldi bat: ordua iristean, «Zuzenean» agertuko da guztien aplikazioan. Amaitzean, sakatu «Amaitu obra» arbela irekitzeko.",
+    funtzioaSortu: "+ Programatu emanaldia", funtzioGabe: "Ez dago emanaldirik programatuta.", obraEtiketa: "Obra", obraBerria: "Obra berria…", tituluaEtiketa: "Izenburua",
+    generoEtiketa: "Generoa", lekua: "Lekua", data: "Eguna", ordua: "Ordua", arbelaMinutuak: "Arbelaren iraupena (minutuak)", programatu: "Programatu",
+    arbelaMin: n => `arbela ${n} min`, tituluaFalta: "Idatzi obraren izenburua.", dataOkerra: "Aukeratu eguna eta ordua.",
+    egoerak: { laster: "Programatuta", zuzenean: "Zuzenean", arbela: "Arbela irekita", amaituta: "Amaituta", iraganda: "Amaituta" },
+    // Transmitir a un ordenador
+    pantailaIzen: "Ordenagailuan erakutsi", pantailaAzal: u => `Ordenagailuan, ireki ${u} eta idatzi hemen pantailan agertzen den kodea.`,
+    kodea: "Kodea", konektatu: "Konektatu", transmititzen: k => `Pantailan erakusten (${k}).`, gelditu: "Gelditu", pantailan: "PANTAILAN",
+    kodeOkerra: "Kodeak 6 karaktere ditu.", pantailaErrorea: "Ezin izan da pantailarekin konektatu. Egiaztatu kodea.",
+    pantailaTitulua: "Txalometroa pantailan", pantailaPausoak: ["Ireki Txalometroa mugikorrean.", "Joan Ezarpenak → «Ordenagailuan erakutsi» atalera.", "Idatzi kode hau:"],
+    itxaroten: "Mugikorraren zain…", pantailaSareGabe: "Pantaila modua erabiltzeko, sare soziala (Supabase) konektatu behar da.", appraItzuli: "Aplikaziora itzuli",
   },
   es: {
     obrak: "Obras", butakak: "Butacas", konst: "Constelación", wrapped: "Wrapped",
@@ -619,10 +712,7 @@ const T = {
     emozioak: { barre: "Reír", negar: "Llorar", biak: "Las dos", ez: "Ninguna" },
     iritziAzal: "Si quieres, cuéntanos qué te ha parecido la obra (opcional).", iritzia: "Tu opinión", iritziaIdatzi: "Escribe aquí tu opinión…",
     eskerrik: "¡Gracias!", izarBerria: "Se ha encendido una estrella nueva en tu constelación", ikusiKonst: "Ver constelación", itzuli: "Volver a las obras",
-    butakaMapa: "Mapa de butacas", zuzenean: "En directo", eszena: "ESCENARIO", ikusle: "personas viendo ahora", libre: "Libre", hartuta: "Ocupada", nirea: "La tuya",
-    eseri: b => `Alguien se ha sentado en ${b}`, zuEseri: b => `Te has sentado en la ${b}`, altxatu: "Te has levantado de tu butaca",
-    hasteko: t => `Empieza en ${t}`, martxan: "Función en marcha", ilara: "Fila", butakaEtiketa: (i, z, e) => `Fila ${i}, butaca ${z}, ${e}`,
-    simulazioa: "Simulación: en la versión real, cada butaca tendrá un código QR; al escanearlo, tu sitio se encenderá en el mapa. Toca una butaca libre para marcar la tuya.",
+    zuzenean: "En directo", laster: "Próximamente", butakakLaster: "Próximamente: siéntate en tu butaca escaneando su código QR y mira cómo se llena la sala en directo.",
     nireKonst: "Mi constelación", izar: "estrellas", genero: "géneros", nota: "nota media",
     konstAzal: "Cada obra que ves es una estrella. Color: género. Más al centro, mejor nota. Más grande, más emoción. Las líneas unen el orden en que las viste y las obras del mismo género.",
     konstIzena: "Tu constelación se llama", hutsikKonst: "Todavía no tienes estrellas. Valora una obra que hayas visto para encender la primera.",
@@ -662,6 +752,21 @@ const T = {
     kontuaEzabatu: "Borrar cuenta", kontuaEzabatuAzal: "Al borrar la cuenta se borran para siempre tu perfil, tus opiniones y a quién sigues.",
     partekatzen: "Compartiendo en el feed…", partekatuta: "Compartida en el feed.", partekatuEzin: "No se ha podido compartir; lo volveremos a intentar.",
     partekatuSartu: "Entra para compartir tu opinión en el feed",
+    arbelaIrekita: "Pizarra abierta", arbelaItxitaIzen: "Pizarra cerrada", arbelaIkusi: "Ver la pizarra", arbelaIxten: "La pizarra se cierra en", hurrengoFuntzioak: "Próximas funciones",
+    amaituObra: "Terminar obra", atzeraKontua: "Cuenta atrás", arbela: "Pizarra",
+    atzeraAzal: "El público está escribiendo en la pizarra. Cuando acabe el tiempo, se cerrará.", arbelaItxita: "La pizarra se ha cerrado. ¡Gracias!",
+    arbelaHutsik: "La pizarra todavía está vacía: ¡escribe lo primero!", iruzkinak: "comentarios", iruzkinIrud: "Escribe en la pizarra…", bidaliIruzkina: "Enviar",
+    sartuIruzkintzeko: "Entra para escribir en la pizarra",
+    funtzioak: "Funciones en directo", funtzioakAzal: "Programa una función: cuando llegue la hora, saldrá «En directo» en la app de todos. Al acabar, pulsa «Terminar obra» para abrir la pizarra.",
+    funtzioaSortu: "+ Programar función", funtzioGabe: "No hay funciones programadas.", obraEtiketa: "Obra", obraBerria: "Obra nueva…", tituluaEtiketa: "Título",
+    generoEtiketa: "Género", lekua: "Lugar", data: "Fecha", ordua: "Hora", arbelaMinutuak: "Duración de la pizarra (minutos)", programatu: "Programar",
+    arbelaMin: n => `pizarra de ${n} min`, tituluaFalta: "Escribe el título de la obra.", dataOkerra: "Elige la fecha y la hora.",
+    egoerak: { laster: "Programada", zuzenean: "En directo", arbela: "Pizarra abierta", amaituta: "Terminada", iraganda: "Terminada" },
+    pantailaIzen: "Transmitir a un ordenador", pantailaAzal: u => `En el ordenador, abre ${u} y escribe aquí el código que aparece en la pantalla.`,
+    kodea: "Código", konektatu: "Conectar", transmititzen: k => `Transmitiendo a la pantalla ${k}.`, gelditu: "Dejar de transmitir", pantailan: "EN PANTALLA",
+    kodeOkerra: "El código tiene 6 caracteres.", pantailaErrorea: "No se ha podido conectar con la pantalla. Revisa el código.",
+    pantailaTitulua: "Txalometroa en pantalla", pantailaPausoak: ["Abre el Txalometro en el móvil.", "Ve a Ajustes → «Transmitir a un ordenador».", "Escribe este código:"],
+    itxaroten: "Esperando al móvil…", pantailaSareGabe: "Para usar el modo pantalla hay que conectar la red social (Supabase).", appraItzuli: "Volver a la app",
   },
 };
 const t = () => T[G.lang];
@@ -677,7 +782,7 @@ const NOMBRES_PRUEBA = [["Ilargiaren lapurra", "El ladrón de la luna"], ["Gauek
   ["Hamaika ispilu", "Once espejos"], ["Zuhaitz hutsa", "El árbol vacío"], ["Etxe txikia", "La casa pequeña"], ["Haizearen alaba", "La hija del viento"], ["Azken trena", "El último tren"]];
 
 function aplicarPruebas() {
-  CATALOGO.obras = [...G.pruebak.map(p => p.obra), ...CATALOGO_BASE];
+  CATALOGO.obras = [...G.pruebak.map(p => p.obra), ...ZUZENEKO_OBRAK, ...CATALOGO_BASE];
   CFG.obras = { ...OBRAS_CFG_BASE };
   for (const { obra: o } of G.pruebak) CFG.obras[o.id] = { eu: o.eu, es: o.es, alias: [...new Set([o.eu, o.es])], imagen: o.imagen };
   cacheRes = null;
@@ -808,10 +913,10 @@ function vistaObrak() {
     </article>`;
   }).join("");
   const vistas = new Set(misObras().map(v => v.obra));
-  const errep = CATALOGO.obras.filter(o => !o.txalometroa).map(o => `<button type="button" class="txiki" data-fitxa="${o.id}">
+  const errep = CATALOGO.obras.filter(o => !o.txalometroa && !o.zuzenean).map(o => `<button type="button" class="txiki" data-fitxa="${o.id}">
       <div class="argazkia"><img src="${esc(o.imagen)}" alt="" loading="lazy">${vistas.has(o.id) ? `<span class="ikusita">${tx.ikusita}</span>` : ""}</div>
       <div class="testua"><b>${esc(izena(o))}</b><span>${o.urtea} · ${esc(genIzena(o.genero))}</span></div></button>`).join("");
-  return `${bandaDemo()}<h1 class="titulua">${tx.orain}</h1><p class="azalpena">${tx.orainAzal}</p>
+  return `${bandaDemo()}${htmlZuzenean()}<h1 class="titulua">${tx.orain}</h1><p class="azalpena">${tx.orainAzal}</p>
     <div class="obrak">${tarjetas}</div>
     <h2 class="azpititulua">${tx.errep}</h2><p class="azalpena">${tx.errepAzal}</p>
     <div class="errepertorioa">${errep}</div>`;
@@ -840,11 +945,11 @@ function bandaDemo() {
 function pintar() {
   pintarNav();
   const main = document.getElementById("edukia");
-  pararButakak(); pararZerua(); SARE.txanda++;
+  pararZerua(); SARE.txanda++;
   if (vista.nombre === "fitxa") main.innerHTML = vistaFitxa(vista.obra);
   else if (vista.nombre === "jarioa") { main.innerHTML = vistaJarioa(); if (sareaPrest()) hasiJarioa(); }
   else if (vista.nombre === "profila") { main.innerHTML = vistaProfila(); if (sareaPrest()) hasiProfila(); }
-  else if (vista.nombre === "butakak") { main.innerHTML = vistaButakak(); hasiButakak(); }
+  else if (vista.nombre === "butakak") main.innerHTML = vistaButakak();
   else if (vista.nombre === "konst") { main.innerHTML = vistaKonst(); hasiZerua(); }
   else if (vista.nombre === "wrapped") main.innerHTML = vistaWrapped();
   else main.innerHTML = vistaObrak();
@@ -936,85 +1041,13 @@ function pintarResultado() {
     </div>`;
 }
 
-// ================================================================ Mapa de butacas (simulación)
-
-const ILARAK = "ABCDEFGHIJKL".split(""), ZUTABEAK = 18;
-let butakak = null, tenporizadorea = null, jarioa = [], hasieraAt = 0;
-
-function prepararButakak() {
-  const r = azarra(hash(new Date().toDateString()));
-  butakak = ILARAK.map(() => Array(ZUTABEAK).fill(false));
-  // Empiezan ocupadas las butacas «buenas» (centro y delante) en un 35 %.
-  const todas = []; ILARAK.forEach((_, i) => { for (let z = 0; z < ZUTABEAK; z++) todas.push([i, z, preferencia(i, z) + r() * .8]); });
-  todas.sort((a, b) => b[2] - a[2]).slice(0, Math.round(todas.length * .35)).forEach(([i, z]) => { butakak[i][z] = true; });
-  hasieraAt = Date.now() + 4 * 60 * 1000;
-  jarioa = [];
-}
-const preferencia = (i, z) => 1 - Math.abs(z - (ZUTABEAK - 1) / 2) / ZUTABEAK - i / ILARAK.length * .6;
-const etiquetaButaka = (i, z) => `${ILARAK[i]}${z + 1}`;
-const ocupadas = () => butakak.flat().filter(Boolean).length + (G.butaka ? 1 : 0);
+// ================================================================ Butacas (próximamente)
+// La simulación del mapa de butacas se ha retirado: la pestaña anuncia que llegará con los QR de cada butaca.
 
 function vistaButakak() {
-  if (!butakak) prepararButakak();
-  const tx = t(), o = activas().filter(x => !x.proba).sort((a, b) => b.urtea - a.urtea)[0] || activas()[0];
-  const total = ILARAK.length * ZUTABEAK, n = ocupadas();
-  const filas = ILARAK.map((l, i) => `<div class="ilara"><span>${l}</span>${Array.from({ length: ZUTABEAK }, (_, z) => {
-    const mia = G.butaka === etiquetaButaka(i, z), h = butakak[i][z];
-    const est = mia ? tx.nirea : h ? tx.hartuta : tx.libre;
-    return `${z === 9 ? "<span></span>" : ""}<button type="button" class="butaka ${mia ? "nirea" : h ? "hartuta" : ""}" data-butaka="${i}-${z}" aria-label="${esc(tx.butakaEtiketa(l, z + 1, est))}" ${h && !mia ? "disabled" : ""}></button>`;
-  }).join("")}<span>${l}</span></div>`).join("");
-  return `<p class="zuzenean" style="margin:18px 0 0"><i></i>${tx.zuzenean.toUpperCase()}</p>
-    <h1 class="titulua" style="margin-top:4px">${esc(izena(o))}</h1>
-    <div class="kontagailua"><b id="kont">${n}</b><span>/ ${total} ${tx.ikusle}</span></div>
-    <div class="betetzea"><i id="betetzea" style="width:${(n / total * 100).toFixed(1)}%"></i></div>
-    <p class="azalpena" id="egoera">${egoeraTestua()}</p>
-    <div class="aretoa"><div class="eszenatokia">${tx.eszena}</div><div class="ilarak" id="ilarak">${filas}</div></div>
-    <div class="legenda"><span><i style="background:#333"></i>${tx.libre}</span><span><i style="background:var(--rojo)"></i>${tx.hartuta}</span><span><i style="background:var(--crema)"></i>${tx.nirea}</span></div>
-    <ul class="jarioa" id="jarioa" aria-live="polite">${jarioa.map(x => `<li>${x}</li>`).join("")}</ul>
-    <p class="simulazioa">${tx.simulazioa}</p>`;
-}
-function egoeraTestua() {
-  const falta = hasieraAt - Date.now();
-  if (falta <= 0) return t().martxan;
-  const m = Math.floor(falta / 60000), s = Math.floor(falta / 1000) % 60;
-  return t().hasteko(`${m}:${dd(s)}`);
-}
-function hasiButakak() {
-  const r = azarra(Date.now());
-  tenporizadorea = setInterval(() => {
-    const libres = [];
-    butakak.forEach((fila, i) => fila.forEach((h, z) => { if (!h && G.butaka !== etiquetaButaka(i, z)) libres.push([i, z]); }));
-    const egoera = document.getElementById("egoera"); if (egoera) egoera.textContent = egoeraTestua();
-    if (!libres.length || libres.length < ILARAK.length * ZUTABEAK * .06) return;
-    // Llega más gente cuanto más cerca está el comienzo; prefieren el centro.
-    const cuantos = 1 + Math.floor(r() * (Date.now() > hasieraAt - 90000 ? 4 : 2));
-    for (let k = 0; k < cuantos && libres.length; k++) {
-      libres.sort((a, b) => (preferencia(...b) + r() * 1.2) - (preferencia(...a) + r() * 1.2));
-      const [i, z] = libres.shift(); butakak[i][z] = true;
-      const btn = document.querySelector(`[data-butaka="${i}-${z}"]`);
-      if (btn) { btn.classList.add("hartuta", "berria"); btn.disabled = true; btn.setAttribute("aria-label", t().butakaEtiketa(ILARAK[i], z + 1, t().hartuta)); }
-      anotar(t().eseri(`<b>${etiquetaButaka(i, z)}</b>`));
-    }
-    actualizarContador();
-  }, 1400);
-}
-function actualizarContador() {
-  const total = ILARAK.length * ZUTABEAK, n = ocupadas();
-  const k = document.getElementById("kont"), b = document.getElementById("betetzea");
-  if (k) k.textContent = n; if (b) b.style.width = `${(n / total * 100).toFixed(1)}%`;
-}
-function anotar(html) {
-  jarioa = [html, ...jarioa].slice(0, 4);
-  const ul = document.getElementById("jarioa"); if (ul) ul.innerHTML = jarioa.map(x => `<li>${x}</li>`).join("");
-}
-function pararButakak() { clearInterval(tenporizadorea); tenporizadorea = null; }
-function tocarButaka(i, z) {
-  const et = etiquetaButaka(i, z);
-  if (G.butaka === et) { G.butaka = null; anotar(t().altxatu); }
-  else { G.butaka = et; anotar(t().zuEseri(`<b>${et}</b>`)); }
-  guardar();
-  const main = document.getElementById("edukia"), y = window.scrollY;
-  main.innerHTML = vistaButakak(); window.scrollTo(0, y);
+  const tx = t();
+  return `<h1 class="titulua">${tx.butakak}</h1>
+    <div class="hutsik laster"><div class="ikur">${ICONOS.butakak}</div><span class="laster-txip">${tx.laster}</span><p>${tx.butakakLaster}</p></div>`;
 }
 
 // ================================================================ Mi constelación
@@ -1330,6 +1363,7 @@ function abrirAjustes() {
       <div style="display:flex;gap:10px;flex-wrap:wrap">${G.pruebak.length < NOMBRES_PRUEBA.length ? `<button type="button" class="botoia" data-proba="sortu">${tx.sortuProbak}</button>` : ""}
         ${G.pruebak.length ? `<button type="button" class="botoia marino" data-proba="denak">${probaArmado ? tx.ziur : tx.ezabatuDenak}</button>` : ""}</div></div>
     ${htmlKontua()}
+    ${htmlPantailaAjustes()}
     <div class="lerroa" style="display:block"><b>${tx.datuak}</b><p class="txikia">${tx.datuakAzal}</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px">
         ${G.valoraciones.some(v => v.demo) ? `<button type="button" class="botoia marino" data-demo="kendu">${tx.kendu}: ${tx.adibidea.toLowerCase()}</button>` : `<button type="button" class="botoia marino" data-demo="jarri">${tx.adibidea}</button>`}
@@ -1381,7 +1415,7 @@ async function sareaHasi() {
   return sb;
 }
 async function nirePerfilaKargatu() {
-  const { data, error } = await SARE.sb.from("perfiles").select("id, usuario, nombre, bio, color").eq("id", SARE.saioa.user.id).maybeSingle();
+  const { data, error } = await SARE.sb.from("perfiles").select("id, usuario, nombre, bio, color, rol").eq("id", SARE.saioa.user.id).maybeSingle();
   if (error) throw error;
   SARE.perfil = data;
   pintarProfilaBotoia();
@@ -1522,6 +1556,7 @@ async function hasiProfila() {
     <div class="botoiak">${p.es_yo ? `<button type="button" class="botoia marino" data-sare="editatu">${tx.perfilaEditatu}</button><button type="button" class="botoia marino" data-sare="irten">${tx.irten}</button>`
       : `<button type="button" class="botoia${p.lo_sigo ? " marino" : ""}" data-jarraitu="${p.lo_sigo ? "utzi" : "bai"}">${p.lo_sigo ? tx.jarraitzenDuzu : tx.jarraitu}</button>`}</div>
     <div id="profila-editatu"></div>
+    ${p.es_yo && esAdmin() ? htmlFuntzioakAdmin() : ""}
     ${zain.length ? `<div class="demo-banda"><span>${tx.argitaratuGabe(zain.length)}</span><button type="button" data-sare="argitaratu">${tx.argitaratuDenak}</button></div>` : ""}
     <h2 class="azpititulua">${tx.iritziakIzen}</h2><div id="iritziak">${kargatzenHtml()}</div>`;
   await iritziakKargatu({ modo: "denak", de_usuario: p.usuario }, true, txanda);
@@ -1575,7 +1610,7 @@ async function perfilaBidali(form) {
   botoia.disabled = true; oharra.textContent = "";
   const sortu = form.dataset.modua === "sortu";
   const kontsulta = sortu ? SARE.sb.from("perfiles").insert({ id: SARE.saioa.user.id, ...fila }) : SARE.sb.from("perfiles").update(fila).eq("id", SARE.perfil.id);
-  const { data, error } = await kontsulta.select("id, usuario, nombre, bio, color").single();
+  const { data, error } = await kontsulta.select("id, usuario, nombre, bio, color, rol").single();
   if (error) { oharra.textContent = sareErrorea(error); botoia.disabled = false; return; }
   SARE.perfil = data; pintarProfilaBotoia();
   if (sortu) sinkronizatu();
@@ -1696,12 +1731,467 @@ function sareKlik(e) {
   return false;
 }
 // Si ya había sesión en este móvil, se recupera al arrancar (para el botón de perfil y publicar lo pendiente).
+// Con Supabase configurado se conecta siempre al cargar: hace falta para saber qué funciones están en directo.
 function sareaArrancar() {
-  pintarProfilaBotoia();
-  let haySaioa = false;
-  try { haySaioa = !!localStorage.getItem(SB_SAIOA); } catch (e) {}
-  if (sareaPrest() && haySaioa) addEventListener("load", () => sareaHasi().catch(() => {}), { once: true });
+  pintarProfilaBotoia(); pintarTransmisioa();
+  if (sareaPrest() && !pantailaModua) addEventListener("load", () => zuzenaHasi(), { once: true });
 }
+
+// ================================================================ Transmitir el móvil a un ordenador
+// El ordenador abre la app con «#pantalla» y enseña un código. En el móvil, Ajustes → «Transmitir a un
+// ordenador» y ese código. El móvil manda lo que tiene en pantalla (comprimido) por un canal de Supabase
+// Realtime y el ordenador lo dibuja en un marco del tamaño del móvil, siguiendo cada cambio y el desplazamiento.
+// No hace falta cuenta. Los navegadores de móvil no dejan grabar la pantalla: por eso se envía la página, no un vídeo.
+
+const PANTAILA = { kanala: null, kodea: null, behatzailea: null, tenp: null, oihalTenp: null, azkenak: {}, azkenOihalak: "", bidaltzen: false };
+const KODE_LETRAK = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+// Partes de la app que se ven (en este orden); las dos primeras van dentro del marco con desplazamiento.
+const ISPILU_ZATIAK = ["header.goiburua", "#edukia", "#nabigazioa", "#arbela", "#baloratu", "#istorioa", "#orria"];
+
+async function trinkotu(obj) {
+  const json = JSON.stringify(obj);
+  if (typeof CompressionStream !== "function") return { j: json };
+  const buf = new Uint8Array(await new Response(new Blob([json]).stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer());
+  let bin = ""; for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode.apply(null, buf.subarray(i, i + 0x8000));
+  return { z: btoa(bin) };
+}
+async function zabaldu(p) {
+  if (p.j) return JSON.parse(p.j);
+  const buf = Uint8Array.from(atob(p.z), c => c.charCodeAt(0));
+  return JSON.parse(await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream("gzip"))).text());
+}
+
+// ---------------------------------------------------------------- En el móvil
+
+function ispiluZatia(el, oihalak) {
+  if (!el || el.hidden) return "";
+  const k = el.cloneNode(true);
+  const jatorriak = el.querySelectorAll("canvas"), kopiak = k.querySelectorAll("canvas");
+  jatorriak.forEach((c, i) => {
+    const img = document.createElement("img");
+    img.className = c.className; img.dataset.oihala = oihalak.length;
+    img.style.cssText = `${c.style.cssText};width:${c.clientWidth}px;height:${c.clientHeight}px;display:block`;
+    try { oihalak.push(c.width && c.height ? c.toDataURL("image/jpeg", .6) : ""); } catch (e) { oihalak.push(""); }
+    kopiak[i].replaceWith(img);
+  });
+  // Lo escrito en los campos (las contraseñas, solo como puntos).
+  const ein = el.querySelectorAll("input, textarea, select"), kin = k.querySelectorAll("input, textarea, select");
+  ein.forEach((x, i) => {
+    const y = kin[i];
+    if (x.tagName === "TEXTAREA") y.textContent = x.value;
+    else if (x.tagName === "SELECT") [...y.options].forEach((o, j) => o.toggleAttribute("selected", j === x.selectedIndex));
+    else if (x.type === "checkbox" || x.type === "radio") y.toggleAttribute("checked", x.checked);
+    else y.setAttribute("value", x.type === "password" ? "x".repeat(x.value.length) : x.value);
+    y.removeAttribute("autofocus");
+  });
+  k.querySelectorAll("script").forEach(s => s.remove());
+  return k.outerHTML;
+}
+async function ispiluaBidali(osoa = false) {
+  PANTAILA.tenp = null;
+  if (!PANTAILA.kanala || PANTAILA.bidaltzen) { if (PANTAILA.kanala) ispiluaProgramatu(); return; }
+  if (osoa) { PANTAILA.azkenak = {}; PANTAILA.azkenOihalak = ""; }
+  const oihalak = [], zatiak = {};
+  ISPILU_ZATIAK.forEach((sel, i) => { const html = ispiluZatia(document.querySelector(sel), oihalak); if (PANTAILA.azkenak[i] !== html) zatiak[i] = PANTAILA.azkenak[i] = html; });
+  const oihalakJson = JSON.stringify(oihalak), oihalBerriak = oihalakJson !== PANTAILA.azkenOihalak;
+  PANTAILA.azkenOihalak = oihalakJson;
+  const datuak = { zatiak, y: scrollY, bal: document.getElementById("baloratu").scrollTop, arb: document.getElementById("arbela").scrollTop,
+    w: innerWidth, h: innerHeight, lang: G.lang, ...(oihalBerriak ? { oihalak } : {}) };
+  PANTAILA.bidaltzen = true;
+  try { await PANTAILA.kanala.send({ type: "broadcast", event: "irudia", payload: await trinkotu(datuak) }); }
+  catch (e) { /* se reintenta con el siguiente cambio */ }
+  finally { PANTAILA.bidaltzen = false; }
+}
+function ispiluaProgramatu(osoa = false) {
+  if (!PANTAILA.kanala) return;
+  if (osoa) { clearTimeout(PANTAILA.tenp); PANTAILA.tenp = setTimeout(() => ispiluaBidali(true), 50); return; }
+  if (!PANTAILA.tenp) PANTAILA.tenp = setTimeout(() => ispiluaBidali(false), 200);
+}
+async function pantailaKonektatu(kodea) {
+  const tx = t(), oharra = document.getElementById("pantaila-oharra");
+  kodea = String(kodea || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (kodea.length !== 6) { if (oharra) oharra.textContent = tx.kodeOkerra; return; }
+  try {
+    const sb = await sareaKargatu();
+    await pantailaGelditu(false);
+    const kanala = sb.channel(`pantaila-${kodea}`, { config: { broadcast: { self: false } } });
+    kanala.on("broadcast", { event: "eskatu" }, () => ispiluaProgramatu(true));
+    await new Promise((ok, ko) => { const tenp = setTimeout(() => ko(new Error("denbora")), 10000);
+      kanala.subscribe(s => { if (s === "SUBSCRIBED") { clearTimeout(tenp); ok(); } else if (s === "CHANNEL_ERROR" || s === "TIMED_OUT") { clearTimeout(tenp); ko(new Error(s)); } }); });
+    Object.assign(PANTAILA, { kanala, kodea });
+    PANTAILA.behatzailea = new MutationObserver(() => ispiluaProgramatu());
+    PANTAILA.behatzailea.observe(document.body, { subtree: true, childList: true, attributes: true, characterData: true });
+    addEventListener("scroll", ispiluKorritu, { passive: true, capture: true });
+    addEventListener("input", ispiluKorritu, true);
+    addEventListener("resize", ispiluKorritu);
+    // La constelación se mueve sola: su imagen se manda una vez por segundo.
+    PANTAILA.oihalTenp = setInterval(() => { if (document.querySelector("#edukia canvas, #istorioa canvas")) ispiluaProgramatu(); }, 1000);
+    pintarTransmisioa(); abrirAjustes();
+    ispiluaProgramatu(true);
+  } catch (e) { if (oharra) oharra.textContent = tx.pantailaErrorea; }
+}
+function ispiluKorritu() { ispiluaProgramatu(); }
+async function pantailaGelditu(abisatu = true) {
+  const k = PANTAILA.kanala; if (!k) return;
+  if (abisatu) { try { await k.send({ type: "broadcast", event: "amaiera", payload: {} }); } catch (e) {} }
+  PANTAILA.behatzailea?.disconnect(); clearTimeout(PANTAILA.tenp); clearInterval(PANTAILA.oihalTenp);
+  removeEventListener("scroll", ispiluKorritu, { capture: true }); removeEventListener("input", ispiluKorritu, true); removeEventListener("resize", ispiluKorritu);
+  Object.assign(PANTAILA, { kanala: null, kodea: null, behatzailea: null, tenp: null, azkenak: {}, azkenOihalak: "" });
+  try { SARE.sb.removeChannel(k); } catch (e) {}
+  pintarTransmisioa();
+}
+function pintarTransmisioa() {
+  const b = document.getElementById("transmisioa"); if (!b) return;
+  b.hidden = !PANTAILA.kanala;
+  b.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><i></i>`;
+  b.setAttribute("aria-label", `${t().pantailan} · ${t().gelditu}`); b.title = `${t().pantailan} · ${t().gelditu}`;
+}
+function htmlPantailaAjustes() {
+  if (!sareaPrest()) return "";
+  const tx = t(), url = `${location.origin}${location.pathname}#pantalla`;
+  return `<div class="lerroa" style="display:block"><b>${tx.pantailaIzen}</b>
+    ${PANTAILA.kanala ? `<p class="txikia">${tx.transmititzen(PANTAILA.kodea)}</p><button type="button" class="botoia" data-pantaila="gelditu" style="margin-top:10px">${tx.gelditu}</button>`
+      : `<p class="txikia">${tx.pantailaAzal(esc(url))}</p>
+        <form id="pantaila-form" class="pantaila-form"><input name="kodea" maxlength="7" placeholder="ABC234" autocapitalize="characters" autocomplete="off" spellcheck="false" aria-label="${tx.kodea}">
+          <button type="submit" class="botoia">${tx.konektatu}</button></form><p class="oharra" id="pantaila-oharra" aria-live="polite"></p>`}</div>`;
+}
+
+// ---------------------------------------------------------------- En el ordenador (#pantalla)
+
+const pantailaModua = /^#(pantalla|pantaila)$/.test(location.hash);
+const ORDENAGAILUA = { kanala: null, konektatuta: false, oihalak: [], datuak: null };
+function pantailaKodea() {
+  let k = null;
+  try { k = sessionStorage.getItem("txalometroa-pantaila"); } catch (e) {}
+  if (!/^[A-Z0-9]{6}$/.test(k || "")) {
+    const r = new Uint32Array(6); crypto.getRandomValues(r);
+    k = [...r].map(n => KODE_LETRAK[n % KODE_LETRAK.length]).join("");
+    try { sessionStorage.setItem("txalometroa-pantaila", k); } catch (e) {}
+  }
+  return k;
+}
+function itxaronMarraztu() {
+  const tx = t(), el = document.getElementById("pantaila"), kodea = pantailaKodea();
+  ORDENAGAILUA.konektatuta = false; ORDENAGAILUA.datuak = null;
+  el.innerHTML = `<div class="pantaila-itxaron">
+    <div class="pantaila-logoa">${svgLogoLiquido(10, { animar: false, etiqueta: "Txalometroa" })}</div>
+    <h1>${tx.pantailaTitulua}</h1>
+    ${sareaPrest() ? `<ol>${tx.pantailaPausoak.map(p => `<li>${p}</li>`).join("")}</ol>
+      <div class="pantaila-kodea" aria-label="${tx.kodea}">${kodea.split("").map(c => `<span>${c}</span>`).join("")}</div>
+      <p class="itxaroten"><i></i>${tx.itxaroten}</p>` : `<p>${tx.pantailaSareGabe}</p>`}
+    <div class="pantaila-hizkuntza"><button type="button" data-pantaila-lang="eu" aria-pressed="${G.lang === "eu"}">EUS</button><button type="button" data-pantaila-lang="es" aria-pressed="${G.lang === "es"}">ES</button></div>
+    <a class="esteka" href="${location.pathname}" data-pantaila="app">${tx.appraItzuli}</a></div>`;
+}
+async function ispiluaMarraztu(d) {
+  const el = document.getElementById("pantaila");
+  if (!ORDENAGAILUA.konektatuta) {
+    ORDENAGAILUA.konektatuta = true;
+    el.innerHTML = `<div class="ispilu-eszena"><div class="ispilu-tokia"><div class="ispilua" id="ispilua">
+        <div class="ispilu-gorputza" id="ispilu-gorputza"><div data-z="0"></div><div data-z="1"></div></div>
+        ${ISPILU_ZATIAK.slice(2).map((_, i) => `<div data-z="${i + 2}"></div>`).join("")}</div></div>
+      <p class="ispilu-oina"><span class="zuzenean"><i></i>${t().zuzenean}</span> · ${pantailaKodea()}</p></div>`;
+  }
+  const ispilua = document.getElementById("ispilua");
+  for (const [i, html] of Object.entries(d.zatiak || {})) ispilua.querySelector(`[data-z="${i}"]`).innerHTML = html;
+  if (d.oihalak) ORDENAGAILUA.oihalak = d.oihalak;
+  ispilua.querySelectorAll("img[data-oihala]").forEach(img => { const src = ORDENAGAILUA.oihalak[img.dataset.oihala]; if (src && img.getAttribute("src") !== src) img.src = src; });
+  // Tamaño del móvil, escalado para caber en la pantalla del ordenador.
+  const w = d.w || 390, h = d.h || 844, s = Math.min((innerHeight - 70) / h, (innerWidth - 40) / w, 2.4);
+  ispilua.style.width = `${w}px`; ispilua.style.height = `${h}px`; ispilua.style.transform = `scale(${s})`;
+  const tokia = ispilua.parentElement; tokia.style.width = `${w * s}px`; tokia.style.height = `${h * s}px`;
+  document.getElementById("ispilu-gorputza").scrollTop = d.y || 0;
+  const bal = ispilua.querySelector("#baloratu"); if (bal) bal.scrollTop = d.bal || 0;
+  const arb = ispilua.querySelector("#arbela"); if (arb) arb.scrollTop = d.arb || 0;
+  if (d.lang) document.documentElement.lang = d.lang;
+  ORDENAGAILUA.datuak = d;
+}
+async function pantailaHasi() {
+  document.body.classList.add("pantaila-modua");
+  document.getElementById("pantaila").hidden = false;
+  itxaronMarraztu();
+  if (!sareaPrest()) return;
+  let sb; try { sb = await sareaKargatu(); } catch (e) { return; }
+  const kanala = ORDENAGAILUA.kanala = sb.channel(`pantaila-${pantailaKodea()}`, { config: { broadcast: { self: false } } });
+  const eskatu = () => kanala.send({ type: "broadcast", event: "eskatu", payload: {} }).catch(() => {});
+  kanala.on("broadcast", { event: "irudia" }, async ({ payload }) => { try { await ispiluaMarraztu(await zabaldu(payload)); } catch (e) { eskatu(); } });
+  kanala.on("broadcast", { event: "amaiera" }, () => itxaronMarraztu());
+  kanala.subscribe(s => { if (s === "SUBSCRIBED") eskatu(); });
+  // Si el móvil ya estaba conectado (el ordenador se recargó), se le pide la pantalla entera.
+  setInterval(() => { if (!ORDENAGAILUA.konektatuta) eskatu(); }, 5000);
+  addEventListener("resize", () => { if (ORDENAGAILUA.datuak) ispiluaMarraztu({ ...ORDENAGAILUA.datuak, zatiak: {} }); });
+}
+
+function pantailaKlik(e) {
+  const q = s => e.target.closest(s);
+  let el;
+  if (q("#transmisioa")) { pantailaGelditu(); return true; }
+  if ((el = q("[data-pantaila]"))) { if (el.dataset.pantaila === "gelditu") { pantailaGelditu().then(abrirAjustes); return true; } return false; }
+  if ((el = q("[data-pantaila-lang]"))) { G.lang = el.dataset.pantailaLang; guardar(); itxaronMarraztu(); return true; }
+  return false;
+}
+document.addEventListener("submit", e => { if (e.target.id === "pantaila-form") { e.preventDefault(); pantailaKonektatu(e.target.kodea.value); } });
+
+// ================================================================ Funciones en directo y pizarra
+// Hika (perfil con rol admin) programa funciones con fecha y hora. A esa hora salen «En directo»
+// arriba de Obras. Al pulsar «Terminar obra», el móvil de quien la termina muestra la cuenta atrás
+// y en el del público se abre la pizarra con las valoraciones y los comentarios, en tiempo real.
+
+const ZUZEN = { funciones: [], kanala: null, tic: null, galdeketa: null, egoerak: "", pizarra: null, armatua: null, atzeratu: null };
+const ZUZENEKO_OBRAK = [];   // obras nuevas creadas con una función (no están en el catálogo)
+const ORDU = 3600e3;
+const funcionObra = f => f.obra || `zuzen-${f.id}`;
+const esAdmin = () => haySesion() && SARE.perfil.rol === "admin";
+const arbelakItxita = () => new Set(G.arbelaItxita || []);
+
+// laster (aún no ha empezado) · zuzenean (en directo) · arbela (pizarra abierta) · amaituta · iraganda
+function funcionEgoera(f, ahora = Date.now()) {
+  if (f.estado === "pizarra") return ahora < Date.parse(f.pizarra_hasta) ? "arbela" : "amaituta";
+  const hasi = Date.parse(f.empieza);
+  return ahora < hasi ? "laster" : ahora < hasi + 4 * ORDU ? "zuzenean" : "iraganda";
+}
+function obrakErregistratu() {
+  ZUZENEKO_OBRAK.length = 0;
+  for (const f of ZUZEN.funciones.filter(f => !f.obra)) {
+    const genero = GENEROAK[f.genero] ? f.genero : GEN_ORDEN[0];
+    ZUZENEKO_OBRAK.push({ id: funcionObra(f), eu: f.titulo, es: f.titulo, genero, urtea: new Date(f.empieza).getFullYear(),
+      imagen: cartelPrueba(f.titulo, genero, azarra(f.id)), zuzenean: true });
+  }
+  aplicarPruebas();
+}
+const bi = n => String(n).padStart(2, "0");
+function geratzen(f) {
+  const s = Math.max(0, Math.round((Date.parse(f.pizarra_hasta) - Date.now()) / 1000));
+  return s >= 3600 ? `${Math.floor(s / 3600)}:${bi(Math.floor(s / 60) % 60)}:${bi(s % 60)}` : `${bi(Math.floor(s / 60))}:${bi(s % 60)}`;
+}
+const orduaTestua = iso => new Intl.DateTimeFormat(G.lang, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }).format(new Date(iso));
+
+// ---------------------------------------------------------------- Datos y tiempo real
+
+async function funcionesKargatu() {
+  if (!SARE.sb) return;
+  const { data, error } = await SARE.sb.rpc("funciones_activas");
+  if (error || !Array.isArray(data)) return;
+  ZUZEN.funciones = data;
+  if (ZUZEN.pizarra) ZUZEN.pizarra.f = data.find(f => f.id === ZUZEN.pizarra.f.id) || ZUZEN.pizarra.f;
+  obrakErregistratu();
+  zuzenTic(true);
+}
+function zuzenaEntzun() {
+  if (ZUZEN.kanala || !SARE.sb) return;
+  const berriz = () => { clearTimeout(ZUZEN.atzeratu); ZUZEN.atzeratu = setTimeout(() => { funcionesKargatu(); if (ZUZEN.pizarra) pizarraKargatu(); }, 300); };
+  ZUZEN.kanala = SARE.sb.channel("zuzenean")
+    .on("postgres_changes", { event: "*", schema: "public", table: "funciones" }, berriz)
+    .on("postgres_changes", { event: "INSERT", schema: "public", table: "comentarios" }, berriz)
+    .on("postgres_changes", { event: "*", schema: "public", table: "valoraciones" }, berriz)
+    .subscribe();
+  // Por si el tiempo real no llega: se repasa cada 30 s (y cada 8 s con la pizarra abierta).
+  ZUZEN.galdeketa = setInterval(() => { if (!document.hidden) funcionesKargatu(); }, 30000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) funcionesKargatu(); });
+}
+async function zuzenaHasi() {
+  try { await sareaHasi(); } catch (e) { return; }
+  await funcionesKargatu();
+  zuzenaEntzun();
+  if (!ZUZEN.tic) ZUZEN.tic = setInterval(() => zuzenTic(false), 1000);
+}
+// Cada segundo: cuentas atrás, cambios de estado (empieza, se abre o se cierra la pizarra) y abrir la pizarra.
+function zuzenTic(behartu) {
+  const ahora = Date.now(), egoerak = ZUZEN.funciones.map(f => `${f.id}:${funcionEgoera(f, ahora)}`).join(",");
+  if (behartu || egoerak !== ZUZEN.egoerak) {
+    ZUZEN.egoerak = egoerak;
+    const atala = document.getElementById("zuzenean-atala"); if (atala) atala.outerHTML = htmlZuzenean();
+    const zerrenda = document.getElementById("funtzioak-zerrenda"); if (zerrenda) zerrenda.innerHTML = htmlFuntzioZerrenda();
+  }
+  if (ZUZEN.pizarra && funcionEgoera(ZUZEN.pizarra.f, ahora) !== ZUZEN.pizarra.egoera) arbelaMarraztu();   // se abre o se cierra
+  document.querySelectorAll("[data-atzera]").forEach(el => { const f = ZUZEN.funciones.find(x => x.id === Number(el.dataset.atzera)); if (f?.pizarra_hasta) el.textContent = geratzen(f); });
+  if (!ZUZEN.pizarra && !pantailaModua) {
+    const itxita = arbelakItxita();
+    const f = ZUZEN.funciones.find(f => funcionEgoera(f, ahora) === "arbela" && !itxita.has(f.id));
+    if (f) arbelaIreki(f.id, haySesion() && f.creada_por === SARE.perfil.id ? "atzera" : "arbela");
+  }
+}
+
+// ---------------------------------------------------------------- «En directo» arriba de Obras
+
+function htmlZuzenean() {
+  const tx = t(), ahora = Date.now();
+  const fs = ZUZEN.funciones.map(f => ({ f, e: funcionEgoera(f, ahora), o: obraCat(funcionObra(f)) })).filter(x => x.o);
+  const nagusiak = fs.filter(x => x.e === "zuzenean" || x.e === "arbela"), hurrengoak = fs.filter(x => x.e === "laster").slice(0, 3);
+  return `<div id="zuzenean-atala">${nagusiak.map(({ f, e, o }) => `<article class="zuzen-txartela e-${e}">
+      <div class="argazkia"><img src="${esc(o.imagen)}" alt=""><span class="zuzenean"><i></i>${e === "arbela" ? tx.arbelaIrekita : tx.zuzenean}</span></div>
+      <div class="gorputza"><h2>${esc(izena(o))}</h2><p>${esc(f.lugar ? `${f.lugar} · ` : "")}${orduaTestua(f.empieza)}</p>
+        ${e === "arbela" ? `<p class="atzera-kontua"><span>${tx.arbelaIxten}</span> <b data-atzera="${f.id}">${geratzen(f)}</b></p>` : ""}
+        <div class="botoiak"><button type="button" class="botoia" data-baloratu="${esc(o.id)}">${tx.txalotu}</button>
+          ${e === "arbela" ? `<button type="button" class="botoia krema" data-arbela="${f.id}">${tx.arbelaIkusi}</button>` : ""}
+          ${e === "zuzenean" && esAdmin() ? `<button type="button" class="botoia marino" data-amaitu="${f.id}">${ZUZEN.armatua === f.id ? tx.ziur : tx.amaituObra}</button>` : ""}</div></div>
+    </article>`).join("")}
+    ${hurrengoak.length ? `<h2 class="azpititulua">${tx.hurrengoFuntzioak}</h2><ul class="hurrengoak">${hurrengoak.map(({ f, o }) => `<li><button type="button" data-fitxa="${esc(o.id)}">
+      <img src="${esc(o.imagen)}" alt="" loading="lazy"><span><b>${esc(izena(o))}</b><small>${orduaTestua(f.empieza)}${f.lugar ? ` · ${esc(f.lugar)}` : ""}</small></span><span class="falta">${denboraLehen(f.empieza)}</span></button></li>`).join("")}</ul>` : ""}
+  </div>`;
+}
+
+// ---------------------------------------------------------------- Programar y terminar (admin, en su perfil)
+
+function htmlFuntzioZerrenda() {
+  const tx = t(), ahora = Date.now();
+  if (!ZUZEN.funciones.length) return `<p class="azalpena">${tx.funtzioGabe}</p>`;
+  return `<ul class="funtzio-zerrenda">${ZUZEN.funciones.map(f => {
+    const e = funcionEgoera(f, ahora), o = obraCat(funcionObra(f));
+    return `<li class="e-${e}"><div><b>${esc(o ? izena(o) : f.titulo)}</b><small>${orduaTestua(f.empieza)}${f.lugar ? ` · ${esc(f.lugar)}` : ""} · ${tx.arbelaMin(f.minutos_pizarra)}</small>
+        <span class="egoera-txip e-${e}">${tx.egoerak[e]}${e === "arbela" ? ` · <b data-atzera="${f.id}">${geratzen(f)}</b>` : ""}</span></div>
+      <div class="botoiak">${e === "zuzenean" ? `<button type="button" class="botoia" data-amaitu="${f.id}">${ZUZEN.armatua === f.id ? tx.ziur : tx.amaituObra}</button>` : ""}
+        ${e === "arbela" ? `<button type="button" class="botoia" data-arbela="${f.id}" data-arbela-modua="atzera">${tx.atzeraKontua}</button>` : ""}
+        <button type="button" class="esteka" data-funtzioa-ezabatu="${f.id}">${ZUZEN.armatua === -f.id ? tx.ziurEzabatu : tx.ezabatuIritzia}</button></div></li>`;
+  }).join("")}</ul>`;
+}
+function htmlFuntzioakAdmin() {
+  const tx = t(), orain = new Date(Date.now() + 10 * 60e3);
+  const eguna = `${orain.getFullYear()}-${bi(orain.getMonth() + 1)}-${bi(orain.getDate())}`, ordua = `${bi(orain.getHours())}:${bi(Math.floor(orain.getMinutes() / 5) * 5)}`;
+  const obrak = CATALOGO_BASE.slice().sort((a, b) => (b.txalometroa ? 1 : 0) - (a.txalometroa ? 1 : 0) || b.urtea - a.urtea);
+  return `<section class="funtzio-admin"><h2 class="azpititulua">${tx.funtzioak}</h2><p class="azalpena">${tx.funtzioakAzal}</p>
+    <div id="funtzioak-zerrenda">${htmlFuntzioZerrenda()}</div>
+    <details class="sare-txartela funtzio-berria"><summary>${tx.funtzioaSortu}</summary>
+      <form id="funtzio-form" novalidate>
+        <label class="eremua">${tx.obraEtiketa}<select name="obra">${obrak.map(o => `<option value="${esc(o.id)}">${esc(izena(o))}</option>`).join("")}<option value="">${tx.obraBerria}</option></select></label>
+        <div class="obra-berria" hidden>
+          <label class="eremua">${tx.tituluaEtiketa}<input name="titulo" maxlength="80"></label>
+          <label class="eremua">${tx.generoEtiketa}<select name="genero">${GEN_ORDEN.map(g => `<option value="${g}">${esc(genIzena(g))}</option>`).join("")}</select></label>
+        </div>
+        <div class="bi-zutabe"><label class="eremua">${tx.data}<input type="date" name="eguna" value="${eguna}" required></label>
+          <label class="eremua">${tx.ordua}<input type="time" name="ordua" value="${ordua}" required></label></div>
+        <label class="eremua">${tx.lekua} <small>(${tx.aukerakoa})</small><input name="lugar" maxlength="80"></label>
+        <label class="eremua">${tx.arbelaMinutuak}<input type="number" name="minutuak" value="10" min="1" max="120" inputmode="numeric"></label>
+        <p class="oharra" id="funtzio-oharra" aria-live="polite"></p>
+        <button type="submit" class="botoia">${tx.programatu}</button>
+      </form></details></section>`;
+}
+async function funtzioaBidali(form) {
+  const tx = t(), oharra = form.querySelector("#funtzio-oharra"), botoia = form.querySelector("[type=submit]");
+  const obra = form.obra.value, titulo = form.titulo.value.trim(), hasi = new Date(`${form.eguna.value}T${form.ordua.value}`);
+  if (!obra && !titulo) { oharra.textContent = tx.tituluaFalta; form.titulo.focus(); return; }
+  if (!form.eguna.value || !form.ordua.value || isNaN(hasi)) { oharra.textContent = tx.dataOkerra; return; }
+  const minutuak = Math.max(1, Math.min(120, Math.round(Number(form.minutuak.value) || 10)));
+  botoia.disabled = true; oharra.textContent = "";
+  const { error } = await SARE.sb.from("funciones").insert({ obra: obra || null, titulo: obra ? "" : titulo, genero: obra ? obraCat(obra)?.genero || GEN_ORDEN[0] : form.genero.value,
+    lugar: form.lugar.value.trim(), empieza: hasi.toISOString(), minutos_pizarra: minutuak, creada_por: SARE.perfil.id });
+  botoia.disabled = false;
+  if (error) { oharra.textContent = sareErrorea(error); return; }
+  form.closest("details").open = false; form.reset();
+  await funcionesKargatu();
+}
+// Los botones que borran o terminan piden una segunda pulsación en 4 s.
+function armatu(gakoa) {
+  if (ZUZEN.armatua === gakoa) { ZUZEN.armatua = null; return true; }
+  ZUZEN.armatua = gakoa; zuzenTic(true);
+  setTimeout(() => { if (ZUZEN.armatua === gakoa) { ZUZEN.armatua = null; zuzenTic(true); } }, 4000);
+  return false;
+}
+async function funtzioaAmaitu(id) {
+  if (!armatu(id)) return;
+  const { data, error } = await SARE.sb.rpc("terminar_funcion", { p_id: id });
+  if (error) return;
+  const f = data?.[0]; if (f) ZUZEN.funciones = ZUZEN.funciones.map(x => x.id === f.id ? f : x);
+  zuzenTic(true);
+  arbelaIreki(id, "atzera");
+  funcionesKargatu();
+}
+async function funtzioaEzabatu(id) {
+  if (!armatu(-id)) return;
+  const { error } = await SARE.sb.from("funciones").delete().eq("id", id);
+  if (!error) funcionesKargatu();
+}
+
+// ---------------------------------------------------------------- Pizarra y cuenta atrás
+
+function arbelaIreki(id, modua = "arbela") {
+  const f = ZUZEN.funciones.find(x => x.id === id); if (!f) return;
+  ZUZEN.pizarra = { f, modua, zerrenda: [], ezagunak: new Set(), lehena: true };
+  const el = document.getElementById("arbela"); el.hidden = false; document.body.style.overflow = "hidden";
+  arbelaMarraztu(); pizarraKargatu();
+  clearInterval(ZUZEN.pizarraTenp); ZUZEN.pizarraTenp = setInterval(pizarraKargatu, 8000);
+}
+function arbelaItxi() {
+  const p = ZUZEN.pizarra; if (!p) return;
+  G.arbelaItxita = [...arbelakItxita(), p.f.id].slice(-30); guardar();
+  clearInterval(ZUZEN.pizarraTenp); ZUZEN.pizarra = null;
+  const el = document.getElementById("arbela"); el.hidden = true; el.innerHTML = ""; document.body.style.overflow = "";
+}
+async function pizarraKargatu() {
+  const p = ZUZEN.pizarra; if (!p || !SARE.sb) return;
+  const { data, error } = await SARE.sb.rpc("pizarra", { p_funcion: p.f.id });
+  if (error || ZUZEN.pizarra !== p) return;
+  p.zerrenda = data || [];
+  arbelaZerrenda();
+}
+function arbelaMarraztu() {
+  const p = ZUZEN.pizarra, tx = t(), el = document.getElementById("arbela"); if (!p) return;
+  const o = obraCat(funcionObra(p.f)), e = funcionEgoera(p.f), irekita = e === "arbela";
+  p.egoera = e;
+  const goia = `<div class="arbela-goia"><button type="button" class="atzera" data-arbela-itxi aria-label="${tx.atzera}">${ICONOS.itxi}</button>
+    ${p.f.creada_por === SARE.perfil?.id ? `<button type="button" class="esteka" data-arbela-modua="${p.modua === "atzera" ? "arbela" : "atzera"}">${p.modua === "atzera" ? tx.arbelaIkusi : tx.atzeraKontua}</button>` : ""}</div>`;
+  if (p.modua === "atzera") {
+    el.innerHTML = `${goia}<div class="atzera-pantaila"><p class="zuzenean"><i></i>${irekita ? tx.arbelaIrekita : tx.arbelaItxitaIzen}</p>
+      <h2>${esc(o ? izena(o) : p.f.titulo)}</h2>
+      <div class="atzera-erraldoia" data-atzera="${p.f.id}" role="timer">${geratzen(p.f)}</div>
+      <p class="azalpena">${irekita ? tx.atzeraAzal : tx.arbelaItxita}</p>
+      <div class="estatistikak" id="arbela-zenbakiak"></div></div>`;
+  } else {
+    el.innerHTML = `${goia}<div class="arbela-markoa"><div class="arbela-azala">
+        <header><span class="arbela-izena">${tx.arbela}</span><h2>${esc(o ? izena(o) : p.f.titulo)}</h2>
+          <p>${irekita ? `${tx.arbelaIxten} <b data-atzera="${p.f.id}">${geratzen(p.f)}</b>` : tx.arbelaItxita}</p><p class="arbela-zenbakiak" id="arbela-zenbakiak"></p></header>
+        <ul class="klarionak" id="arbela-zerrenda" aria-live="polite"></ul></div></div>
+      <div class="arbela-oina">${irekita ? (haySesion() ? `<form id="iruzkin-form" class="iruzkin-form"><input name="testua" maxlength="280" placeholder="${tx.iruzkinIrud}" aria-label="${tx.iruzkinIrud}" autocomplete="off"><button type="submit" class="botoia">${tx.bidaliIruzkina}</button></form><p class="oharra" id="iruzkin-oharra" aria-live="polite"></p>`
+          : `<button type="button" class="esteka" data-arbela-sartu>${tx.sartuIruzkintzeko}</button>`) : ""}
+        ${o ? `<button type="button" class="botoia krema zabala" data-baloratu="${esc(o.id)}">${tx.txalotu}</button>` : ""}</div>`;
+  }
+  arbelaZerrenda();
+}
+function arbelaZerrenda() {
+  const p = ZUZEN.pizarra, tx = t(); if (!p) return;
+  const balorazioak = p.zerrenda.filter(x => x.tipo === "balorazioa"), notak = balorazioak.map(x => Number(x.nota)).filter(x => x > 0);
+  const media = notak.length ? notak.reduce((a, b) => a + b, 0) / notak.length : null, iruzkinak = p.zerrenda.length - balorazioak.length;
+  const zenb = document.getElementById("arbela-zenbakiak");
+  if (zenb && p.modua === "atzera") zenb.innerHTML = `<div><b>${balorazioak.length}</b><span>${tx.balorazioak}</span></div><div><b>${iruzkinak}</b><span>${tx.iruzkinak}</span></div><div><b>${fmt(media)}</b><span>${tx.nota}</span></div>`;
+  else if (zenb) zenb.textContent = `${balorazioak.length} ${tx.balorazioak} · ${iruzkinak} ${tx.iruzkinak}${media !== null ? ` · ${tx.nota} ${fmt(media)}` : ""}`;
+  const ul = document.getElementById("arbela-zerrenda"); if (!ul) return;
+  if (!p.zerrenda.length) { ul.innerHTML = `<li class="hutsa">${tx.arbelaHutsik}</li>`; return; }
+  ul.innerHTML = p.zerrenda.map(x => {
+    const gakoa = `${x.tipo}-${x.id}`, berria = !p.lehena && !p.ezagunak.has(gakoa), biraketa = (hash(gakoa) % 7) - 3;
+    return `<li class="${x.tipo}${berria ? " berria" : ""}" style="--r:${biraketa}deg">${x.tipo === "balorazioa" ? `<span class="nota">${fmt(Number(x.nota))}</span>` : ""}
+      ${x.texto ? `<p>${esc(x.texto)}</p>` : ""}<small>${esc(x.nombre)} · @${esc(x.usuario)}</small></li>`;
+  }).join("");
+  p.zerrenda.forEach(x => p.ezagunak.add(`${x.tipo}-${x.id}`));
+  if (p.zerrenda.length) p.lehena = false;
+}
+async function iruzkinaBidali(form) {
+  const tx = t(), testua = form.testua.value.trim(), oharra = document.getElementById("iruzkin-oharra");
+  if (!testua || !ZUZEN.pizarra || !haySesion()) return;
+  const botoia = form.querySelector("[type=submit]"); botoia.disabled = true;
+  const { error } = await SARE.sb.from("comentarios").insert({ funcion_id: ZUZEN.pizarra.f.id, usuario_id: SARE.perfil.id, texto: testua.slice(0, 280) });
+  botoia.disabled = false;
+  if (error) { if (oharra) oharra.textContent = error.code === "42501" ? tx.arbelaItxita : sareErrorea(error); return; }
+  form.testua.value = ""; if (oharra) oharra.textContent = "";
+  pizarraKargatu();
+}
+
+function zuzenKlik(e) {
+  const q = s => e.target.closest(s);
+  let el;
+  if ((el = q("[data-arbela-itxi]"))) { arbelaItxi(); return true; }
+  if ((el = q("[data-arbela-sartu]"))) { arbelaItxi(); irA("jarioa"); return true; }
+  if ((el = q("[data-arbela]"))) { arbelaIreki(Number(el.dataset.arbela), el.dataset.arbelaModua || "arbela"); return true; }
+  if ((el = q("[data-arbela-modua]"))) { if (ZUZEN.pizarra) { ZUZEN.pizarra.modua = el.dataset.arbelaModua; arbelaMarraztu(); } return true; }
+  if ((el = q("[data-amaitu]"))) { funtzioaAmaitu(Number(el.dataset.amaitu)); return true; }
+  if ((el = q("[data-funtzioa-ezabatu]"))) { funtzioaEzabatu(Number(el.dataset.funtzioaEzabatu)); return true; }
+  return false;
+}
+document.addEventListener("submit", e => {
+  if (e.target.id === "funtzio-form") { e.preventDefault(); funtzioaBidali(e.target); }
+  if (e.target.id === "iruzkin-form") { e.preventDefault(); iruzkinaBidali(e.target); }
+});
+document.addEventListener("change", e => {
+  if (e.target.name === "obra" && e.target.closest("#funtzio-form")) e.target.form.querySelector(".obra-berria").hidden = !!e.target.value;
+});
 
 // ================================================================ Confeti
 
@@ -1728,10 +2218,10 @@ document.addEventListener("click", e => {
   if ((el = q("[data-vista]"))) { cerrarAjustes(); return irA(el.dataset.vista); }
   if ((el = q("[data-fitxa]"))) return irA("fitxa", { obra: el.dataset.fitxa });
   if ((el = q("[data-baloratu]"))) { e.stopPropagation(); return abrirValorar(el.dataset.baloratu); }
-  if (sareKlik(e)) return;
+  if (pantailaKlik(e) || zuzenKlik(e) || sareKlik(e)) return;
   if ((el = q("[data-wrapped]"))) { if (el.dataset.wrapped === "demo") { ponerDemo(); pintar(); } return abrirWrapped(el.dataset.wrapped === "mundiala" ? "mundiala" : "zurea"); }
   if ((el = q("[data-demo]"))) { el.dataset.demo === "jarri" ? ponerDemo() : quitarDemo(); cerrarAjustes(); return pintar(); }
-  if ((el = q("[data-lang]"))) { G.lang = el.dataset.lang; guardar(); pintar(); pintarInstalar(); pintarProfilaBotoia(); return abrirAjustes(); }
+  if ((el = q("[data-lang]"))) { G.lang = el.dataset.lang; guardar(); pintar(); pintarInstalar(); pintarProfilaBotoia(); pintarTransmisioa(); if (ZUZEN.pizarra) arbelaMarraztu(); return abrirAjustes(); }
   if (q("#ezarpenak")) return abrirAjustes();
   if ((el = q("[data-proba-ezabatu]"))) {
     const id = el.dataset.probaEzabatu; borrarPrueba(id);
@@ -1753,7 +2243,6 @@ document.addEventListener("click", e => {
     G.valoraciones = []; G.butaka = null; guardar(); cacheRes = null; cerrarAjustes(); return pintar();
   }
   if (e.target.id === "orria") return cerrarAjustes();
-  if ((el = q("[data-butaka]"))) { const [i, z] = el.dataset.butaka.split("-").map(Number); return tocarButaka(i, z); }
   // Valorar
   if ((el = q(".maskarak button"))) {
     const cont = el.closest(".maskarak"), i = +el.dataset.i, b = el.getBoundingClientRect();
@@ -1783,6 +2272,7 @@ document.addEventListener("click", e => {
 });
 document.addEventListener("input", e => { if (e.target.dataset.testua && baloraketa) baloraketa.testuak[e.target.dataset.testua] = e.target.value; });
 document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && ZUZEN.pizarra && !baloraketa && !historia && document.getElementById("orria").hidden) return arbelaItxi();
   const m = e.target.closest?.(".maskarak");
   if (m && ["ArrowRight", "ArrowUp", "ArrowLeft", "ArrowDown", "Home", "End"].includes(e.key)) {
     e.preventDefault(); const g = m.dataset.preg, v = baloraketa.notas[g];
@@ -1815,6 +2305,7 @@ else if (VISTAS.includes(h)) vista = { nombre: h };
 else if (h === "profila" || h.startsWith("profila-")) vista = { nombre: "profila", usuario: h.slice(8) || undefined };
 sareaArrancar();
 pintar(); pintarInstalar();
+if (pantailaModua) pantailaHasi();
 if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 </body>
