@@ -14,7 +14,7 @@
 <title>Txalometroa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Raleway:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Raleway:wght@400;600;700&family=Playfair+Display:wght@600;800&family=Inter:wght@400;600&display=swap">
 <style>
 /* Diseño: fondo gris de las referencias con resplandores rojo y crema, letra pixelada
    para titulares y cifras, tarjetas crema con el logo de Hika. Una sola columna móvil. */
@@ -286,8 +286,156 @@ textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 </style>
+<style>
+/* ================================================================ Telón de entrada
+   Carga: telones cerrados, foco y rosas que el público lanza al escenario mientras arranca la app.
+   Apertura (clase .abre, 5,28 s): cambia el rótulo, se abren los telones, sube la bambalina y desaparece el suelo. */
+__TELON_CSS__
+.telon { animation: telonSeguro 0s 25s forwards; }
+@keyframes telonSeguro { to { visibility: hidden; pointer-events: none; } }
+.telon.paso { pointer-events: none; }
+.telon .curtain { animation: telonVaivenH 6s ease-in-out infinite alternate; }
+.telon .v .curtain { animation-name: telonVaivenV; }
+.telon .curtain.right { animation-delay: -3s; }
+/* Con el vaivén, los telones asoman 12 px por fuera de la pantalla para no dejar ver la app por los bordes. */
+.telon .curtain.left { left: -12px; width: calc(50% + 12px); }
+.telon .curtain.right { right: -12px; width: calc(50% + 12px); }
+.telon .curtain, .telon .rose-x, .telon .rose-y, .telon .rose-r { will-change: transform; }
+@keyframes telonVaivenH { 0% { transform: skewX(0deg); } 100% { transform: skewX(.6deg); } }
+@keyframes telonVaivenV { 0% { transform: skewX(0deg); } 100% { transform: skewX(.8deg); } }
+.telon .foco { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.telon .spot { position: absolute; inset: 0; animation: telonPulso 3.2s ease-in-out infinite;
+  background: radial-gradient(ellipse 420px 560px at 50% 62%, rgba(255,214,140,.22), rgba(255,214,140,0) 70%); }
+.telon .v .spot { background: radial-gradient(ellipse 220px 520px at 50% 62%, rgba(255,214,140,.22), rgba(255,214,140,0) 70%); }
+@keyframes telonPulso { 0%, 100% { opacity: .75; } 50% { opacity: 1; } }
+.telon .cargando { position: absolute; left: 0; right: 0; top: calc(250px + var(--dy) / 2); z-index: 5; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.telon .v .cargando { top: calc(330px + var(--dy) / 2); gap: 12px; }
+.telon .cargando .medal { width: 150px; height: 150px; margin-bottom: 12px; }
+.telon .v .cargando .medal { width: 130px; height: 130px; }
+.telon .rotulo { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; letter-spacing: 5px; color: #f3dfb0; text-transform: uppercase; text-shadow: 0 2px 8px rgba(0,0,0,.8); }
+.telon .v .rotulo { gap: 8px; font-size: 11px; letter-spacing: 3px; }
+.telon .textos { display: grid; justify-items: center; }
+.telon .textos > span { grid-area: 1 / 1; white-space: nowrap; transition: opacity .35s ease-in-out; }
+.telon .t-abre { opacity: 0; }
+.telon .bar { position: relative; width: 240px; height: 3px; border-radius: 2px; background: rgba(232,195,106,.2); overflow: hidden; transition: opacity .35s ease-in-out; }
+.telon .bar::after { content: ""; position: absolute; top: 0; bottom: 0; width: 80px; background: linear-gradient(90deg, transparent, #e8c36a, transparent); animation: telonBrilloH 1.6s ease-in-out infinite; }
+.telon .v .bar { width: 180px; }
+.telon .v .bar::after { width: 60px; animation-name: telonBrilloV; }
+@keyframes telonBrilloH { 0% { left: -80px; } 100% { left: 240px; } }
+@keyframes telonBrilloV { 0% { left: -60px; } 100% { left: 180px; } }
+/* Rosas: tres capas (avance lateral, vuelo y caída, giro), 7 s por lanzamiento. */
+.telon .rosas { position: absolute; left: 0; right: 0; top: var(--dy); height: 720px; z-index: 7; pointer-events: none; }
+.telon .v .rosas { height: 844px; }
+.telon .rose-x { position: absolute; top: 0; animation: 7s linear infinite backwards; }
+.telon .rose-y, .telon .rose-r { animation: 7s infinite backwards; }
+.telon .rose-r { width: 52px; height: 85px; }
+.telon .v .rose-r { width: 40px; height: 65px; }
+.telon .rose-r svg { display: block; width: 100%; height: 100%; }
+.telon .h .xa { animation-name: telonRosaXaH; } .telon .h .xb { animation-name: telonRosaXbH; }
+.telon .h .xc { animation-name: telonRosaXcH; } .telon .h .xd { animation-name: telonRosaXdH; }
+.telon .h .y1 { animation-name: telonRosaY1H; } .telon .h .y2 { animation-name: telonRosaY2H; } .telon .h .y3 { animation-name: telonRosaY3H; }
+.telon .v .xa { animation-name: telonRosaXaV; } .telon .v .xb { animation-name: telonRosaXbV; }
+.telon .v .xc { animation-name: telonRosaXcV; } .telon .v .xd { animation-name: telonRosaXdV; }
+.telon .v .y1 { animation-name: telonRosaY1V; } .telon .v .y2 { animation-name: telonRosaY2V; } .telon .v .y3 { animation-name: telonRosaY3V; }
+.telon .r1 { animation-name: telonRosaR1; animation-timing-function: linear; }
+.telon .r2 { animation-name: telonRosaR2; animation-timing-function: linear; }
+.telon .r3 { animation-name: telonRosaR3; animation-timing-function: linear; }
+@keyframes telonRosaXaH { 0% { transform: translateX(0); } 38%, 100% { transform: translateX(-110px); } }
+@keyframes telonRosaXbH { 0% { transform: translateX(0); } 38%, 100% { transform: translateX(70px); } }
+@keyframes telonRosaXcH { 0% { transform: translateX(0); } 38%, 100% { transform: translateX(150px); } }
+@keyframes telonRosaXdH { 0% { transform: translateX(0); } 38%, 100% { transform: translateX(-160px); } }
+@keyframes telonRosaXaV { 0% { transform: translateX(0); } 38%, 100% { transform: translateX(-50px); } }
+@keyframes telonRosaXbV { 0% { transform: translateX(0); } 38%, 100% { transform: translateX(35px); } }
+@keyframes telonRosaXcV { 0% { transform: translateX(0); } 38%, 100% { transform: translateX(60px); } }
+@keyframes telonRosaXdV { 0% { transform: translateX(0); } 38%, 100% { transform: translateX(-65px); } }
+@keyframes telonRosaY1H { 0% { transform: translateY(780px); opacity: 1; animation-timing-function: cubic-bezier(.15,.7,.4,1); } 20% { transform: translateY(150px); animation-timing-function: cubic-bezier(.6,0,.9,.5); } 38% { transform: translateY(600px); animation-timing-function: ease-out; } 42% { transform: translateY(586px); animation-timing-function: ease-in; } 46%, 88% { transform: translateY(600px); opacity: 1; } 100% { transform: translateY(600px); opacity: 0; } }
+@keyframes telonRosaY2H { 0% { transform: translateY(780px); opacity: 1; animation-timing-function: cubic-bezier(.15,.7,.4,1); } 20% { transform: translateY(120px); animation-timing-function: cubic-bezier(.6,0,.9,.5); } 38% { transform: translateY(618px); animation-timing-function: ease-out; } 42% { transform: translateY(604px); animation-timing-function: ease-in; } 46%, 88% { transform: translateY(618px); opacity: 1; } 100% { transform: translateY(618px); opacity: 0; } }
+@keyframes telonRosaY3H { 0% { transform: translateY(780px); opacity: 1; animation-timing-function: cubic-bezier(.15,.7,.4,1); } 20% { transform: translateY(180px); animation-timing-function: cubic-bezier(.6,0,.9,.5); } 38% { transform: translateY(634px); animation-timing-function: ease-out; } 42% { transform: translateY(622px); animation-timing-function: ease-in; } 46%, 88% { transform: translateY(634px); opacity: 1; } 100% { transform: translateY(634px); opacity: 0; } }
+@keyframes telonRosaY1V { 0% { transform: translateY(900px); opacity: 1; animation-timing-function: cubic-bezier(.15,.7,.4,1); } 20% { transform: translateY(160px); animation-timing-function: cubic-bezier(.6,0,.9,.5); } 38% { transform: translateY(728px); animation-timing-function: ease-out; } 42% { transform: translateY(716px); animation-timing-function: ease-in; } 46%, 88% { transform: translateY(728px); opacity: 1; } 100% { transform: translateY(728px); opacity: 0; } }
+@keyframes telonRosaY2V { 0% { transform: translateY(900px); opacity: 1; animation-timing-function: cubic-bezier(.15,.7,.4,1); } 20% { transform: translateY(130px); animation-timing-function: cubic-bezier(.6,0,.9,.5); } 38% { transform: translateY(744px); animation-timing-function: ease-out; } 42% { transform: translateY(732px); animation-timing-function: ease-in; } 46%, 88% { transform: translateY(744px); opacity: 1; } 100% { transform: translateY(744px); opacity: 0; } }
+@keyframes telonRosaY3V { 0% { transform: translateY(900px); opacity: 1; animation-timing-function: cubic-bezier(.15,.7,.4,1); } 20% { transform: translateY(200px); animation-timing-function: cubic-bezier(.6,0,.9,.5); } 38% { transform: translateY(758px); animation-timing-function: ease-out; } 42% { transform: translateY(748px); animation-timing-function: ease-in; } 46%, 88% { transform: translateY(758px); opacity: 1; } 100% { transform: translateY(758px); opacity: 0; } }
+@keyframes telonRosaR1 { 0% { transform: rotate(-20deg); } 38%, 100% { transform: rotate(450deg); } }
+@keyframes telonRosaR2 { 0% { transform: rotate(15deg); } 38%, 100% { transform: rotate(-260deg); } }
+@keyframes telonRosaR3 { 0% { transform: rotate(0deg); } 38%, 100% { transform: rotate(640deg); } }
+
+/* Apertura: los tiempos son los de la animación original de 8 s, de 0 a 66 % (telón abierto). */
+.telon.abre { animation: telonFondo 5.28s linear forwards, telonSeguro 0s 25s forwards; }
+.telon.abre .t-carga, .telon.abre .bar { opacity: 0; }
+.telon.abre .t-abre { opacity: 1; }
+.telon.abre .cargando { animation: telonFueraCarga 5.28s ease-in-out forwards; }
+.telon.abre .foco { animation: telonFueraFoco 5.28s ease-in-out forwards; }
+.telon.abre .floor, .telon.abre .rosas { animation: telonFueraSuelo 5.28s ease-in-out forwards; }
+.telon.abre .h .valance { animation: telonSubeH 5.28s forwards; }
+.telon.abre .v .valance { animation: telonSubeV 5.28s forwards; }
+.telon.abre .h .curtain.left { animation: telonVaivenH 6s ease-in-out 0s infinite alternate, telonAbreIH 5.28s forwards; }
+.telon.abre .h .curtain.right { animation: telonVaivenH 6s ease-in-out -3s infinite alternate, telonAbreDH 5.28s forwards; }
+.telon.abre .v .curtain.left { animation: telonVaivenV 6s ease-in-out 0s infinite alternate, telonAbreIV 5.28s forwards; }
+.telon.abre .v .curtain.right { animation: telonVaivenV 6s ease-in-out -3s infinite alternate, telonAbreDV 5.28s forwards; }
+@keyframes telonFondo { 0%, 27.27% { background-color: #0d0d0d; } 27.5%, 100% { background-color: transparent; } }
+@keyframes telonFueraCarga { 0%, 18.18% { opacity: 1; transform: translateY(0); } 30.3%, 100% { opacity: 0; transform: translateY(10px); } }
+@keyframes telonFueraFoco { 0%, 24.24% { opacity: 1; } 45.45%, 100% { opacity: 0; } }
+@keyframes telonFueraSuelo { 0%, 78.79% { opacity: 1; transform: translateY(0); } 96.97%, 100% { opacity: 0; transform: translateY(30px); } }
+@keyframes telonSubeH { 0%, 84.85% { transform: translateY(0); animation-timing-function: cubic-bezier(.5,0,.75,0); } 100% { transform: translateY(-150px); } }
+@keyframes telonSubeV { 0%, 84.85% { transform: translateY(0); animation-timing-function: cubic-bezier(.5,0,.75,0); } 100% { transform: translateY(-130px); } }
+/* Los telones se abren con translate y scale para no cortar su vaivén (transform). */
+@keyframes telonAbreIH { 0%, 27.27% { translate: 0 0; scale: 1 1; animation-timing-function: cubic-bezier(.65,0,.35,1); } 83.33% { translate: 0 0; scale: .14 1; animation-timing-function: cubic-bezier(.5,0,.75,0); } 100% { translate: -20.3125% 0; scale: .14 1; } }
+@keyframes telonAbreDH { 0%, 27.27% { translate: 0 0; scale: 1 1; animation-timing-function: cubic-bezier(.65,0,.35,1); } 83.33% { translate: 0 0; scale: .14 1; animation-timing-function: cubic-bezier(.5,0,.75,0); } 100% { translate: 20.3125% 0; scale: .14 1; } }
+@keyframes telonAbreIV { 0%, 27.27% { translate: 0 0; scale: 1 1; animation-timing-function: cubic-bezier(.65,0,.35,1); } 83.33% { translate: 0 0; scale: .16 1; animation-timing-function: cubic-bezier(.5,0,.75,0); } 100% { translate: -35.9% 0; scale: .16 1; } }
+@keyframes telonAbreDV { 0%, 27.27% { translate: 0 0; scale: 1 1; animation-timing-function: cubic-bezier(.65,0,.35,1); } 83.33% { translate: 0 0; scale: .16 1; animation-timing-function: cubic-bezier(.5,0,.75,0); } 100% { translate: 35.9% 0; scale: .16 1; } }
+</style>
 </head>
 <body>
+<div class="telon" id="telon" aria-hidden="true"><div class="h"></div><div class="v"></div></div>
+<script>
+"use strict";
+__TELON_JS__
+// Telón de entrada: la carga dura al menos 3,2 s (dos pasadas de la barra, primeras rosas en el suelo)
+// y, cuando la página ha cargado, se abre entero. Tocar la pantalla adelanta la apertura.
+(() => {
+  const telon = document.getElementById("telon");
+  try {
+    let lang = (navigator.language || "eu").startsWith("es") ? "es" : "eu";
+    try { lang = JSON.parse(localStorage.getItem("txalometroa-mugikorra")).lang || lang; } catch (e) { /* sin datos guardados */ }
+    // EU: textos nuevos, pendientes de revisión por un hablante nativo.
+    const tx = lang === "es" ? { carga: "Preparando la función", abre: "¡Que empiece la función!" }
+                             : { carga: "Emanaldia prestatzen", abre: "Has dadila emanaldia!" };
+    const rosa = `<svg viewBox="0 0 44 72" aria-hidden="true"><path d="M22 30 C21 45 23 55 22 70" stroke="#2f6b2a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M22 48 C14 42 9 46 8 50 C14 52 19 51 22 48Z" fill="#3d8a35"/><path d="M22 56 C30 50 35 53 36 57 C30 59 25 59 22 56Z" fill="#3d8a35"/><path d="M18 27 L22 33 L26 27Z" fill="#2f6b2a"/><path d="M10 18 C10 5 34 5 34 18 C34 31 10 31 10 18Z" fill="#a3121f"/><path d="M13 14 C16 3 30 5 31 14 C26 10 18 10 13 14Z" fill="#d42a38"/><path d="M16 18 C18 10 28 12 28 18 C25 15 20 15 16 18Z" fill="#6e0812"/><path d="M14 22 C18 29 28 29 31 21 C26 25 19 25 14 22Z" fill="#c21d2b"/></svg>`;
+    // Cada rosa: avance lateral, vuelo, giro, posición (%) y retraso (s).
+    const ROSAS = {
+      h: [["xa", "y1", "r1", 46, 0], ["xc", "y2", "r2", 30, .6], ["xb", "y3", "r3", 62, 1.1], ["xd", "y1", "r2", 74, 1.7], ["xb", "y3", "r1", 22, 2.3],
+          ["xc", "y2", "r3", 54, 2.9], ["xa", "y1", "r2", 38, 3.5], ["xa", "y2", "r1", 80, 4.1], ["xc", "y3", "r3", 16, 4.7]],
+      v: [["xa", "y1", "r1", 48, 0], ["xc", "y2", "r2", 22, .8], ["xb", "y3", "r3", 64, 1.6], ["xd", "y1", "r2", 78, 2.4], ["xb", "y3", "r1", 14, 3.2],
+          ["xc", "y2", "r3", 54, 4], ["xa", "y1", "r2", 36, 4.8]]
+    };
+    for (const o of ["h", "v"]) {
+      telon.querySelector("." + o).innerHTML = `<div class="floor"></div><div class="curtain left"></div><div class="curtain right"></div>
+        <div class="foco"><div class="spot"></div></div>
+        <div class="valance"><span class="medal"></span><div class="marca"><b>TXALOMETROA</b><small>Hika Teatroa</small></div></div>
+        <div class="cargando"><span class="medal"></span>
+          <div class="rotulo"><span class="textos"><span class="t-carga">${tx.carga}</span><span class="t-abre">${tx.abre}</span></span>
+            <span class="puntos"><span class="dot"></span><span class="dot"></span><span class="dot"></span></span></div>
+          <div class="bar"></div></div>
+        <div class="rosas">${ROSAS[o].map(([x, y, r, izq, d]) => `<div class="rose-x ${x}" style="left:${izq}%;animation-delay:${d}s"><div class="rose-y ${y}" style="animation-delay:${d}s"><div class="rose-r ${r}" style="animation-delay:${d}s">${rosa}</div></div></div>`).join("")}</div>`;
+    }
+    const soltar = telonVigilar(telon);
+    const cerrar = () => { soltar(); telon.remove(); };
+    let abierto = false;
+    const abrir = () => {
+      if (abierto) return;
+      abierto = true;
+      telon.classList.add("abre");
+      setTimeout(() => telon.classList.add("paso"), 2600);   // telones ya medio abiertos: se puede tocar la app
+      telon.addEventListener("animationend", e => { if (e.animationName.startsWith("telonSube")) cerrar(); });
+      setTimeout(cerrar, 6000);
+    };
+    const reducir = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const espera = ms => new Promise(r => setTimeout(r, ms));
+    const cargada = new Promise(r => document.readyState === "complete" ? r() : addEventListener("load", r, { once: true }));
+    Promise.all([espera(reducir ? 0 : 3200), Promise.race([cargada, espera(10000)])]).then(abrir);
+    addEventListener("DOMContentLoaded", () => telon.addEventListener("pointerdown", abrir), { once: true });
+  } catch (e) { telon.remove(); }
+})();
+</script>
 <header class="goiburua">
   <div class="marka"><span class="tile" id="marka-logoa"></span><b>TXALOMETROA</b></div>
   <button class="instalatu" id="instalatu" type="button" hidden></button>

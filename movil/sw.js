@@ -1,7 +1,7 @@
 // Service worker del Txalometroa: la app funciona sin conexión una vez abierta.
 // construir.py sustituye la versión en cada compilación para que el móvil coja los cambios.
-const VERSION = "txalometroa-6390d0d352";
-const APP = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png"];
+const VERSION = "txalometroa-4f92e41d16";
+const APP = ["./", "./index.html", "./404.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png"];
 const IMAGENES = "txalometroa-imagenes";
 
 self.addEventListener("install", e => {
@@ -21,8 +21,10 @@ self.addEventListener("fetch", e => {
   if (url.origin === location.origin) {
     // La página: primero la red (para coger cambios) y, sin conexión, la copia guardada.
     if (req.mode === "navigate") {
-      e.respondWith(fetch(req.url, { cache: "no-cache", credentials: "same-origin" }).then(r => { const copia = r.clone(); caches.open(VERSION).then(c => c.put("./index.html", copia)); return r; })
-        .catch(() => caches.match("./index.html")));
+      // Solo se guarda la app (no el 404 de Netlify). Sin red ni copia, la página de error con el telón.
+      const esApp = /\/(index\.html)?$/.test(url.pathname);
+      e.respondWith(fetch(req.url, { cache: "no-cache", credentials: "same-origin" }).then(r => { if (r.ok && esApp) { const copia = r.clone(); caches.open(VERSION).then(c => c.put("./index.html", copia)); } return r; })
+        .catch(() => caches.match(esApp ? "./index.html" : "./404.html").then(r => r || caches.match("./404.html"))));
       return;
     }
     e.respondWith(caches.match(req).then(r => r || fetch(req)));

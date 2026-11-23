@@ -14,7 +14,7 @@ from pathlib import Path
 
 raiz = Path(__file__).resolve().parent.parent
 sitio = json.loads((raiz / ".netlify" / "state.json").read_text(encoding="utf-8"))["siteId"]
-FICHEROS = ["index.html", "sw.js", "manifest.webmanifest", "_headers"]
+FICHEROS = ["index.html", "404.html", "sw.js", "manifest.webmanifest", "_headers"]
 
 subprocess.run([sys.executable, str(raiz / "app" / "construir.py")], check=True)
 

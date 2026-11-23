@@ -5,6 +5,7 @@ El prototipo son cuatro piezas que comparten la misma lógica. Todo es HTML y Ja
 | Pieza | Fichero final | Plantilla | Para quién |
 | --- | --- | --- | --- |
 | App móvil (PWA) | `movil/index.html` | `movil/index.src.html` | El público: valorar, constelación, Wrapped, butacas |
+| Página de error | `movil/404.html` | `movil/404.src.html` | Error 404 o sin conexión, con el telón |
 | App de análisis y publicación | `app/txalometroa.html` | `app/txalometroa.src.html` | Hika: informe interno y bloque para WordPress |
 | Réplica de la web | `replica/index.html` | `replica/replica.src.html` | Pruebas: la página del Txalometroa con el bloque y el formulario |
 | Script de análisis | `analizar.py` | — | Lo mismo que la app de análisis, por línea de comandos |
@@ -67,6 +68,13 @@ Cuatro pestañas y un menú de ajustes:
 - **Constelación:** dibujada en un canvas. Ángulo = género, distancia al centro = nota (más cerca, mejor), tamaño = emoción y textos. Las líneas unen el orden cronológico y las obras del mismo género.
 - **Wrapped:** historias a pantalla completa. El mundial sale del export real; el personal, de las valoraciones del usuario. Toca para avanzar y mantén pulsado para pausar.
 - **Ajustes:** idioma eu/es, instalar la app, perfil de ejemplo, **Admin · obras de prueba** (crea obras falsas con valoraciones inventadas y las borra) y borrar los datos.
+
+### Animaciones del telón
+
+Las tres escenas del telón tienen versión horizontal (web, 1280×720) y vertical (móvil, 390×844) y se escalan para verse enteras en cualquier pantalla; los telones y el suelo se estiran para llenar lo que sobra. Lo común (escenario, encaje y logo de Hika) está en `movil/telon/` y `construir.py` lo incrusta.
+
+- **Carga y apertura** (`movil/index.src.html`): al abrir la app, telón cerrado con el público lanzando rosas («Preparando la función»). Dura al menos 3,2 s y, cuando la página ha cargado, cambia a «¡Que empiece la función!», se abren los telones, sube la bambalina y aparece la app (5,3 s). Tocar la pantalla adelanta la apertura.
+- **Error** (`movil/404.src.html` → `movil/404.html`): el cartel 404 asoma por detrás del telón. Netlify la sirve para cualquier dirección que no existe («Página no encontrada», botón para volver al inicio) y el service worker, cuando no hay red ni copia («No hay conexión», botón para reintentar).
 
 Es instalable: tiene `manifest.webmanifest`, iconos en `movil/icons/`, un service worker que guarda la app para usarla sin conexión y `_headers` para Netlify.
 
