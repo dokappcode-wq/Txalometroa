@@ -146,6 +146,9 @@ h2.azpititulua { font: 400 30px/1 var(--pixel); margin: 30px 0 10px; letter-spac
 .maskarak { display: grid; grid-template-columns: repeat(5, 1fr) 44px; gap: 6px; align-items: center; touch-action: none; user-select: none; -webkit-user-select: none; border-radius: 10px; }
 .maskarak button { border: 0; padding: 0; background: none; transition: transform .12s; }
 .maskarak button:active { transform: scale(.94); }
+.maskarak .mascara.urrea { overflow: visible; }
+.maskarak button.piztu { animation: urreztatu .45s ease-out; }
+@keyframes urreztatu { 0% { transform: scale(.9); filter: brightness(1.6); } 60% { transform: scale(1.1); } 100% { transform: scale(1); filter: none; } }
 .maskarak output { font: 400 30px/1 var(--pixel); text-align: right; color: var(--tinta-3); }
 .maskarak output.jarrita { color: var(--crema); }
 details.gehiago summary { cursor: pointer; padding: 14px 0; color: var(--tinta-2); font-weight: 600; }
@@ -883,10 +886,50 @@ function htmlNeurgailua(nota, etiketa, clase = "") {
 function htmlMaskaraNeurria(v) {
   return `<div class="maskara-neurria" aria-hidden="true">${K_MASCARA.map((k, i) => svgMascara(k, Math.max(0, Math.min(1, (v ?? 0) / 2 - i)))).join("")}</div>`;
 }
-// Entrada con máscaras: media máscara = 1 punto, entera = 2.
-function htmlMaskarak(g, valor, etiqueta) {
+// Máscara de teatro dorada para valorar (diseño de Hika): k va de la tragedia (-1) a la comedia (1).
+// Debajo, la máscara en gris; encima, la dorada recortada según «relleno» (0, media o entera).
+let idUrrea = 0;
+function svgMaskaraUrrea(k, relleno = 0) {
+  const id = `mu${++idUrrea}`, triste = Math.max(0, -k), alegre = Math.max(0, k);
+  const cara = "M9 22 C8 10 17 5 28 7 C38 9 44 13 50 12 C56 11 63 7 74 6 C85 5 93 11 92 23 C92 41 90 60 85 77 C78 98 65 116 50 120 C35 116 22 98 15 78 C10 61 8 41 9 22 Z";
+  // Ojos en media luna: en la tragedia caen hacia fuera; en la comedia se arquean.
+  const ojo = lado => {
+    const x0 = 50 + lado * 6, x1 = 50 + lado * 34, yIn = 49 - triste * 3, yOut = 50 + triste * 6;
+    const arriba = 35 - alegre * 3, abajo = 53 - alegre * 9;
+    return `M${x1} ${yOut} Q${50 + lado * 19} ${arriba} ${x0} ${yIn} Q${50 + lado * 19} ${abajo} ${x1} ${yOut} Z`;
+  };
+  // Cejas en relieve que bajan hasta la nariz.
+  const ceja = lado => `M${50 + lado * 34} ${39 + triste * 3 - alegre * 2} Q${50 + lado * 26} ${24 - alegre * 3 + triste * 2} ${50 + lado * 9} ${30 - triste * 5} Q${50 + lado * 3} ${44} ${50 + lado * 4} ${64}`;
+  const BOCAK = {
+    "-1": "M29 104 Q50 74 71 104 Q50 90 29 104 Z", "-0.5": "M32 99 Q50 83 68 99 Q50 92 32 99 Z", "0": "M33 93 Q50 89 67 93 Q50 99 33 93 Z",
+    "0.5": "M31 88 Q50 103 69 88 Q50 96 31 88 Z", "1": "M27 84 Q50 116 73 84 Q50 96 27 84 Z"
+  };
+  const capa = (c, n) => `
+    <path d="${cara}" fill="url(#${id}-${n})" stroke="${c.borde}" stroke-width="3.2" stroke-linejoin="round"/>
+    ${c.mejilla ? `<ellipse cx="28" cy="76" rx="13" ry="10" fill="${c.mejilla}" opacity="${.2 + alegre * .3}" filter="url(#${id}-b)"/><ellipse cx="72" cy="76" rx="13" ry="10" fill="${c.mejilla}" opacity="${.2 + alegre * .3}" filter="url(#${id}-b)"/>` : ""}
+    <path d="${ceja(-1)} ${ceja(1)}" fill="none" stroke="${c.relieve}" stroke-width="3.6" stroke-linecap="round" filter="url(#${id}-b)"/>
+    <path d="${ojo(-1)} ${ojo(1)} ${BOCAK[k]}" fill="${c.hueco}"/>
+    <path d="M42 75 Q39 68 45 68 Q47 73 50 73 Q53 73 55 68 Q61 68 58 75" fill="none" stroke="${c.nariz}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M49 60 L49 70" stroke="${c.nariz}" stroke-width="1.4" stroke-linecap="round" opacity=".7"/>`;
+  const GRIS = { borde: "#4b4b4b", mejilla: null, relieve: "rgba(255,255,255,.28)", hueco: "#a9a9a9", nariz: "#5a5a5a" };
+  const URREA = { borde: "#b6953c", mejilla: "#e8b93a", relieve: "rgba(255,248,214,.7)", hueco: "#fde9a6", nariz: "#c9a341" };
+  return `<svg class="mascara urrea" viewBox="0 0 101 126" aria-hidden="true">
+  <defs>
+    <radialGradient id="${id}-g" cx=".5" cy=".55" r=".65"><stop offset="0" stop-color="#8d8d8d"/><stop offset="1" stop-color="#666"/></radialGradient>
+    <radialGradient id="${id}-u" cx=".5" cy=".6" r=".65"><stop offset="0" stop-color="#ffdc5e"/><stop offset=".7" stop-color="#f6cb47"/><stop offset="1" stop-color="#e8bb3c"/></radialGradient>
+    <filter id="${id}-b" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation=".8"/></filter>
+    <filter id="${id}-d" x="-25%" y="-25%" width="150%" height="150%"><feGaussianBlur stdDeviation="3" result="b"/><feFlood flood-color="#ffd95a" flood-opacity=".55"/><feComposite in2="b" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <clipPath id="${id}-m"><rect x="0" y="0" width="${(101 * relleno).toFixed(1)}" height="126"/></clipPath>
+  </defs>
+  ${capa(GRIS, "g")}
+  ${relleno > 0 ? `<g filter="url(#${id}-d)"><g clip-path="url(#${id}-m)">${capa(URREA, "u")}</g></g>` : ""}
+</svg>`;
+}
+// Entrada con máscaras: media máscara = 1 punto, entera = 2. «antes» marca las que acaban de dorarse.
+function htmlMaskarak(g, valor, etiqueta, antes = valor) {
+  const relleno = (v, i) => Math.max(0, Math.min(1, v / 2 - i));
   return `<div class="maskarak" role="slider" tabindex="0" aria-label="${esc(etiqueta)}" aria-valuemin="0" aria-valuemax="10" aria-valuenow="${valor}" data-preg="${g}">
-    ${K_MASCARA.map((k, i) => `<button type="button" tabindex="-1" data-i="${i + 1}" aria-hidden="true">${svgMascara(k, Math.max(0, Math.min(1, valor / 2 - i)))}</button>`).join("")}
+    ${K_MASCARA.map((k, i) => `<button type="button" tabindex="-1" data-i="${i + 1}" aria-hidden="true"${relleno(valor, i) > relleno(antes, i) ? ' class="piztu"' : ""}>${svgMaskaraUrrea(k, relleno(valor, i))}</button>`).join("")}
     <output class="${valor ? "jarrita" : ""}">${valor || "–"}</output></div>`;
 }
 
@@ -998,9 +1041,10 @@ function pintarValorar() {
   el.scrollTop = 0;
 }
 function ponerNota(g, v, teclado = false) {
+  const antes = baloraketa.notas[g];
   baloraketa.notas[g] = Math.max(0, Math.min(10, v));
   const cont = document.querySelector(`.maskarak[data-preg="${g}"]`);
-  cont.outerHTML = htmlMaskarak(g, baloraketa.notas[g], CFG.preguntas[g]["texto_" + G.lang]);
+  cont.outerHTML = htmlMaskarak(g, baloraketa.notas[g], CFG.preguntas[g]["texto_" + G.lang], antes);
   if (teclado) document.querySelector(`.maskarak[data-preg="${g}"]`).focus({ preventScroll: true });
   const o = document.getElementById("oharra"); if (o) o.textContent = "";
 }
