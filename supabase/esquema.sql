@@ -196,6 +196,8 @@ create table if not exists public.funciones (
   check (obra is not null or char_length(btrim(titulo)) > 0)
 );
 create index if not exists funciones_empieza on public.funciones (empieza);
+-- «Borrar pizarra»: desde este momento la pizarra empieza de cero.
+alter table public.funciones add column if not exists pizarra_borrada timestamptz;
 
 create table if not exists public.comentarios (
   id bigint generated always as identity primary key,
@@ -245,19 +247,30 @@ language sql volatile security invoker set search_path = public as $$
   returning *;
 $$;
 
+-- «Borrar pizarra» (admin): borra los comentarios y deja de mostrar las valoraciones anteriores.
+-- Las valoraciones no se borran: siguen en el feed y en el perfil de cada persona.
+create or replace function public.borrar_pizarra(p_id bigint)
+returns setof public.funciones
+language plpgsql volatile security invoker set search_path = public as $$
+begin
+  if not public.es_admin() then raise exception 'solo admin' using errcode = '42501'; end if;
+  delete from comentarios where funcion_id = p_id;
+  return query update funciones set pizarra_borrada = now() where id = p_id returning *;
+end $$;
+
 -- Lo que sale en la pizarra: comentarios y valoraciones de la obra desde que empezó la función.
 create or replace function public.pizarra(p_funcion bigint)
 returns table (tipo text, id bigint, texto text, nota numeric, usuario text, nombre text, color text, creado timestamptz)
 language sql stable security invoker set search_path = public as $$
   with f as (select * from funciones where id = p_funcion)
   select 'iruzkina', c.id, c.texto, null::numeric, p.usuario, p.nombre, p.color, c.creado
-  from comentarios c join perfiles p on p.id = c.usuario_id, f where c.funcion_id = f.id
+  from comentarios c join perfiles p on p.id = c.usuario_id, f where c.funcion_id = f.id and c.creado > coalesce(f.pizarra_borrada, '-infinity')
   union all
   select 'balorazioa', v.id, v.opinion,
          (select round(avg(x), 2) from unnest(array[v.gal1, v.gal2, v.gal3, v.gal4]) x where x > 0),
          p.usuario, p.nombre, p.color, v.editada
   from valoraciones v join perfiles p on p.id = v.usuario_id, f
-  where v.obra = coalesce(f.obra, 'zuzen-' || f.id) and v.editada >= f.empieza
+  where v.obra = coalesce(f.obra, 'zuzen-' || f.id) and v.editada >= greatest(f.empieza, coalesce(f.pizarra_borrada, f.empieza))
   order by 8 desc
   limit 200;
 $$;
@@ -273,7 +286,7 @@ grant insert (id, usuario, nombre, bio, color), update (usuario, nombre, bio, co
 grant usage on all sequences in schema public to authenticated;
 grant execute on function public.muro(text, text, timestamptz, int), public.perfil_de(text), public.buscar_perfiles(text),
   public.funciones_activas(), public.pizarra(bigint), public.es_admin() to anon, authenticated;
-grant execute on function public.terminar_funcion(bigint) to authenticated;
+grant execute on function public.terminar_funcion(bigint), public.borrar_pizarra(bigint) to authenticated;
 
 -- Tiempo real: la app se entera al momento de las funciones, los comentarios y las valoraciones nuevas.
 do $$

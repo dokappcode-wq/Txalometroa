@@ -359,6 +359,8 @@ textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(
 .arbela-goia { display: flex; justify-content: space-between; align-items: center; }
 .arbela-goia .atzera { width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(0, 0, 0, .35); display: grid; place-items: center; }
 .arbela-goia .atzera svg { width: 22px; height: 22px; }
+.arbela-admin { display: flex; align-items: center; gap: 12px; }
+.arbela-admin .botoia { padding: 9px 14px; font-size: 18px; }
 .arbela-markoa { flex: 1; margin: 10px 0; border: 12px solid #6b4423; border-radius: 10px; box-shadow: inset 0 0 0 2px #8a5a30, 0 14px 30px rgba(0, 0, 0, .5); display: flex; }
 .arbela-azala { flex: 1; padding: 14px 14px 18px; font-family: Caveat, "Comic Sans MS", cursive; color: #f4f1e8;
   background: radial-gradient(120% 80% at 30% 20%, rgba(255, 255, 255, .07), transparent 60%), radial-gradient(90% 60% at 80% 90%, rgba(255, 255, 255, .05), transparent 60%), #1f3b2d; }
@@ -368,6 +370,23 @@ textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(
 .arbela-azala header p { margin: 0; font-size: 22px; }
 .arbela-azala header b { font-variant-numeric: tabular-nums; }
 .arbela-zenbakiak { opacity: .8; font-size: 19px !important; }
+.arbela-azala .arbela-erlojua { font: 700 64px/1 Caveat, cursive; font-variant-numeric: tabular-nums; color: #b9f3b0; margin: 2px 0 4px; }
+.arbela-azala .arbela-ixten { font-size: 20px; opacity: .85; }
+/* En el ordenador (o un proyector) la pizarra ocupa toda la pantalla, en columnas. */
+@media (min-width: 820px) {
+  .arbela { padding-left: 32px; padding-right: 32px; }
+  .arbela-azala { padding: 22px 28px 28px; }
+  .arbela-azala header { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 0 24px; text-align: left; }
+  .arbela-azala header .arbela-izena, .arbela-azala header h2, .arbela-azala header .arbela-zenbakiak { grid-column: 1; }
+  .arbela-azala header .arbela-ixten, .arbela-azala header .arbela-erlojua { grid-column: 2; text-align: right; }
+  .arbela-azala header .arbela-ixten { grid-row: 1; } .arbela-azala header .arbela-erlojua { grid-row: 2 / span 2; }
+  .arbela-azala h2 { font-size: 64px; }
+  .arbela-azala .arbela-erlojua { font-size: 110px; }
+  .klarionak { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px 28px; align-items: start; }
+  .klarionak li { font-size: 28px; }
+  .arbela-oina { grid-template-columns: 1fr auto; align-items: start; }
+  .arbela-oina > .botoia.zabala { width: auto; }
+}
 .klarionak { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
 .klarionak li { font-size: 24px; line-height: 1.15; transform: rotate(var(--r, 0deg)); text-shadow: 0 0 1px rgba(255, 255, 255, .5); }
 .klarionak li p { margin: 0; overflow-wrap: anywhere; }
@@ -689,7 +708,7 @@ const T = {
     arbelaHutsik: "Arbela hutsik dago oraindik: idatzi lehena!", iruzkinak: "iruzkin", iruzkinIrud: "Idatzi arbelean…", bidaliIruzkina: "Bidali",
     sartuIruzkintzeko: "Sartu arbelean idazteko",
     funtzioak: "Zuzeneko emanaldiak", funtzioakAzal: "Programatu emanaldi bat: ordua iristean, «Zuzenean» agertuko da guztien aplikazioan. Amaitzean, sakatu «Amaitu obra» arbela irekitzeko.",
-    funtzioaSortu: "+ Programatu emanaldia", funtzioGabe: "Ez dago emanaldirik programatuta.", obraEtiketa: "Obra", obraBerria: "Obra berria…", tituluaEtiketa: "Izenburua",
+    funtzioaSortu: "+ Programatu emanaldia", funtzioaEzeztatu: "Bertan behera utzi", arbelaGarbitu: "Arbela ezabatu", funtzioGabe: "Ez dago emanaldirik programatuta.", obraEtiketa: "Obra", obraBerria: "Obra berria…", tituluaEtiketa: "Izenburua",
     generoEtiketa: "Generoa", lekua: "Lekua", data: "Eguna", ordua: "Ordua", arbelaMinutuak: "Arbelaren iraupena (minutuak)", programatu: "Programatu",
     arbelaMin: n => `arbela ${n} min`, tituluaFalta: "Idatzi obraren izenburua.", dataOkerra: "Aukeratu eguna eta ordua.",
     egoerak: { laster: "Programatuta", zuzenean: "Zuzenean", arbela: "Arbela irekita", amaituta: "Amaituta", iraganda: "Amaituta" },
@@ -762,7 +781,7 @@ const T = {
     arbelaHutsik: "La pizarra todavía está vacía: ¡escribe lo primero!", iruzkinak: "comentarios", iruzkinIrud: "Escribe en la pizarra…", bidaliIruzkina: "Enviar",
     sartuIruzkintzeko: "Entra para escribir en la pizarra",
     funtzioak: "Funciones en directo", funtzioakAzal: "Programa una función: cuando llegue la hora, saldrá «En directo» en la app de todos. Al acabar, pulsa «Terminar obra» para abrir la pizarra.",
-    funtzioaSortu: "+ Programar función", funtzioGabe: "No hay funciones programadas.", obraEtiketa: "Obra", obraBerria: "Obra nueva…", tituluaEtiketa: "Título",
+    funtzioaSortu: "+ Programar función", funtzioaEzeztatu: "Cancelar", arbelaGarbitu: "Borrar pizarra", funtzioGabe: "No hay funciones programadas.", obraEtiketa: "Obra", obraBerria: "Obra nueva…", tituluaEtiketa: "Título",
     generoEtiketa: "Género", lekua: "Lugar", data: "Fecha", ordua: "Hora", arbelaMinutuak: "Duración de la pizarra (minutos)", programatu: "Programar",
     arbelaMin: n => `pizarra de ${n} min`, tituluaFalta: "Escribe el título de la obra.", dataOkerra: "Elige la fecha y la hora.",
     egoerak: { laster: "Programada", zuzenean: "En directo", arbela: "Pizarra abierta", amaituta: "Terminada", iraganda: "Terminada" },
@@ -2063,7 +2082,7 @@ function zuzenTic(behartu) {
   if (!ZUZEN.pizarra && !pantailaModua) {
     const itxita = arbelakItxita();
     const f = ZUZEN.funciones.find(f => funcionEgoera(f, ahora) === "arbela" && !itxita.has(f.id));
-    if (f) arbelaIreki(f.id, haySesion() && f.creada_por === SARE.perfil.id ? "atzera" : "arbela");
+    if (f) arbelaIreki(f.id, "arbela");
   }
 }
 
@@ -2096,8 +2115,8 @@ function htmlFuntzioZerrenda() {
     return `<li class="e-${e}"><div><b>${esc(o ? izena(o) : f.titulo)}</b><small>${orduaTestua(f.empieza)}${f.lugar ? ` · ${esc(f.lugar)}` : ""} · ${tx.arbelaMin(f.minutos_pizarra)}</small>
         <span class="egoera-txip e-${e}">${tx.egoerak[e]}${e === "arbela" ? ` · <b data-atzera="${f.id}">${geratzen(f)}</b>` : ""}</span></div>
       <div class="botoiak">${e === "zuzenean" ? `<button type="button" class="botoia" data-amaitu="${f.id}">${ZUZEN.armatua === f.id ? tx.ziur : tx.amaituObra}</button>` : ""}
-        ${e === "arbela" ? `<button type="button" class="botoia" data-arbela="${f.id}" data-arbela-modua="atzera">${tx.atzeraKontua}</button>` : ""}
-        <button type="button" class="esteka" data-funtzioa-ezabatu="${f.id}">${ZUZEN.armatua === -f.id ? tx.ziurEzabatu : tx.ezabatuIritzia}</button></div></li>`;
+        ${e === "arbela" ? `<button type="button" class="botoia" data-arbela="${f.id}">${tx.arbelaIkusi}</button>` : ""}
+        <button type="button" class="esteka" data-funtzioa-ezabatu="${f.id}">${ZUZEN.armatua === -f.id ? tx.ziurEzabatu : tx.funtzioaEzeztatu}</button></div></li>`;
   }).join("")}</ul>`;
 }
 function htmlFuntzioakAdmin() {
@@ -2148,8 +2167,18 @@ async function funtzioaAmaitu(id) {
   if (error) return;
   const f = data?.[0]; if (f) ZUZEN.funciones = ZUZEN.funciones.map(x => x.id === f.id ? f : x);
   zuzenTic(true);
-  arbelaIreki(id, "atzera");
+  arbelaIreki(id, "arbela");
   funcionesKargatu();
+}
+// «Borrar pizarra»: vacía la pizarra para todo el mundo (comentarios fuera, valoraciones ocultas).
+async function arbelaGarbitu(id) {
+  const gakoa = `g${id}`;
+  if (ZUZEN.armatua !== gakoa) { armatu(gakoa); if (ZUZEN.pizarra) arbelaMarraztu(); setTimeout(() => { if (ZUZEN.pizarra) arbelaMarraztu(); }, 4100); return; }
+  ZUZEN.armatua = null;
+  const { data, error } = await SARE.sb.rpc("borrar_pizarra", { p_id: id });
+  if (error) return;
+  const f = data?.[0]; if (f) ZUZEN.funciones = ZUZEN.funciones.map(x => x.id === f.id ? f : x);
+  if (ZUZEN.pizarra) { ZUZEN.pizarra.f = f || ZUZEN.pizarra.f; ZUZEN.pizarra.zerrenda = []; arbelaMarraztu(); pizarraKargatu(); }
 }
 async function funtzioaEzabatu(id) {
   if (!armatu(-id)) return;
@@ -2184,7 +2213,8 @@ function arbelaMarraztu() {
   const o = obraCat(funcionObra(p.f)), e = funcionEgoera(p.f), irekita = e === "arbela";
   p.egoera = e;
   const goia = `<div class="arbela-goia"><button type="button" class="atzera" data-arbela-itxi aria-label="${tx.atzera}">${ICONOS.itxi}</button>
-    ${p.f.creada_por === SARE.perfil?.id ? `<button type="button" class="esteka" data-arbela-modua="${p.modua === "atzera" ? "arbela" : "atzera"}">${p.modua === "atzera" ? tx.arbelaIkusi : tx.atzeraKontua}</button>` : ""}</div>`;
+    ${esAdmin() ? `<div class="arbela-admin"><button type="button" class="esteka" data-arbela-modua="${p.modua === "atzera" ? "arbela" : "atzera"}">${p.modua === "atzera" ? tx.arbelaIkusi : tx.atzeraKontua}</button>
+      <button type="button" class="botoia marino" data-arbela-garbitu="${p.f.id}">${ZUZEN.armatua === `g${p.f.id}` ? tx.ziur : tx.arbelaGarbitu}</button></div>` : ""}</div>`;
   if (p.modua === "atzera") {
     el.innerHTML = `${goia}<div class="atzera-pantaila"><p class="zuzenean"><i></i>${irekita ? tx.arbelaIrekita : tx.arbelaItxitaIzen}</p>
       <h2>${esc(o ? izena(o) : p.f.titulo)}</h2>
@@ -2194,7 +2224,7 @@ function arbelaMarraztu() {
   } else {
     el.innerHTML = `${goia}<div class="arbela-markoa"><div class="arbela-azala">
         <header><span class="arbela-izena">${tx.arbela}</span><h2>${esc(o ? izena(o) : p.f.titulo)}</h2>
-          <p>${irekita ? `${tx.arbelaIxten} <b data-atzera="${p.f.id}">${geratzen(p.f)}</b>` : tx.arbelaItxita}</p><p class="arbela-zenbakiak" id="arbela-zenbakiak"></p></header>
+          ${irekita ? `<p class="arbela-ixten">${tx.arbelaIxten}</p><p class="arbela-erlojua" data-atzera="${p.f.id}" role="timer">${geratzen(p.f)}</p>` : `<p>${tx.arbelaItxita}</p>`}<p class="arbela-zenbakiak" id="arbela-zenbakiak"></p></header>
         <ul class="klarionak" id="arbela-zerrenda" aria-live="polite"></ul></div></div>
       <div class="arbela-oina">${irekita ? (haySesion() ? `<form id="iruzkin-form" class="iruzkin-form"><input name="testua" maxlength="280" placeholder="${tx.iruzkinIrud}" aria-label="${tx.iruzkinIrud}" autocomplete="off"><button type="submit" class="botoia">${tx.bidaliIruzkina}</button></form><p class="oharra" id="iruzkin-oharra" aria-live="polite"></p>`
           : `<button type="button" class="esteka" data-arbela-sartu>${tx.sartuIruzkintzeko}</button>`) : ""}
@@ -2238,6 +2268,7 @@ function zuzenKlik(e) {
   if ((el = q("[data-arbela]"))) { arbelaIreki(Number(el.dataset.arbela), el.dataset.arbelaModua || "arbela"); return true; }
   if ((el = q("[data-arbela-modua]"))) { if (ZUZEN.pizarra) { ZUZEN.pizarra.modua = el.dataset.arbelaModua; arbelaMarraztu(); } return true; }
   if ((el = q("[data-amaitu]"))) { funtzioaAmaitu(Number(el.dataset.amaitu)); return true; }
+  if ((el = q("[data-arbela-garbitu]"))) { arbelaGarbitu(Number(el.dataset.arbelaGarbitu)); return true; }
   if ((el = q("[data-funtzioa-ezabatu]"))) { funtzioaEzabatu(Number(el.dataset.funtzioaEzabatu)); return true; }
   return false;
 }
