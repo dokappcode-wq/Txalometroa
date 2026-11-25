@@ -14,17 +14,17 @@
 <title>Txalometroa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jersey+10&family=Raleway:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap">
 <style>
-/* Diseño: fondo gris de las referencias con resplandores rojo y crema, letra pixelada
+/* Diseño: fondo gris de las referencias con resplandores rojo y crema, tipografía serif
    para titulares y cifras, tarjetas crema con el logo de Hika. Una sola columna móvil. */
 :root {
   --gris: #575757; --gris-2: #444; --gris-3: #2a2a2a; --negro: #0d0d0d;
   --rojo: #c80000; --rojo-logo: #c8361b; --rojo-vivo: #ff3c42;
   --crema: #fffdf0; --crema-logo: #fdeec7; --marino: #0b0a3a;
   --tinta: #fffdf0; --tinta-2: rgba(255, 253, 240, .74); --tinta-3: rgba(255, 253, 240, .5);
-  --pixel: "Jersey 10", "Pixelify Sans", ui-monospace, monospace;
-  --texto: Raleway, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --titular: "Playfair Display", Georgia, serif;
+  --texto: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
   --arriba: env(safe-area-inset-top, 0px); --abajo: env(safe-area-inset-bottom, 0px);
   --lado-i: max(16px, env(safe-area-inset-left, 0px)); --lado-d: max(16px, env(safe-area-inset-right, 0px));
   color-scheme: dark;
@@ -40,37 +40,41 @@ body {
 }
 button { font: inherit; color: inherit; cursor: pointer; }
 img { max-width: 100%; display: block; }
-.pixel { font-family: var(--pixel); font-weight: 400; letter-spacing: .02em; line-height: .95; }
-button:focus-visible, a:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--crema-logo); outline-offset: 2px; }
+.pixel { font-family: var(--titular); font-weight: 400; letter-spacing: .02em; line-height: .95; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--crema-logo); outline-offset: 2px; }
 
 /* ---------- Cabecera y navegación */
 header.goiburua { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 10px;
   padding: calc(var(--arriba) + 10px) var(--lado-d) 10px var(--lado-i); background: rgba(42, 42, 42, .82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .goiburua .marka { display: flex; align-items: center; gap: 8px; margin-right: auto; }
-.goiburua .marka .tile { width: 36px; height: 36px; border-radius: 9px; background: var(--crema-logo); padding: 4px; }
+.goiburua .marka .tile { flex-shrink: 0; width: 36px; height: 36px; border-radius: 9px; background: var(--crema-logo); padding: 4px; }
 .goiburua .marka .tile svg { width: 100%; height: 100%; }
-.goiburua .marka b { font: 400 30px var(--pixel); letter-spacing: .04em; }
+.goiburua .marka b { font: 700 22px var(--titular); letter-spacing: .04em; }
 .goiburua .ikono { width: 40px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 10px; background: rgba(255, 255, 255, .08); }
 .goiburua .ikono svg { width: 22px; height: 22px; }
-.goiburua .instalatu { border: 1px solid var(--crema); background: var(--marino); padding: 7px 12px; font: 400 18px var(--pixel); text-decoration: underline; letter-spacing: .04em; }
+.goiburua .ikono { flex-shrink: 0; }
+@media (max-width: 420px) { .goiburua .marka b { font-size: 18px; } }
+.goiburua .instalatu { border: 1px solid var(--crema); background: var(--marino); padding: 7px 12px; font: 400 18px var(--titular); text-decoration: underline; letter-spacing: .04em; }
+@media (max-width: 440px) { .goiburua .instalatu { display: none; } }
 main { padding: 8px var(--lado-d) calc(var(--abajo) + 96px) var(--lado-i); max-width: 620px; margin: 0 auto; }
-nav.oina { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: repeat(4, 1fr);
+nav.oina { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
   padding: 6px max(8px, env(safe-area-inset-left, 0px)) calc(var(--abajo) + 6px) max(8px, env(safe-area-inset-right, 0px));
   background: rgba(13, 13, 13, .92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid rgba(255, 255, 255, .08); }
-nav.oina button { border: 0; background: none; display: grid; justify-items: center; gap: 2px; padding: 6px 2px; color: var(--tinta-3); font: 400 15px var(--pixel); letter-spacing: .05em; }
+nav.oina button { border: 0; background: none; display: grid; justify-items: center; gap: 2px; padding: 6px 2px; color: var(--tinta-3); font: 600 12px var(--texto); letter-spacing: .03em; }
+@media (max-width: 400px) { nav.oina button { font-size: 11px; } }
 nav.oina button svg { width: 26px; height: 26px; }
 nav.oina button[aria-current="page"] { color: var(--tinta); }
 nav.oina button[aria-current="page"] svg { color: var(--rojo-vivo); }
 
 /* ---------- Piezas comunes */
-h1.titulua { font: 400 44px/0.95 var(--pixel); margin: 18px 0 4px; letter-spacing: .02em; text-wrap: balance; }
-h2.azpititulua { font: 400 30px/1 var(--pixel); margin: 30px 0 10px; letter-spacing: .02em; }
+h1.titulua { font: 400 44px/0.95 var(--titular); margin: 18px 0 4px; letter-spacing: .02em; text-wrap: balance; }
+h2.azpititulua { font: 400 30px/1 var(--titular); margin: 30px 0 10px; letter-spacing: .02em; }
 .azalpena { color: var(--tinta-2); margin: 0 0 14px; font-size: 15px; max-width: 60ch; }
 .txip { display: inline-flex; align-items: center; gap: 6px; font: 600 12px var(--texto); letter-spacing: .06em; text-transform: uppercase;
   padding: 4px 9px; border-radius: 999px; background: rgba(13, 13, 13, .7); color: var(--tinta); }
 .txip i { width: 8px; height: 8px; border-radius: 50%; background: var(--c, #fff); display: inline-block; }
 .botoia { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 4px; padding: 13px 20px;
-  font: 400 24px/1 var(--pixel); letter-spacing: .06em; background: var(--rojo); color: var(--crema); text-transform: uppercase; }
+  font: 400 24px/1 var(--titular); letter-spacing: .06em; background: var(--rojo); color: var(--crema); text-transform: uppercase; }
 .botoia.marino { background: var(--marino); border: 1px solid var(--crema); text-decoration: underline; text-underline-offset: 3px; }
 .botoia.krema { background: var(--crema); color: var(--negro); }
 .botoia.zabala { width: 100%; }
@@ -80,7 +84,7 @@ h2.azpititulua { font: 400 30px/1 var(--pixel); margin: 30px 0 10px; letter-spac
 
 /* Medidor: tarjeta crema con el logo que se llena y la nota */
 .neurgailua { background: var(--crema-logo); color: var(--negro); border-radius: 14px; padding: 10px 10px 8px; display: grid; justify-items: center; gap: 2px; --hueco: var(--crema-logo); }
-.neurgailua .zbk { font: 400 34px/1 var(--pixel); }
+.neurgailua .zbk { font: 400 34px/1 var(--titular); }
 .neurgailua .zbk small { font-size: 18px; opacity: .6; }
 .neurgailua .zer { font: 600 10px var(--texto); letter-spacing: .08em; text-transform: uppercase; opacity: .65; }
 .neurgailua.handia { padding: 18px 18px 12px; }
@@ -93,7 +97,7 @@ h2.azpititulua { font: 400 30px/1 var(--pixel); margin: 30px 0 10px; letter-spac
 .obra-txartela .argazkia img { width: 100%; height: 100%; object-fit: cover; }
 .obra-txartela .argazkia::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.25), transparent 30%, transparent 45%, rgba(13,13,13,.92)); }
 .obra-txartela .txip { position: absolute; top: 12px; left: 12px; z-index: 1; }
-.obra-txartela .izena { position: absolute; left: 16px; right: 120px; bottom: 14px; z-index: 1; margin: 0; font: 400 40px/.9 var(--pixel); letter-spacing: .02em; text-wrap: balance; }
+.obra-txartela .izena { position: absolute; left: 16px; right: 120px; bottom: 14px; z-index: 1; margin: 0; font: 400 40px/.9 var(--titular); letter-spacing: .02em; text-wrap: balance; }
 .obra-txartela .neurgailua { position: absolute; right: 12px; bottom: -6px; z-index: 2; width: 96px; box-shadow: 0 8px 22px rgba(0,0,0,.4); }
 .obra-txartela .neurgailua .zbk { font-size: 30px; }
 .obra-txartela .behea { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 18px 16px 16px; }
@@ -106,9 +110,9 @@ h2.azpititulua { font: 400 30px/1 var(--pixel); margin: 30px 0 10px; letter-spac
 .txiki { scroll-snap-align: start; border: 0; padding: 0; text-align: left; background: var(--gris-3); border-radius: 14px; overflow: hidden; }
 .txiki .argazkia { aspect-ratio: 4 / 3; background: #4d3733; position: relative; }
 .txiki .argazkia img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.85); }
-.txiki .ikusita { position: absolute; top: 8px; right: 8px; background: var(--rojo); color: var(--crema); font: 400 15px var(--pixel); padding: 2px 7px; border-radius: 3px; letter-spacing: .05em; }
+.txiki .ikusita { position: absolute; top: 8px; right: 8px; background: var(--rojo); color: var(--crema); font: 600 12px var(--texto); padding: 2px 7px; border-radius: 3px; letter-spacing: .05em; }
 .txiki .testua { padding: 8px 10px 10px; }
-.txiki .testua b { display: block; font: 400 24px/1 var(--pixel); }
+.txiki .testua b { display: block; font: 400 24px/1 var(--titular); }
 .txiki .testua span { font-size: 12px; color: var(--tinta-2); }
 
 /* ---------- Ficha de obra */
@@ -116,103 +120,82 @@ h2.azpititulua { font: 400 30px/1 var(--pixel); margin: 30px 0 10px; letter-spac
 .fitxa-azala img { width: 100%; height: 100%; object-fit: cover; }
 .fitxa-azala::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.35), transparent 30%, transparent 50%, var(--gris) 98%); }
 .fitxa-azala .atzera { position: absolute; top: 12px; left: var(--lado-i); z-index: 2; }
-.fitxa-azala h1 { position: absolute; left: var(--lado-i); right: var(--lado-d); bottom: 4px; z-index: 2; margin: 0; font: 400 58px/.88 var(--pixel); text-wrap: balance; }
+.fitxa-azala h1 { position: absolute; left: var(--lado-i); right: var(--lado-d); bottom: 4px; z-index: 2; margin: 0; font: 400 58px/.88 var(--titular); text-wrap: balance; }
 .atzera { width: 40px; height: 40px; border-radius: 50%; border: 0; background: rgba(13, 13, 13, .6); display: grid; place-items: center; }
 .atzera svg { width: 22px; height: 22px; }
 .meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 10px 0 18px; color: var(--tinta-2); font-size: 14px; }
 .publikoa { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 16px; align-items: center; background: rgba(13, 13, 13, .35); border-radius: 18px; padding: 14px; }
-.publikoa h3 { margin: 0 0 4px; font: 400 26px/1 var(--pixel); }
+.publikoa h3 { margin: 0 0 4px; font: 400 26px/1 var(--titular); }
 .publikoa p { margin: 0; font-size: 14px; color: var(--tinta-2); }
 .alderdiak { display: grid; gap: 12px; margin-top: 18px; }
 .alderdia { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 10px; align-items: center; }
 .alderdia .izen { font-size: 14px; color: var(--tinta-2); }
-.alderdia .zbk { font: 400 24px/1 var(--pixel); }
+.alderdia .zbk { font: 400 24px/1 var(--titular); }
 .maskara-neurria { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; max-width: 280px; }
 .zurea { margin-top: 18px; padding: 14px; border-radius: 16px; border: 1px dashed rgba(255, 253, 240, .35); }
-.zurea h3 { margin: 0 0 6px; font: 400 24px/1 var(--pixel); }
+.zurea h3 { margin: 0 0 6px; font: 400 24px/1 var(--titular); }
 .zurea p { margin: 4px 0 0; color: var(--tinta-2); font-size: 14px; }
 .ekintza { position: sticky; bottom: calc(var(--abajo) + 84px); margin-top: 22px; z-index: 5; }
 
-/* ---------- Valorar */
-.baloratu { position: fixed; inset: 0; z-index: 50; background: var(--gris-3); overflow-y: auto; padding: calc(var(--arriba) + 12px) var(--lado-d) calc(var(--abajo) + 110px) var(--lado-i); }
-.baloratu .goia { display: flex; align-items: center; gap: 12px; max-width: 620px; margin: 0 auto; }
-.baloratu .urratsak { flex: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-.baloratu .urratsak i { height: 4px; border-radius: 2px; background: rgba(255, 255, 255, .2); }
-.baloratu .urratsak i.eginda { background: var(--rojo-vivo); }
-.baloratu .edukia { max-width: 620px; margin: 0 auto; }
-.baloratu h2 { font: 400 46px/.95 var(--pixel); margin: 22px 0 4px; }
-.galdera { padding: 16px 0; border-bottom: 1px solid rgba(255, 255, 255, .08); }
-.galdera .testua { font-weight: 600; margin: 0 0 10px; }
-.maskarak { display: grid; grid-template-columns: repeat(5, 1fr) 44px; gap: 6px; align-items: center; touch-action: none; user-select: none; -webkit-user-select: none; border-radius: 10px; }
-.maskarak button { border: 0; padding: 0; background: none; transition: transform .12s; }
-.maskarak button:active { transform: scale(.94); }
-.maskarak output { font: 400 30px/1 var(--pixel); text-align: right; color: var(--tinta-3); }
-.maskarak output.jarrita { color: var(--crema); }
-details.gehiago summary { cursor: pointer; padding: 14px 0; color: var(--tinta-2); font-weight: 600; }
-.aukerak { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0 18px; }
-.aukera { border: 2px solid rgba(255, 255, 255, .14); border-radius: 14px; background: rgba(13, 13, 13, .3); padding: 12px 10px; display: grid; justify-items: center; gap: 6px; font-weight: 600; }
-.aukera .irud { display: flex; gap: 4px; height: 52px; }
-.aukera .irud svg { width: 46px; height: 52px; }
-.aukera[aria-pressed="true"] { border-color: var(--rojo-vivo); background: rgba(200, 0, 0, .22); }
-label.idatzi { display: grid; gap: 6px; margin: 16px 0; font-weight: 600; }
-label.idatzi span { font-weight: 400; color: var(--tinta-3); font-size: 13px; }
-textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(--texto); color: var(--negro); background: var(--crema); border: 0; border-radius: 10px; padding: 10px 12px; }
-.baloratu .beheko { position: fixed; left: 0; right: 0; bottom: 0; z-index: 51; display: flex; gap: 10px; padding: 12px var(--lado-d) calc(var(--abajo) + 12px) var(--lado-i); background: linear-gradient(180deg, transparent, var(--gris-3) 30%); }
-.baloratu .beheko > * { max-width: 620px; }
-.baloratu .beheko .botoia { flex: 1; }
-.oharra { color: #ffb3b3; min-height: 1.4em; font-size: 14px; margin: 8px 0 0; }
+/* ---------- Cuenta, opiniones y feed */
+.dialogo { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0;
+  color: var(--tinta); background: var(--gris-3); border: 0; overflow-y: auto;
+  padding: calc(var(--arriba) + 12px) var(--lado-d) calc(var(--abajo) + 24px) var(--lado-i); }
+.dialogo .edukia { max-width: 580px; margin: 0 auto; }
+.dialogo fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.dialogo label { display: grid; gap: 6px; margin: 16px 0; font-weight: 600; }
+.dialogo input, .dialogo textarea { width: 100%; font: 16px/1.45 var(--texto); color: var(--negro); background: var(--crema);
+  border: 0; border-radius: 10px; padding: 10px 12px; }
+.dialogo textarea { min-height: 160px; resize: vertical; }
+.dialogo .ekintzak { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.dialogo button:disabled { opacity: .65; cursor: wait; }
+.oharra { color: #ffb3b3; font-size: 14px; margin: 8px 0; }
+.oharra:empty { margin: 0; }
+.feed-lista { display: grid; gap: 12px; margin: 16px 0; }
+.iritzia { background: var(--gris-3); border-radius: 12px; padding: 14px 16px; overflow-wrap: anywhere; }
+.iritzia h2 { font: 400 26px/1 var(--titular); margin: 0; }
+.iritzia time { color: var(--tinta-2); font-size: 13px; }
+.iritzia p { margin: 8px 0 0; white-space: pre-wrap; }
 
-/* Resultado */
-.emaitza { text-align: center; padding-top: 30px; }
-.emaitza .neurgailua { width: min(240px, 70vw); margin: 18px auto 10px; }
-.emaitza h2 { font: 400 64px/.9 var(--pixel); margin: 0; }
-.emaitza .alderaketa { display: flex; justify-content: center; gap: 22px; margin: 10px 0 18px; }
-.emaitza .alderaketa div { display: grid; }
-.emaitza .alderaketa b { font: 400 40px/1 var(--pixel); }
-.emaitza .alderaketa span { font-size: 12px; color: var(--tinta-2); text-transform: uppercase; letter-spacing: .08em; }
-.izar-berria { display: inline-flex; gap: 8px; align-items: center; background: rgba(13, 13, 13, .4); padding: 10px 14px; border-radius: 999px; margin-bottom: 18px; }
-.konfetia { position: fixed; inset: 0; pointer-events: none; z-index: 90; }
-
-/* ---------- Butacas */
-.zuzenean { display: inline-flex; align-items: center; gap: 8px; font: 400 20px var(--pixel); letter-spacing: .08em; color: var(--rojo-vivo); }
-.zuzenean i { width: 10px; height: 10px; border-radius: 50%; background: var(--rojo-vivo); animation: taupada 1.2s infinite; }
-@keyframes taupada { 50% { opacity: .25; transform: scale(.7); } }
-.kontagailua { display: flex; align-items: baseline; gap: 10px; margin: 6px 0 2px; }
-.kontagailua b { font: 400 76px/.85 var(--pixel); font-variant-numeric: tabular-nums; }
-.kontagailua span { color: var(--tinta-2); }
-.betetzea { height: 8px; border-radius: 4px; background: rgba(255, 255, 255, .12); overflow: hidden; margin: 6px 0 4px; }
-.betetzea i { display: block; height: 100%; background: var(--rojo-vivo); transition: width .6s; }
-.aretoa { margin: 18px 0 8px; padding: 14px 10px 16px; background: var(--negro); border-radius: 18px; overflow-x: auto; }
-.eszenatokia { margin: 0 auto 18px; width: 82%; text-align: center; background: var(--crema-logo); color: var(--negro); font: 400 22px/1 var(--pixel); letter-spacing: .3em; padding: 8px 0 6px; border-radius: 3px 3px 40% 40% / 3px 3px 14px 14px; }
-.ilarak { display: grid; gap: 5px; min-width: 330px; }
-.ilara { display: grid; grid-template-columns: 14px repeat(9, 1fr) 10px repeat(9, 1fr) 14px; gap: 4px; align-items: center; }
-.ilara > span { font: 400 13px var(--pixel); color: var(--tinta-3); text-align: center; }
-.butaka { aspect-ratio: 1 / .9; border: 0; padding: 0; border-radius: 4px 4px 2px 2px; background: #333; transition: background .4s, transform .25s; }
-.butaka.hartuta { background: var(--rojo); }
-.butaka.berria { animation: eseri .7s ease-out; }
-@keyframes eseri { 0% { transform: scale(1.6); background: var(--crema); } 100% { transform: scale(1); } }
-.butaka.nirea { background: var(--crema); box-shadow: 0 0 0 2px var(--crema-logo), 0 0 14px 2px rgba(253, 238, 199, .8); }
-.legenda { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--tinta-2); margin: 8px 0; }
-.legenda i { display: inline-block; width: 12px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
-.jarioa { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 4px; font-size: 14px; color: var(--tinta-2); min-height: 92px; }
-.jarioa li { animation: sartu .4s ease-out; }
-.jarioa b { color: var(--tinta); font-family: var(--pixel); font-size: 18px; font-weight: 400; }
-@keyframes sartu { from { opacity: 0; transform: translateY(-6px); } }
-.simulazioa { font-size: 13px; color: var(--tinta-3); border-left: 3px solid var(--rojo); padding-left: 10px; margin-top: 14px; }
+/* ---------- Escenas */
+.escena { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none;
+  margin: 0; padding: 0; border: 0; background: #0d0d0d; color: var(--crema); }
+.escena iframe { width: 100%; height: 100%; border: 0; pointer-events: none; }
+.escena-controles { position: absolute; bottom: calc(var(--abajo) + 18px); inset-inline: 16px;
+  display: flex; justify-content: center; flex-wrap: wrap; align-items: center; gap: 8px; text-align: center; }
+.escena[data-tipo="sin-conexion"] .escena-controles { background: rgba(13, 13, 13, .92); border-radius: 10px; padding: 12px; }
+.escena-texto { width: 100%; margin: 0; font: 700 24px var(--titular); }
+.escena:not([data-tipo="sin-conexion"]) .escena-texto { position: absolute; clip-path: inset(50%); }
+.escena .botoia { font: 600 14px var(--texto); text-transform: none; letter-spacing: 0; }
+.maskarak-puntuacion { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px; }
+.maskarak-puntuacion label { position: relative; display: block; margin: 0; cursor: pointer; }
+.maskarak-puntuacion input { position: absolute; opacity: 0; width: 1px; }
+.maskarak-puntuacion input:focus-visible + span { outline: 2px solid var(--crema); }
+.maskarak-puntuacion span { display: grid; justify-items: center; padding: 4px 0; }
+.maskarak-puntuacion input:checked + span { background: var(--marino); border-radius: 6px; outline: 1px solid var(--crema); }
+.maskarak-puntuacion svg { width: 100%; max-width: 28px; }
+.maskara-gabe input { width: auto; }
+.feed-cartel { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; border-radius: 8px; margin-block: 12px; }
+.feed-acciones { display: flex; gap: 8px; flex-wrap: wrap; margin-block-start: 12px; }
+.feed-acciones button { border: 1px solid rgba(255,255,255,.28); background: none; border-radius: 20px; padding: 6px 12px; }
+.feed-acciones button[aria-pressed="true"] { color: #ff8f9a; border-color: currentColor; }
+.iritzia .maskara-neurria { margin-block: 8px; }
+.iritzia small { color: var(--tinta-2); }
+#komentarioak .iritzia { border: 1px solid rgba(255,255,255,.15); margin-block: 8px; }
 
 /* ---------- Constelación */
 .zerua { position: relative; margin: 14px calc(-1 * var(--lado-d)) 0 calc(-1 * var(--lado-i)); background: radial-gradient(circle at 50% 46%, #1d1630 0%, #0b0a1a 60%, #050509 100%); border-radius: 0; overflow: hidden; touch-action: manipulation; }
 .zerua canvas { display: block; width: 100%; height: auto; }
 .izar-txartela { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 12px; align-items: center; background: var(--crema); color: var(--negro); border-radius: 14px; padding: 10px; margin-top: 12px; }
 .izar-txartela img { width: 92px; height: 70px; object-fit: cover; border-radius: 8px; }
-.izar-txartela b { display: block; font: 400 28px/1 var(--pixel); }
+.izar-txartela b { display: block; font: 400 28px/1 var(--titular); }
 .izar-txartela span { font-size: 13px; color: #444; }
 .izar-txartela .maskara-neurria { max-width: 170px; gap: 3px; margin-top: 4px; }
 .estatistikak { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 10px 0; }
 .estatistikak div { background: rgba(13, 13, 13, .35); border-radius: 12px; padding: 10px; }
-.estatistikak b { display: block; font: 400 38px/1 var(--pixel); }
+.estatistikak b { display: block; font: 400 38px/1 var(--titular); }
 .estatistikak span { font-size: 12px; color: var(--tinta-2); }
-.izena-konst { font: 400 30px/1 var(--pixel); color: var(--crema-logo); margin: 4px 0 0; }
+.izena-konst { font: 400 30px/1 var(--titular); color: var(--crema-logo); margin: 4px 0 0; }
 .generoak { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
 .hutsik { text-align: center; padding: 40px 10px; background: rgba(13, 13, 13, .3); border-radius: 18px; margin-top: 14px; display: grid; gap: 14px; justify-items: center; }
 .hutsik .ikur { width: 90px; }
@@ -223,7 +206,7 @@ textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(
 .wrapped-txartela { position: relative; overflow: hidden; border: 0; border-radius: 22px; padding: 22px 20px; min-height: 210px; text-align: left; display: grid; align-content: end; gap: 6px; }
 .wrapped-txartela.mundiala { background: var(--rojo); color: var(--crema); }
 .wrapped-txartela.pertsonala { background: var(--crema); color: var(--negro); }
-.wrapped-txartela b { font: 400 54px/.88 var(--pixel); position: relative; }
+.wrapped-txartela b { font: 400 54px/.88 var(--titular); position: relative; }
 .wrapped-txartela span { position: relative; font-weight: 600; }
 .wrapped-txartela .forma { position: absolute; width: 220px; right: -40px; top: -30px; opacity: .9; }
 .istorioa { position: fixed; inset: 0; z-index: 80; background: #000; color: var(--crema); overflow: hidden; }
@@ -241,36 +224,36 @@ textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(
 .diapo > * { position: relative; z-index: 1; }
 .diapo .forma { position: absolute; z-index: 0; pointer-events: none; }
 .diapo .goiburu { font: 600 13px var(--texto); letter-spacing: .18em; text-transform: uppercase; opacity: .85; }
-.diapo .erraldoia { font: 400 min(42vw, 230px)/.8 var(--pixel); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
-.diapo .handia { font: 400 min(15vw, 84px)/.9 var(--pixel); text-wrap: balance; }
-.diapo .ertaina { font: 400 min(9vw, 46px)/.95 var(--pixel); text-wrap: balance; }
+.diapo .erraldoia { font: 400 min(42vw, 230px)/.8 var(--titular); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.diapo .handia { font: 400 min(15vw, 84px)/.9 var(--titular); text-wrap: balance; }
+.diapo .ertaina { font: 400 min(9vw, 46px)/.95 var(--titular); text-wrap: balance; }
 .diapo p { margin: 0; font-size: 17px; max-width: 30ch; }
 .diapo .argazki { width: 78%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; transform: rotate(-3deg); box-shadow: 10px 10px 0 rgba(0, 0, 0, .35); }
 .diapo .neurgailua { width: 44%; max-width: 220px; }
 .diapo .zerrenda { display: grid; gap: 10px; }
 .diapo .zerrenda div { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 10px; align-items: center; }
-.diapo .zerrenda .zenb { font: 400 32px/1 var(--pixel); opacity: .7; }
-.diapo .zerrenda .izen { font: 400 30px/1 var(--pixel); }
+.diapo .zerrenda .zenb { font: 400 32px/1 var(--titular); opacity: .7; }
+.diapo .zerrenda .izen { font: 400 30px/1 var(--titular); }
 .diapo .zerrenda .bar { grid-column: 2 / -1; height: 12px; background: currentColor; opacity: .9; transform-origin: left; animation: hazi 1s ease-out both; }
 @keyframes hazi { from { transform: scaleX(0); } }
 .diapo .orduak { display: grid; grid-template-columns: repeat(24, 1fr); gap: 2px; align-items: end; height: 120px; }
 .diapo .orduak i { background: currentColor; opacity: .35; transform-origin: bottom; animation: gora .9s ease-out both; }
 .diapo .orduak i.max { opacity: 1; }
 @keyframes gora { from { transform: scaleY(0); } }
-.diapo .erdibitu { display: flex; height: 64px; border-radius: 6px; overflow: hidden; font: 400 28px var(--pixel); }
+.diapo .erdibitu { display: flex; height: 64px; border-radius: 6px; overflow: hidden; font: 400 28px var(--titular); }
 .diapo .erdibitu div { display: grid; place-items: center; animation: hazi 1s ease-out both; }
 .diapo .agertu { animation: agertu .7s ease-out both; }
 .diapo .agertu.b { animation-delay: .25s; } .diapo .agertu.c { animation-delay: .5s; } .diapo .agertu.d { animation-delay: .8s; }
 @keyframes agertu { from { opacity: 0; transform: translateY(18px); } }
-.diapo .aipua { font: 400 min(10vw, 48px)/1 var(--pixel); }
+.diapo .aipua { font: 400 min(10vw, 48px)/1 var(--titular); }
 
 /* ---------- Hoja de ajustes */
 .orria { position: fixed; inset: 0; z-index: 70; background: rgba(0, 0, 0, .55); display: grid; align-items: end; }
 .orria .barrua { background: var(--gris-3); border-radius: 22px 22px 0 0; padding: 18px var(--lado-d) calc(var(--abajo) + 22px) var(--lado-i); max-height: 85dvh; overflow-y: auto; }
-.orria h2 { font: 400 36px/1 var(--pixel); margin: 0 0 12px; }
+.orria h2 { font: 400 36px/1 var(--titular); margin: 0 0 12px; }
 .orria .lerroa { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, .08); }
 .orria .seg { display: inline-flex; border: 1px solid rgba(255, 255, 255, .25); border-radius: 8px; overflow: hidden; }
-.orria .seg button { border: 0; background: none; padding: 7px 14px; font: 400 20px var(--pixel); }
+.orria .seg button { border: 0; background: none; padding: 7px 14px; font: 400 20px var(--titular); }
 .orria .seg button[aria-pressed="true"] { background: var(--crema); color: var(--negro); }
 .orria .txikia { font-size: 13px; color: var(--tinta-2); margin: 4px 0 0; }
 .orria ol { padding-left: 20px; color: var(--tinta-2); font-size: 14px; }
@@ -291,16 +274,25 @@ textarea { width: 100%; min-height: 84px; resize: vertical; font: 16px/1.45 var(
 <header class="goiburua">
   <div class="marka"><span class="tile" id="marka-logoa"></span><b>TXALOMETROA</b></div>
   <button class="instalatu" id="instalatu" type="button" hidden></button>
+  <button class="ikono" id="kontua" type="button"></button>
   <button class="ikono" id="ezarpenak" type="button" aria-label="Ezarpenak / Ajustes">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
   </button>
 </header>
 <main id="edukia"></main>
 <nav class="oina" id="nabigazioa" aria-label="Atalak"></nav>
-<section class="baloratu" id="baloratu" hidden aria-modal="true" role="dialog"></section>
+<dialog class="dialogo" id="baloratu" aria-labelledby="iritzia-titulua"></dialog>
+<dialog class="dialogo" id="kontu-dialogoa" aria-labelledby="kontu-titulua"></dialog>
+<dialog class="dialogo" id="komentarioak" aria-labelledby="iruzkin-titulua"></dialog>
+<dialog class="escena" id="escena" aria-labelledby="escena-titulo">
+  <iframe sandbox="allow-scripts" tabindex="-1" aria-hidden="true"></iframe>
+  <div class="escena-controles"><h2 id="escena-titulo" class="escena-texto"></h2>
+    <button type="button" class="botoia" id="escena-reintentar" hidden></button>
+    <button type="button" class="botoia marino" id="escena-cerrar"></button>
+  </div>
+</dialog>
 <div class="istorioa" id="istorioa" hidden role="dialog" aria-modal="true"></div>
 <div class="orria" id="orria" hidden></div>
-<canvas class="konfetia" id="konfetia" hidden></canvas>
 
 <script type="text/plain" id="datos-iniciales" data-nombre="__NOMBRE__">__DATOS__</script>
 <script>
@@ -312,6 +304,7 @@ __NUCLEO__
 
 const CFG = __CONFIG__;
 const CATALOGO = __CATALOGO__;
+const KONTU_KONFIG = __KONTU_KONFIG__;
 const GENEROAK = CATALOGO.generos;
 const GEN_ORDEN = Object.keys(GENEROAK);
 const CLAVE = "txalometroa-mugikorra";
@@ -319,10 +312,10 @@ const EXPORT = aObjetos(parsearTexto(document.getElementById("datos-iniciales").
 const obraCat = id => CATALOGO.obras.find(o => o.id === id);
 const activas = () => CATALOGO.obras.filter(o => o.txalometroa && CFG.obras[o.txalometroa]);
 
-// Lo personal se guarda solo en el móvil: idioma, valoraciones y butaca.
+// El idioma y las valoraciones antiguas se guardan en este navegador.
 function cargar() {
   try { const g = JSON.parse(localStorage.getItem(CLAVE)); if (g && Array.isArray(g.valoraciones)) return g; } catch (e) { /* sin almacenamiento */ }
-  return { lang: (navigator.language || "eu").startsWith("es") ? "es" : "eu", valoraciones: [], butaka: null, pruebak: [] };
+  return { lang: (navigator.language || "eu").startsWith("es") ? "es" : "eu", valoraciones: [], pruebak: [] };
 }
 const G = cargar();
 G.pruebak ||= [];
@@ -332,40 +325,44 @@ const guardar = () => { try { localStorage.setItem(CLAVE, JSON.stringify(G)); } 
 
 const T = {
   eu: {
-    obrak: "Obrak", butakak: "Butakak", konst: "Konstelazioa", wrapped: "Wrapped",
+    obrak: "Obrak", konst: "Konstelazioa", wrapped: "Wrapped",
     orain: "Orain Txalometroan", orainAzal: "Ukitu obra bat bere iritziak ikusteko edo txalotzeko.",
-    errep: "Errepertorioa", errepAzal: "Hikaren aurreko lanak. Ikusi badituzu, gehitu zure konstelaziora.",
+    errep: "Errepertorioa", errepAzal: "Hikaren aurreko lanak. Aukeratu obra bat zure iritzia idazteko.",
     balorazio: n => `${n} balorazio`, gomendatu: p => `%${p}k gomendatuko luke`, txalotu: "Txalotu", ikusita: "Ikusita",
     zureNota: "Zure nota", publikoa: "Publikoa", publikoIritzia: "Publikoaren iritzia",
-    datuGabe: "Obra honek ez du daturik Txalometroan: ikusi baduzu, baloratu eta zure konstelazioan agertuko da.",
-    ikusiDut: "Ikusi dut · Baloratu", berriroBaloratu: "Berriro baloratu", zureTxaloa: "Zure txaloa",
+    datuGabe: "Obra honek ez du publikoaren notarik oraindik.",
+    ikusiDut: "Idatzi iritzia", zureTxaloa: "Zure txaloa",
     noiz: d => `Baloratua: ${d}`, mediaKalk: "Nota: satisfazioa, trama, aktoreak eta gomendioa.",
-    // Valorar
-    urratsa: ["Notak", "Emozioak", "Hitzak"],
-    notakAzal: "Ukitu maskarak: maskara erdia puntu bat da, osoa bi. Dramatik (1) komediara (10).",
-    gehiago: "Galdera gehiago", hurrengoa: "Hurrengoa", atzera: "Atzera", bidali: "Txalotu!", bidaltzen: "Bidaltzen…",
-    gutxienez: "Baloratu gutxienez lehen lau galderetako bat maskarekin.",
-    emozioGald: "Barre edo negar egin duzu?", emozioak: { barre: "Barre", negar: "Negar", biak: "Biak", ez: "Ez bata ez bestea" },
-    uneHori: "Zein izan zen une hori?", hunkitu: "Zerk hunkitu zaitu gehien?",
-    hitzakAzal: "Nahi baduzu, kontatu gehiago. Erantzun guztiak aukerakoak dira.",
-    zertaz: "Zertaz zihoan antzezlana?", pertsonaia: "Zein izan da zure pertsonaia gogokoena, eta zergatik?",
-    gatazka: "Zein da obraren arazo edo gatazka nagusia?", konpondu: "Nola konpondu zela uste duzu gatazka?",
-    aukerakoa: "aukerakoa",
-    eskerrik: "Eskerrik asko!", izarBerria: "Izar berri bat piztu da zure konstelazioan", ikusiKonst: "Ikusi konstelazioa", itzuli: "Obretara itzuli",
+    // Cuenta y opiniones (revisar los textos nuevos con un hablante nativo).
+    kontua: "Kontua", sartu: "Hasi saioa", alta: "Sortu kontua", irten: "Itxi saioa", itxi: "Itxi",
+    email: "Helbide elektronikoa", pasahitza: "Pasahitza", pasahitzLuzera: "Gutxienez 8 karaktere.",
+    jarioa: "Jarioa", jarioHutsik: "Oraindik ez dago iritzirik.", jarioSartu: "Hasi saioa iritziak ikusteko eta parte hartzeko.",
+    gustuko: "Atsegin dut", kenduGustuko: "Kendu atsegitea", iruzkinak: "Iruzkinak", iruzkina: "Idatzi iruzkina", iruzkindu: "Bidali",
+    iruzkinGabe: "Oraindik ez dago iruzkinik.", ikuslea: "Ikuslea", maskaraNota: "Zure puntuazioa (aukerakoa)", maskaraGabe: "Puntuaziorik gabe",
+    sinConexion: "Konexiorik ez", navegar: "Jarraitu konexiorik gabe", saltar: "Saltatu animazioa", konektatu: "Egokitu konexioa eta saiatu berriro",
+    iritziPublikoa: "Kontua duten pertsonek zure iritzia eta izengoitia ikusiko dituzte.",
+    jarioGehiago: "Ikusi gehiago", iritzia: "Zure iritzia", argitaratu: "Argitaratu jarioan",
+    argitaratuta: "Iritzia argitaratu da.", iritziHutsa: "Idatzi iritzia argitaratu aurretik.",
+    iritziSartu: "Hasi saioa iritzia argitaratzeko. Idatzitakoa hemen geratuko da.",
+    kargatzen: "Kargatzen…", bidaltzen: "Bidaltzen…", saiatu: "Saiatu berriro",
+    konfiguratuGabe: "Kontuak eta jarioa oraindik ez daude aktibatuta.",
+    konexioErrorea: "Ezin izan da konektatu. Saiatu berriro.",
+    kontuErrorea: "Ezin izan da kontuarekin jarraitu. Egiaztatu datuak eta saiatu berriro.",
+    saioErrorea: "Helbide elektronikoa edo pasahitza okerra da.",
+    altaItxaron: "Erregistroa ez dago berehala erabiltzeko konfiguratuta. Jarri harremanetan Txalometroarekin.",
+    argitaratuErrorea: "Ezin izan da iritzia argitaratu. Saiatu berriro.",
+    emozioak: { barre: "Barre", negar: "Negar", biak: "Biak", ez: "Ez bata ez bestea" },
+    hurrengoa: "Hurrengoa", atzera: "Atzera",
     // Butacas
-    butakaMapa: "Butaken mapa", zuzenean: "Zuzenean", eszena: "ESZENATOKIA", ikusle: "ikusle orain", libre: "Libre", hartuta: "Hartuta", nirea: "Zurea",
-    eseri: b => `${b} eseri da`, zuEseri: b => `Zu ${b} butakan eseri zara`, altxatu: "Altxatu zara zure butakatik",
-    hasteko: t => `Hasteko ${t}`, martxan: "Funtzioa martxan", ilara: "Ilara", butakaEtiketa: (i, z, e) => `${i} ilara, ${z}. butaka, ${e}`,
-    simulazioa: "Simulazioa: benetako bertsioan butaka bakoitzak QR kode bat izango du; eskaneatzean, zure lekua mapan piztuko da. Ukitu butaka libre bat zurea markatzeko.",
     // Constelación
     nireKonst: "Nire konstelazioa", izar: "izar", genero: "genero", nota: "batez beste",
     konstAzal: "Ikusi duzun obra bakoitza izar bat da. Kolorea: generoa. Erdirago, nota altuagoa. Handiagoa, emozio gehiago. Lerroek ikusi dituzun ordena eta genero bereko obrak lotzen dituzte.",
-    konstIzena: "Zure konstelazioaren izena", hutsikKonst: "Oraindik ez duzu izarrik. Baloratu ikusi duzun antzezlan bat lehen izarra pizteko.",
+    konstIzena: "Zure konstelazioaren izena", hutsikKonst: "Oraindik ez duzu izarrik. Adibidezko profila ikus dezakezu.",
     adibidea: "Adibidezko profila ikusi", adibideBanda: "Adibidezko profila ikusten ari zara.", kendu: "Kendu",
     izenak: { drama: "Malko Handia", tragikomedia: "Bi Aurpegiak", komedia: "Barre Algara", musikala: "Lira Berria", dantza: "Makilen Dantza", kalea: "Plazako Izarra" },
     // Wrapped
     wrappedAzal: "Txalometroaren datuak, Spotifyren Wrapped bezala.", mundiala: "Wrapped mundiala", zurea: "Zure Wrapped",
-    mundialaAzal: "Hikaren publikoa, 2024–2026", zureaAzal: "Zure obrak, notak eta emozioak", zureaHutsik: "Baloratu obra bat zure Wrapped-a sortzeko.",
+    mundialaAzal: "Hikaren publikoa, 2024–2026", zureaAzal: "Zure obrak, notak eta emozioak", zureaHutsik: "Oraindik ez duzu Wrapped pertsonalik.",
     // Ajustes
     ezarpenak: "Ezarpenak", hizkuntza: "Hizkuntza", instalatuIzen: "Instalatu", instalatuAzal: "Gehitu Txalometroa mugikorraren pantailara, aplikazio bat bezala.",
     iosPausoak: ["Ireki orri hau Safarin.", "Sakatu «Partekatu» botoia.", "Aukeratu «Hasierako pantailan gehitu»."],
@@ -373,46 +370,50 @@ const T = {
     admin: "Admin · Proba-obrak", adminAzal: "Obra faltsuak, asmatutako balorazioekin, aplikazioa probatzeko. PROBA etiketa daramate eta nahi duzunean ezaba ditzakezu.",
     sortuProbak: "+ Sortu 4 proba-obra", ezabatuProba: "Ezabatu", ezabatuDenak: "Proba-obra guztiak ezabatu", probaEtiketa: "PROBA", probaGabe: "Ez dago proba-obrarik.",
     balLabur: n => `${n} bal.`,
-    datuak: "Zure datuak", datuakAzal: "Zure balorazioak mugikor honetan bakarrik gordetzen dira.", ezabatu: "Nire datuak ezabatu", ziur: "Sakatu berriro ezabatzeko",
+    datuak: "Zure datuak", datuakAzal: "Aurreko balorazioak gailu honetan daude. Iritzi berriak zure kontuan gordetzen dira.", ezabatu: "Ezabatu gailu honetako datuak", ziur: "Sakatu berriro ezabatzeko",
   },
   es: {
-    obrak: "Obras", butakak: "Butacas", konst: "Constelación", wrapped: "Wrapped",
+    obrak: "Obras", konst: "Constelación", wrapped: "Wrapped",
     orain: "Ahora en el Txalometro", orainAzal: "Toca una obra para ver su valoración o aplaudirla.",
-    errep: "Repertorio", errepAzal: "Obras anteriores de Hika. Si las has visto, añádelas a tu constelación.",
+    errep: "Repertorio", errepAzal: "Obras anteriores de Hika. Elige una para escribir tu opinión.",
     balorazio: n => `${n} valoraciones`, gomendatu: p => `El ${p}% la recomendaría`, txalotu: "Txalotu", ikusita: "Vista",
     zureNota: "Tu nota", publikoa: "Público", publikoIritzia: "La opinión del público",
-    datuGabe: "Esta obra no tiene datos en el Txalometro: si la has visto, valórala y aparecerá en tu constelación.",
-    ikusiDut: "La he visto · Valorar", berriroBaloratu: "Volver a valorar", zureTxaloa: "Tu aplauso",
+    datuGabe: "Esta obra todavía no tiene una nota del público.",
+    ikusiDut: "Escribir una opinión", zureTxaloa: "Tu aplauso",
     noiz: d => `Valorada el ${d}`, mediaKalk: "Nota: satisfacción, trama, reparto y recomendación.",
-    urratsa: ["Notas", "Emociones", "Palabras"],
-    notakAzal: "Toca las máscaras: media máscara es un punto y una entera, dos. Del drama (1) a la comedia (10).",
-    gehiago: "Más preguntas", hurrengoa: "Siguiente", atzera: "Atrás", bidali: "¡Txalotu!", bidaltzen: "Enviando…",
-    gutxienez: "Valora con las máscaras al menos una de las cuatro primeras preguntas.",
-    emozioGald: "¿Hubo algún momento que te hizo reír o llorar?", emozioak: { barre: "Reír", negar: "Llorar", biak: "Las dos", ez: "Ninguna" },
-    uneHori: "¿Cuál fue ese momento?", hunkitu: "¿Qué parte de la obra te hizo sentir más emocionado/a?",
-    hitzakAzal: "Si quieres, cuéntanos más. Todas las respuestas son opcionales.",
-    zertaz: "¿De qué trató la obra?", pertsonaia: "¿Quién fue tu personaje favorito y por qué?",
-    gatazka: "¿Qué problema o conflicto central presenta la obra?", konpondu: "¿Cómo crees que se resolvió el conflicto?",
-    aukerakoa: "opcional",
-    eskerrik: "¡Gracias!", izarBerria: "Se ha encendido una estrella nueva en tu constelación", ikusiKonst: "Ver constelación", itzuli: "Volver a las obras",
-    butakaMapa: "Mapa de butacas", zuzenean: "En directo", eszena: "ESCENARIO", ikusle: "personas viendo ahora", libre: "Libre", hartuta: "Ocupada", nirea: "La tuya",
-    eseri: b => `Alguien se ha sentado en ${b}`, zuEseri: b => `Te has sentado en la ${b}`, altxatu: "Te has levantado de tu butaca",
-    hasteko: t => `Empieza en ${t}`, martxan: "Función en marcha", ilara: "Fila", butakaEtiketa: (i, z, e) => `Fila ${i}, butaca ${z}, ${e}`,
-    simulazioa: "Simulación: en la versión real, cada butaca tendrá un código QR; al escanearlo, tu sitio se encenderá en el mapa. Toca una butaca libre para marcar la tuya.",
+    kontua: "Cuenta", sartu: "Iniciar sesión", alta: "Crear cuenta", irten: "Cerrar sesión", itxi: "Cerrar",
+    email: "Correo electrónico", pasahitza: "Contraseña", pasahitzLuzera: "Al menos 8 caracteres.",
+    jarioa: "Feed", jarioHutsik: "Todavía no hay opiniones.", jarioSartu: "Inicia sesión para leer opiniones y participar.",
+    gustuko: "Me gusta", kenduGustuko: "Quitar me gusta", iruzkinak: "Comentarios", iruzkina: "Escribe un comentario", iruzkindu: "Enviar",
+    iruzkinGabe: "Todavía no hay comentarios.", ikuslea: "Espectador", maskaraNota: "Tu puntuación (opcional)", maskaraGabe: "Sin puntuación",
+    sinConexion: "Sin conexión", navegar: "Seguir sin conexión", saltar: "Saltar animación", konektatu: "Comprueba la conexión y vuelve a intentarlo",
+    iritziPublikoa: "Las personas con cuenta podrán ver tu opinión y tu alias.",
+    jarioGehiago: "Ver más", iritzia: "Tu opinión", argitaratu: "Publicar en el feed",
+    argitaratuta: "Opinión publicada.", iritziHutsa: "Escribe una opinión antes de publicar.",
+    iritziSartu: "Inicia sesión para publicar. Tu texto se quedará aquí.",
+    kargatzen: "Cargando…", bidaltzen: "Enviando…", saiatu: "Reintentar",
+    konfiguratuGabe: "Las cuentas y el feed aún no están activados.",
+    konexioErrorea: "No se ha podido conectar. Inténtalo de nuevo.",
+    kontuErrorea: "No se ha podido continuar. Revisa los datos de la cuenta e inténtalo de nuevo.",
+    saioErrorea: "El correo electrónico o la contraseña no son correctos.",
+    altaItxaron: "El registro inmediato no está activado. Ponte en contacto con Txalometroa.",
+    argitaratuErrorea: "No se ha podido publicar la opinión. Inténtalo de nuevo.",
+    emozioak: { barre: "Reír", negar: "Llorar", biak: "Las dos", ez: "Ninguna" },
+    hurrengoa: "Siguiente", atzera: "Atrás",
     nireKonst: "Mi constelación", izar: "estrellas", genero: "géneros", nota: "nota media",
     konstAzal: "Cada obra que ves es una estrella. Color: género. Más al centro, mejor nota. Más grande, más emoción. Las líneas unen el orden en que las viste y las obras del mismo género.",
-    konstIzena: "Tu constelación se llama", hutsikKonst: "Todavía no tienes estrellas. Valora una obra que hayas visto para encender la primera.",
+    konstIzena: "Tu constelación se llama", hutsikKonst: "Todavía no tienes estrellas. Puedes ver un perfil de ejemplo.",
     adibidea: "Ver un perfil de ejemplo", adibideBanda: "Estás viendo un perfil de ejemplo.", kendu: "Quitar",
     izenak: { drama: "La Gran Lágrima", tragikomedia: "Las Dos Caras", komedia: "La Carcajada", musikala: "La Nueva Lira", dantza: "La Danza de Palos", kalea: "La Estrella de la Plaza" },
     wrappedAzal: "Los datos del Txalometro, al estilo del Wrapped de Spotify.", mundiala: "Wrapped mundial", zurea: "Tu Wrapped",
-    mundialaAzal: "El público de Hika, 2024–2026", zureaAzal: "Tus obras, tus notas y tus emociones", zureaHutsik: "Valora una obra para crear tu Wrapped.",
+    mundialaAzal: "El público de Hika, 2024–2026", zureaAzal: "Tus obras, tus notas y tus emociones", zureaHutsik: "Todavía no tienes un Wrapped personal.",
     ezarpenak: "Ajustes", hizkuntza: "Idioma", instalatuIzen: "Instalar", instalatuAzal: "Añade el Txalometro a la pantalla de tu móvil, como una app.",
     iosPausoak: ["Abre esta página en Safari.", "Pulsa el botón «Compartir».", "Elige «Añadir a pantalla de inicio»."],
     androidPausoak: ["Abre esta página en Chrome.", "Pulsa el menú ⋮.", "Elige «Instalar aplicación» o «Añadir a pantalla de inicio»."],
     admin: "Admin · Obras de prueba", adminAzal: "Obras falsas con valoraciones inventadas para probar la app. Llevan la etiqueta PRUEBA y las puedes borrar cuando quieras.",
     sortuProbak: "+ Crear 4 obras de prueba", ezabatuProba: "Borrar", ezabatuDenak: "Borrar todas las de prueba", probaEtiketa: "PRUEBA", probaGabe: "No hay obras de prueba.",
     balLabur: n => `${n} val.`,
-    datuak: "Tus datos", datuakAzal: "Tus valoraciones se guardan solo en este móvil.", ezabatu: "Borrar mis datos", ziur: "Pulsa otra vez para borrar",
+    datuak: "Tus datos", datuakAzal: "Las valoraciones antiguas se guardan en este dispositivo. Las opiniones nuevas se guardan en tu cuenta.", ezabatu: "Borrar datos de este dispositivo", ziur: "Pulsa otra vez para borrar",
   },
 };
 const t = () => T[G.lang];
@@ -511,9 +512,10 @@ const hash = s => [...s].reduce((h, c) => Math.imul(h ^ c.charCodeAt(0), 1677761
 
 const ICONOS = {
   obrak: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c5 0 9 2 9 7 0 6-4 13-9 13S3 15 3 9c0-5 4-7 9-7Zm-4 6.2c-1.2 0-2 .6-2.2 1.6 1.4-.6 3-.6 4.4 0C10 8.8 9.2 8.2 8 8.2Zm8 0c-1.2 0-2 .6-2.2 1.6 1.4-.6 3-.6 4.4 0-.2-1-1-1.6-2.2-1.6ZM7.5 14c1 2.2 2.6 3.3 4.5 3.3s3.5-1.1 4.5-3.3c-3 1-6 1-9 0Z"/></svg>`,
-  butakak: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h12a2 2 0 0 1 2 2v6H4V6a2 2 0 0 1 2-2Zm-3 9h18v4h-2v3h-2v-3H7v3H5v-3H3z"/></svg>`,
   konst: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 18 9 9l6 4 5-9"/><g fill="currentColor" stroke="none"><circle cx="4" cy="18" r="2.4"/><circle cx="9" cy="9" r="2"/><circle cx="15" cy="13" r="2.6"/><circle cx="20" cy="4" r="2"/></g></svg>`,
   wrapped: `<svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M10 8v8l6-4z" fill="#0d0d0d"/></svg>`,
+  jarioa: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H9l-5 4zM8 8h8m-8 4h6"/></svg>`,
+  kontua: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>`,
   atzera: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>`,
   itxi: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>`,
 };
@@ -526,21 +528,18 @@ function htmlNeurgailua(nota, etiketa, clase = "") {
 function htmlMaskaraNeurria(v) {
   return `<div class="maskara-neurria" aria-hidden="true">${K_MASCARA.map((k, i) => svgMascara(k, Math.max(0, Math.min(1, (v ?? 0) / 2 - i)))).join("")}</div>`;
 }
-// Entrada con máscaras: media máscara = 1 punto, entera = 2.
-function htmlMaskarak(g, valor, etiqueta) {
-  return `<div class="maskarak" role="slider" tabindex="0" aria-label="${esc(etiqueta)}" aria-valuemin="0" aria-valuemax="10" aria-valuenow="${valor}" data-preg="${g}">
-    ${K_MASCARA.map((k, i) => `<button type="button" tabindex="-1" data-i="${i + 1}" aria-hidden="true">${svgMascara(k, Math.max(0, Math.min(1, valor / 2 - i)))}</button>`).join("")}
-    <output class="${valor ? "jarrita" : ""}">${valor || "–"}</output></div>`;
-}
 
 // ================================================================ Vistas
 
-const VISTAS = ["obrak", "butakak", "konst", "wrapped"];
+const VISTAS = ["obrak", "jarioa", "konst", "wrapped"];
 let vista = { nombre: "obrak" };
 
 function pintarNav() {
   document.getElementById("nabigazioa").innerHTML = VISTAS.map(v => `<button type="button" data-vista="${v}" ${(vista.nombre === v || (v === "obrak" && vista.nombre === "fitxa")) ? 'aria-current="page"' : ""}>${ICONOS[v]}${t()[v]}</button>`).join("");
   document.documentElement.lang = G.lang;
+  const cuenta = document.getElementById("kontua");
+  cuenta.innerHTML = ICONOS.kontua;
+  cuenta.setAttribute("aria-label", usuario ? t().kontua : t().sartu);
 }
 
 function vistaObrak() {
@@ -578,7 +577,7 @@ function vistaFitxa(id) {
   return `<div class="fitxa-azala"><img src="${esc(o.imagen)}" alt=""><button type="button" class="atzera" data-vista="obrak" aria-label="${tx.atzera}">${ICONOS.atzera}</button><h1>${esc(izena(o))}</h1></div>
     <div class="meta">${o.proba ? `<span class="txip proba">${tx.probaEtiketa}</span>` : ""}<span class="txip"><i style="--c:${genKolorea(o.genero)}"></i>${esc(genIzena(o.genero))}</span><span>${o.urtea}</span>${o[G.lang === "eu" ? "es" : "eu"] !== izena(o) ? `<span>· ${esc(o[G.lang === "eu" ? "es" : "eu"])}</span>` : ""}</div>
     ${publicoHtml}${miaHtml}
-    <div class="ekintza"><button type="button" class="botoia zabala" data-baloratu="${o.id}">${mia ? tx.berriroBaloratu : (o.txalometroa ? tx.txalotu : tx.ikusiDut)}</button></div>`;
+    <div class="ekintza"><button type="button" class="botoia zabala" data-baloratu="${o.id}">${tx.ikusiDut}</button></div>`;
 }
 
 function bandaDemo() {
@@ -588,9 +587,9 @@ function bandaDemo() {
 function pintar() {
   pintarNav();
   const main = document.getElementById("edukia");
-  pararButakak(); pararZerua();
+  pararZerua();
   if (vista.nombre === "fitxa") main.innerHTML = vistaFitxa(vista.obra);
-  else if (vista.nombre === "butakak") { main.innerHTML = vistaButakak(); hasiButakak(); }
+  else if (vista.nombre === "jarioa") main.innerHTML = vistaJarioa();
   else if (vista.nombre === "konst") { main.innerHTML = vistaKonst(); hasiZerua(); }
   else if (vista.nombre === "wrapped") main.innerHTML = vistaWrapped();
   else main.innerHTML = vistaObrak();
@@ -599,163 +598,10 @@ function irA(nombre, extra = {}) {
   vista = { nombre, ...extra };
   try { history.replaceState(null, "", `#${nombre === "fitxa" ? `obra-${extra.obra}` : nombre}`); } catch (e) {}
   pintar(); window.scrollTo(0, 0);
+  if (nombre === "jarioa") cargarJarioa();
 }
 
-// ================================================================ Valorar
-
-let baloraketa = null;   // { obra, urratsa, notas, emozioa, testuak }
-
-function abrirValorar(id) {
-  baloraketa = { obra: id, urratsa: 0, notas: Object.fromEntries(PREG.map(g => [g, 0])), emozioa: null, testuak: {} };
-  const el = document.getElementById("baloratu"); el.hidden = false; document.body.style.overflow = "hidden";
-  pintarValorar();
-}
-function cerrarValorar() {
-  document.getElementById("baloratu").hidden = true; document.body.style.overflow = ""; baloraketa = null;
-}
-
-function pintarValorar() {
-  const tx = t(), b = baloraketa, o = obraCat(b.obra), el = document.getElementById("baloratu");
-  if (b.urratsa === 3) return pintarResultado();
-  const pasos = `<div class="urratsak">${[0, 1, 2].map(i => `<i class="${i <= b.urratsa ? "eginda" : ""}"></i>`).join("")}</div>`;
-  let cuerpo = "";
-  if (b.urratsa === 0) {
-    const principales = CFG.nota_obra, resto = PREG.filter(g => !principales.includes(g) && (o.txalometroa || CFG.preguntas[g].bloque !== "localidad"));
-    const fila = g => `<div class="galdera"><p class="testua">${esc(CFG.preguntas[g]["texto_" + G.lang])}</p>${htmlMaskarak(g, b.notas[g], CFG.preguntas[g]["texto_" + G.lang])}</div>`;
-    cuerpo = `<h2>${esc(izena(o))}</h2><p class="azalpena">${tx.notakAzal}</p>${principales.map(fila).join("")}
-      <details class="gehiago"><summary>${tx.gehiago} (${resto.length})</summary>${resto.map(fila).join("")}</details>
-      <p class="oharra" id="oharra" aria-live="polite"></p>`;
-  } else if (b.urratsa === 1) {
-    const iconos = { barre: [1], negar: [-1], biak: [-1, 1], ez: [0] };
-    cuerpo = `<h2>${tx.urratsa[1]}</h2><p class="testua" style="font-weight:600;margin:16px 0 0">${tx.emozioGald}</p>
-      <div class="aukerak" role="group">${Object.entries(tx.emozioak).map(([k, l]) => `<button type="button" class="aukera" data-emozioa="${k}" aria-pressed="${b.emozioa === k}"><span class="irud">${iconos[k].map(m => svgMascara(m, k === "ez" ? 0 : 1)).join("")}</span>${l}</button>`).join("")}</div>
-      ${testuArea("unea", tx.uneHori)}${testuArea("hunkitu", tx.hunkitu)}`;
-  } else {
-    cuerpo = `<h2>${tx.urratsa[2]}</h2><p class="azalpena">${tx.hitzakAzal}</p>
-      ${testuArea("zertaz", tx.zertaz)}${testuArea("pertsonaia", tx.pertsonaia)}${testuArea("gatazka", tx.gatazka)}${testuArea("konpondu", tx.konpondu)}`;
-  }
-  el.innerHTML = `<div class="goia"><button type="button" class="atzera" data-bal="itxi" aria-label="${tx.atzera}">${ICONOS.itxi}</button>${pasos}</div>
-    <div class="edukia">${cuerpo}</div>
-    <div class="beheko">${b.urratsa > 0 ? `<button type="button" class="botoia marino" data-bal="atzera">${tx.atzera}</button>` : ""}
-      <button type="button" class="botoia" data-bal="${b.urratsa === 2 ? "bidali" : "hurrengoa"}" id="bal-aurrera">${b.urratsa === 2 ? tx.bidali : tx.hurrengoa}</button></div>`;
-  el.scrollTop = 0;
-}
-function testuArea(k, etiketa) {
-  return `<label class="idatzi">${etiketa} <span>(${t().aukerakoa})</span><textarea data-testua="${k}" maxlength="600">${esc(baloraketa.testuak[k] || "")}</textarea></label>`;
-}
-function ponerNota(g, v, teclado = false) {
-  baloraketa.notas[g] = Math.max(0, Math.min(10, v));
-  const cont = document.querySelector(`.maskarak[data-preg="${g}"]`);
-  cont.outerHTML = htmlMaskarak(g, baloraketa.notas[g], CFG.preguntas[g]["texto_" + G.lang]);
-  if (teclado) document.querySelector(`.maskarak[data-preg="${g}"]`).focus({ preventScroll: true });
-  const o = document.getElementById("oharra"); if (o) o.textContent = "";
-}
-
-function enviarValoracion() {
-  const b = baloraketa, o = obraCat(b.obra);
-  const boton = document.getElementById("bal-aurrera"); boton.disabled = true; boton.textContent = t().bidaltzen;
-  const antes = publicoDe(o);
-  const notas = Object.fromEntries(PREG.map(g => [g, b.notas[g] || 0]));
-  G.valoraciones = G.valoraciones.filter(v => !(v.demo && v.obra === b.obra));
-  G.valoraciones.push({ id: `m-${Date.now()}`, obra: b.obra, fecha: new Date().toISOString(), lang: G.lang, notas,
-    emozioa: b.emozioa || "ez", testuak: Object.fromEntries(Object.entries(b.testuak).filter(([, x]) => x.trim())) });
-  guardar(); cacheRes = null;
-  b.antes = antes; b.urratsa = 3;
-  setTimeout(() => { pintarValorar(); konfetia(); }, 350);
-}
-
-function pintarResultado() {
-  const tx = t(), b = baloraketa, o = obraCat(b.obra), mia = misObras().find(v => v.obra === b.obra), p = publicoDe(o);
-  document.getElementById("baloratu").innerHTML = `<div class="goia"><button type="button" class="atzera" data-bal="itxi" aria-label="${tx.atzera}">${ICONOS.itxi}</button></div>
-    <div class="edukia emaitza">
-      <h2>${tx.eskerrik}</h2>
-      ${htmlNeurgailua(notaPropia(mia), tx.zureTxaloa, "handia")}
-      ${p ? `<div class="alderaketa"><div><b>${fmt(notaPropia(mia))}</b><span>${tx.zureNota}</span></div><div><b>${fmt(p.nota)}</b><span>${tx.publikoa} · ${p.n}</span></div></div>` : ""}
-      <div class="izar-berria"><svg viewBox="0 0 24 24" width="22" height="22" fill="${genKolorea(o.genero)}"><path d="M12 2l2.6 6.6L21 9.3l-5 4.4 1.6 6.8L12 17l-5.6 3.5L8 13.7 3 9.3l6.4-.7z"/></svg>${tx.izarBerria}</div>
-      <div style="display:grid;gap:10px"><button type="button" class="botoia" data-bal="konst">${tx.ikusiKonst}</button><button type="button" class="botoia marino" data-bal="itxi">${tx.itzuli}</button></div>
-    </div>`;
-}
-
-// ================================================================ Mapa de butacas (simulación)
-
-const ILARAK = "ABCDEFGHIJKL".split(""), ZUTABEAK = 18;
-let butakak = null, tenporizadorea = null, jarioa = [], hasieraAt = 0;
-
-function prepararButakak() {
-  const r = azarra(hash(new Date().toDateString()));
-  butakak = ILARAK.map(() => Array(ZUTABEAK).fill(false));
-  // Empiezan ocupadas las butacas «buenas» (centro y delante) en un 35 %.
-  const todas = []; ILARAK.forEach((_, i) => { for (let z = 0; z < ZUTABEAK; z++) todas.push([i, z, preferencia(i, z) + r() * .8]); });
-  todas.sort((a, b) => b[2] - a[2]).slice(0, Math.round(todas.length * .35)).forEach(([i, z]) => { butakak[i][z] = true; });
-  hasieraAt = Date.now() + 4 * 60 * 1000;
-  jarioa = [];
-}
-const preferencia = (i, z) => 1 - Math.abs(z - (ZUTABEAK - 1) / 2) / ZUTABEAK - i / ILARAK.length * .6;
-const etiquetaButaka = (i, z) => `${ILARAK[i]}${z + 1}`;
-const ocupadas = () => butakak.flat().filter(Boolean).length + (G.butaka ? 1 : 0);
-
-function vistaButakak() {
-  if (!butakak) prepararButakak();
-  const tx = t(), o = activas().filter(x => !x.proba).sort((a, b) => b.urtea - a.urtea)[0] || activas()[0];
-  const total = ILARAK.length * ZUTABEAK, n = ocupadas();
-  const filas = ILARAK.map((l, i) => `<div class="ilara"><span>${l}</span>${Array.from({ length: ZUTABEAK }, (_, z) => {
-    const mia = G.butaka === etiquetaButaka(i, z), h = butakak[i][z];
-    const est = mia ? tx.nirea : h ? tx.hartuta : tx.libre;
-    return `${z === 9 ? "<span></span>" : ""}<button type="button" class="butaka ${mia ? "nirea" : h ? "hartuta" : ""}" data-butaka="${i}-${z}" aria-label="${esc(tx.butakaEtiketa(l, z + 1, est))}" ${h && !mia ? "disabled" : ""}></button>`;
-  }).join("")}<span>${l}</span></div>`).join("");
-  return `<p class="zuzenean" style="margin:18px 0 0"><i></i>${tx.zuzenean.toUpperCase()}</p>
-    <h1 class="titulua" style="margin-top:4px">${esc(izena(o))}</h1>
-    <div class="kontagailua"><b id="kont">${n}</b><span>/ ${total} ${tx.ikusle}</span></div>
-    <div class="betetzea"><i id="betetzea" style="width:${(n / total * 100).toFixed(1)}%"></i></div>
-    <p class="azalpena" id="egoera">${egoeraTestua()}</p>
-    <div class="aretoa"><div class="eszenatokia">${tx.eszena}</div><div class="ilarak" id="ilarak">${filas}</div></div>
-    <div class="legenda"><span><i style="background:#333"></i>${tx.libre}</span><span><i style="background:var(--rojo)"></i>${tx.hartuta}</span><span><i style="background:var(--crema)"></i>${tx.nirea}</span></div>
-    <ul class="jarioa" id="jarioa" aria-live="polite">${jarioa.map(x => `<li>${x}</li>`).join("")}</ul>
-    <p class="simulazioa">${tx.simulazioa}</p>`;
-}
-function egoeraTestua() {
-  const falta = hasieraAt - Date.now();
-  if (falta <= 0) return t().martxan;
-  const m = Math.floor(falta / 60000), s = Math.floor(falta / 1000) % 60;
-  return t().hasteko(`${m}:${dd(s)}`);
-}
-function hasiButakak() {
-  const r = azarra(Date.now());
-  tenporizadorea = setInterval(() => {
-    const libres = [];
-    butakak.forEach((fila, i) => fila.forEach((h, z) => { if (!h && G.butaka !== etiquetaButaka(i, z)) libres.push([i, z]); }));
-    const egoera = document.getElementById("egoera"); if (egoera) egoera.textContent = egoeraTestua();
-    if (!libres.length || libres.length < ILARAK.length * ZUTABEAK * .06) return;
-    // Llega más gente cuanto más cerca está el comienzo; prefieren el centro.
-    const cuantos = 1 + Math.floor(r() * (Date.now() > hasieraAt - 90000 ? 4 : 2));
-    for (let k = 0; k < cuantos && libres.length; k++) {
-      libres.sort((a, b) => (preferencia(...b) + r() * 1.2) - (preferencia(...a) + r() * 1.2));
-      const [i, z] = libres.shift(); butakak[i][z] = true;
-      const btn = document.querySelector(`[data-butaka="${i}-${z}"]`);
-      if (btn) { btn.classList.add("hartuta", "berria"); btn.disabled = true; btn.setAttribute("aria-label", t().butakaEtiketa(ILARAK[i], z + 1, t().hartuta)); }
-      anotar(t().eseri(`<b>${etiquetaButaka(i, z)}</b>`));
-    }
-    actualizarContador();
-  }, 1400);
-}
-function actualizarContador() {
-  const total = ILARAK.length * ZUTABEAK, n = ocupadas();
-  const k = document.getElementById("kont"), b = document.getElementById("betetzea");
-  if (k) k.textContent = n; if (b) b.style.width = `${(n / total * 100).toFixed(1)}%`;
-}
-function anotar(html) {
-  jarioa = [html, ...jarioa].slice(0, 4);
-  const ul = document.getElementById("jarioa"); if (ul) ul.innerHTML = jarioa.map(x => `<li>${x}</li>`).join("");
-}
-function pararButakak() { clearInterval(tenporizadorea); tenporizadorea = null; }
-function tocarButaka(i, z) {
-  const et = etiquetaButaka(i, z);
-  if (G.butaka === et) { G.butaka = null; anotar(t().altxatu); }
-  else { G.butaka = et; anotar(t().zuEseri(`<b>${et}</b>`)); }
-  guardar();
-  const main = document.getElementById("edukia"), y = window.scrollY;
-  main.innerHTML = vistaButakak(); window.scrollTo(0, y);
-}
+__CUENTAS__
 
 // ================================================================ Mi constelación
 
@@ -826,7 +672,7 @@ function hasiZerua() {
     // Anillos de nota y sectores de género
     ctx.strokeStyle = "rgba(255,253,240,.08)"; ctx.lineWidth = 1;
     [10, 7, 4].forEach(n => { ctx.beginPath(); ctx.arc(cx, cy, R * (.18 + .82 * (1 - (n - 1) / 9)), 0, Math.PI * 2); ctx.stroke(); });
-    ctx.font = "13px 'Jersey 10', monospace"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.font = "13px Inter, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
     GEN_ORDEN.forEach((g, i) => {
       const a = i * sector - Math.PI / 2;
       ctx.fillStyle = genKolorea(g); ctx.globalAlpha = .75;
@@ -855,7 +701,7 @@ function hasiZerua() {
       ctx.fillStyle = "#fffdf0"; ctx.beginPath(); ctx.arc(n.x, n.y, rad * .55, 0, Math.PI * 2); ctx.fill();
       ctx.fillStyle = n.color; ctx.beginPath(); ctx.arc(n.x, n.y, rad * .35, 0, Math.PI * 2); ctx.fill();
       if (zeruaSel === n) { ctx.strokeStyle = "#fffdf0"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(n.x, n.y, rad + 7, 0, Math.PI * 2); ctx.stroke(); }
-      ctx.fillStyle = "rgba(255,253,240,.85)"; ctx.font = "15px 'Jersey 10', monospace";
+      ctx.fillStyle = "rgba(255,253,240,.85)"; ctx.font = "15px Inter, sans-serif";
       ctx.fillText(izena(n.o), n.x, n.y + rad + 12);
     });
     ctx.globalAlpha = 1;
@@ -1077,23 +923,6 @@ function abrirAjustes() {
 }
 function cerrarAjustes() { const o = document.getElementById("orria"); o.hidden = true; o.innerHTML = ""; borrarArmado = false; probaArmado = false; }
 
-// ================================================================ Confeti
-
-function konfetia() {
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const c = document.getElementById("konfetia"), ctx = c.getContext("2d");
-  c.hidden = false; c.width = innerWidth; c.height = innerHeight;
-  const col = ["#c80000", "#0d0d0d", "#fdeec7", "#c8361b", "#fffdf0"];
-  const ps = Array.from({ length: 120 }, () => ({ x: innerWidth / 2 + (Math.random() - .5) * 160, y: innerHeight * .4, vx: (Math.random() - .5) * 12, vy: -Math.random() * 12 - 4,
-    r: Math.random() * 6 + 4, c: col[Math.floor(Math.random() * col.length)], a: Math.random() * Math.PI, va: (Math.random() - .5) * .3 }));
-  let f = 0;
-  (function paso() {
-    ctx.clearRect(0, 0, c.width, c.height);
-    for (const p of ps) { p.vy += .32; p.x += p.vx; p.y += p.vy; p.a += p.va; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.fillStyle = p.c; ctx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); ctx.restore(); }
-    if (++f < 100) requestAnimationFrame(paso); else { ctx.clearRect(0, 0, c.width, c.height); c.hidden = true; }
-  })();
-}
-
 // ================================================================ Eventos
 
 document.addEventListener("click", e => {
@@ -1106,6 +935,17 @@ document.addEventListener("click", e => {
   if ((el = q("[data-demo]"))) { el.dataset.demo === "jarri" ? ponerDemo() : quitarDemo(); cerrarAjustes(); return pintar(); }
   if ((el = q("[data-lang]"))) { G.lang = el.dataset.lang; guardar(); pintar(); pintarInstalar(); return abrirAjustes(); }
   if (q("#ezarpenak")) return abrirAjustes();
+  if (q("#kontua") || q("[data-kontua]")) return abrirCuenta();
+  if (q("[data-cerrar-cuenta]")) return cuentaDialogo.close();
+  if (q("[data-modo-cuenta]")) return cambiarModoCuenta();
+  if (q("[data-cerrar-sesion]")) return cerrarSesion();
+  if (q("[data-cerrar-opinion]")) return opinionDialogo.close();
+  if ((el = q("[data-like]"))) return cambiarLike(el);
+  if ((el = q("[data-comentarios]"))) return abrirComentarios(el.dataset.comentarios);
+  if (q("[data-cerrar-comentarios]")) return comentariosDialogo.close();
+  if ((el = q("[data-comentarios-mas]"))) return cargarComentarios(el.dataset.comentariosMas === "true");
+  if (q("[data-jario-mas]")) return cargarJarioa(true);
+  if (q("[data-jario-reintentar]")) return cargarJarioa(feed.cargarMas);
   if ((el = q("[data-proba-ezabatu]"))) {
     const id = el.dataset.probaEzabatu; borrarPrueba(id);
     if (vista.obra === id) vista = { nombre: "obrak" };
@@ -1123,29 +963,9 @@ document.addEventListener("click", e => {
   }
   if (q("#ezabatu")) {
     if (!borrarArmado) { borrarArmado = true; abrirAjustes(); setTimeout(() => { if (borrarArmado) { borrarArmado = false; if (!document.getElementById("orria").hidden) abrirAjustes(); } }, 4000); return; }
-    G.valoraciones = []; G.butaka = null; guardar(); cacheRes = null; cerrarAjustes(); return pintar();
+    G.valoraciones = []; guardar(); cacheRes = null; cerrarAjustes(); return pintar();
   }
   if (e.target.id === "orria") return cerrarAjustes();
-  if ((el = q("[data-butaka]"))) { const [i, z] = el.dataset.butaka.split("-").map(Number); return tocarButaka(i, z); }
-  // Valorar
-  if ((el = q(".maskarak button"))) {
-    const cont = el.closest(".maskarak"), i = +el.dataset.i, b = el.getBoundingClientRect();
-    const mitad = (e.clientX - b.left) < b.width / 2;
-    const v = mitad ? i * 2 - 1 : i * 2;
-    return ponerNota(cont.dataset.preg, baloraketa.notas[cont.dataset.preg] === v ? 0 : v);
-  }
-  if ((el = q("[data-emozioa]"))) { baloraketa.emozioa = el.dataset.emozioa; document.querySelectorAll("[data-emozioa]").forEach(b => b.setAttribute("aria-pressed", b === el)); return; }
-  if ((el = q("[data-bal]"))) {
-    const a = el.dataset.bal;
-    if (a === "itxi") { const volver = baloraketa?.urratsa === 3; cerrarValorar(); return volver ? irA(vista.nombre, vista) : null; }
-    if (a === "konst") { cerrarValorar(); return irA("konst"); }
-    if (a === "atzera") { baloraketa.urratsa--; return pintarValorar(); }
-    if (a === "hurrengoa") {
-      if (baloraketa.urratsa === 0 && !CFG.nota_obra.some(g => baloraketa.notas[g])) { document.getElementById("oharra").textContent = t().gutxienez; return; }
-      baloraketa.urratsa++; return pintarValorar();
-    }
-    if (a === "bidali") return enviarValoracion();
-  }
   // Wrapped
   if ((el = q("[data-istorio]"))) {
     const a = el.dataset.istorio;
@@ -1154,14 +974,17 @@ document.addEventListener("click", e => {
     return mostrarDiapo(historia.i + (a === "hurrengoa" ? 1 : -1));
   }
 });
-document.addEventListener("input", e => { if (e.target.dataset.testua && baloraketa) baloraketa.testuak[e.target.dataset.testua] = e.target.value; });
+document.addEventListener("submit", e => {
+  if (e.target.id === "form-cuenta") { e.preventDefault(); enviarCuenta(e.target); }
+  if (e.target.id === "form-comentario") { e.preventDefault(); enviarComentario(e.target); }
+  if (e.target.id === "form-opinion") { e.preventDefault(); enviarValoracion(e.target); }
+});
 document.addEventListener("keydown", e => {
-  const m = e.target.closest?.(".maskarak");
-  if (m && ["ArrowRight", "ArrowUp", "ArrowLeft", "ArrowDown", "Home", "End"].includes(e.key)) {
-    e.preventDefault(); const g = m.dataset.preg, v = baloraketa.notas[g];
-    ponerNota(g, e.key === "Home" ? 0 : e.key === "End" ? 10 : v + (["ArrowRight", "ArrowUp"].includes(e.key) ? 1 : -1), true);
+  if (e.key === "Escape") {
+    if (cuentaDialogo.open || opinionDialogo.open || comentariosDialogo.open || escena.open) return;
+    if (historia) cerrarWrapped();
+    else if (!document.getElementById("orria").hidden) cerrarAjustes();
   }
-  if (e.key === "Escape") { if (historia) cerrarWrapped(); else if (!document.getElementById("orria").hidden) cerrarAjustes(); else if (baloraketa) cerrarValorar(); }
   if (historia && e.key === "ArrowRight") mostrarDiapo(historia.i + 1);
   if (historia && e.key === "ArrowLeft") mostrarDiapo(historia.i - 1);
 });
@@ -1185,7 +1008,9 @@ document.getElementById("marka-logoa").innerHTML = svgLogoLiquido(10, { animar: 
 const h = location.hash.slice(1);
 if (h.startsWith("obra-") && obraCat(h.slice(5))) vista = { nombre: "fitxa", obra: h.slice(5) };
 else if (VISTAS.includes(h)) vista = { nombre: h };
-pintar(); pintarInstalar();
+pintar(); pintarInstalar(); iniciarEscena();
+if (vista.nombre === "jarioa") cargarJarioa();
+else conectarCuentas().catch(() => {});
 if ("serviceWorker" in navigator && location.protocol !== "file:") navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 </body>
